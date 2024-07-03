@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace finalproject
+namespace practice
 {
     /// <summary>
     /// Interaction logic for App.xaml

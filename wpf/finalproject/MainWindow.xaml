@@ -4,45 +4,47 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:local="clr-namespace:finalproject"
     mc:Ignorable="d"
-    Title="MainWindow" Height="450" Width="800" 
-    MinHeight="370" MinWidth="530" FontFamily="NanumGothic"
-    Loaded="MetroWindow_Loaded">
-    <Grid Background="#458">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="100" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="100" />
-        </Grid.ColumnDefinitions>
-
+    Title="Login" Height="600" Width="310" 
+    FontFamily="NanumGothic" >
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="130" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="100" />
+            <RowDefinition Height="200" />
+            <!-- 로고 이미지의 높이에 맞게 설정 -->
+            <RowDefinition Height="1*" />
+            <!-- 상단 여백 -->
+            <RowDefinition Height="1" />
+            <!-- 입력란과 버튼 -->
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="1*" />
-            </Grid.ColumnDefinitions>
+        <!-- 로고 이미지 -->
+        <Image Grid.Row="0" Source="./images/logo.png" Margin="0,-16,0,6" />
 
-            <StackPanel Orientation="Vertical" Grid.Column="0" Grid.Row="0">
-                <StackPanel Orientation="Horizontal">
-                    <Label Width="150" FontWeight="Bold" FontSize="17pt" Foreground="White">아이디</Label>
-                    <PasswordBox x:Name="pbLoginid" Width="347" FontSize="17pt" ToolTip="아이디를 입력하세요" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0 20">
-                    <Label Width="150" FontWeight="Bold" FontSize="17pt" Foreground="White" Content="패스워드"/>
-                    <PasswordBox x:Name="pbPasswd" Width="347" FontSize="17pt" ToolTip="비밀번호를 입력하세요" />
-                </StackPanel>
+        <!-- 아이디 입력 -->
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Center" Margin="0 40">
+            <StackPanel Orientation="Horizontal" Margin="0 10">
+                <Label Width="100" FontWeight="Bold" FontSize="14" Foreground="Black" Content="아이디" />
+                <TextBox Width="180" FontSize="14" Background="LightGray" Foreground="White" BorderThickness="0" 
+                             mah:TextBoxHelper.Watermark="아이디를 입력하시오"
+                             mah:TextBoxHelper.ClearTextButton="True" 
+                             mah:TextBoxHelper.UseFloatingWatermark="True"
+                             />
             </StackPanel>
 
-            <Button Grid.Column="1" Content="로그인" Margin="20,-9,0,102" Click="Button_Click" />
-        </Grid>
+            <!-- 패스워드 입력 -->
+            <StackPanel Orientation="Horizontal" Margin="0 20">
+                <Label Width="100" FontWeight="Bold" FontSize="14" Foreground="Black" Content="패스워드" />
+                <PasswordBox Width="180" FontSize="14" Background="LightGray" Foreground="White" BorderThickness="0"
+                             mah:TextBoxHelper.Watermark="비밀번호를 입력하시오"
+                             mah:TextBoxHelper.ClearTextButton="True" 
+                             mah:TextBoxHelper.UseFloatingWatermark="True"/>
+            </StackPanel>
 
+            <!-- 로그인 버튼 -->
+            <Button Content="로그인" Width="179" Height="40" Margin="0 20" Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold" />
+        </StackPanel>
     </Grid>
 </mah:MetroWindow>

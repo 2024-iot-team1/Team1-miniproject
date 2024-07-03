@@ -1,21 +1,17 @@
-﻿using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using System.Diagnostics;
-using System.Web;
+﻿using System.Text;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Controls;
-using System.Text;
-using System.Net;
-using System.IO;
-using Newtonsoft.Json.Linq;
-using finalproject.Models;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using Microsoft.Data.SqlClient;
-using CefSharp.DevTools.Page;
-using System.Data;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using MahApps.Metro.Controls;
 
-namespace finalproject
+
+namespace practice
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -27,19 +23,9 @@ namespace finalproject
             InitializeComponent();
         }
 
-        private void doLogin()
+        private void InitializeComponent()
         {
-            
-        }
-
-        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            doLogin();
+            throw new NotImplementedException();
         }
     }
 }
