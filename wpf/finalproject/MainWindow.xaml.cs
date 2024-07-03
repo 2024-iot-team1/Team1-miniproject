@@ -9,9 +9,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using System.IO;
 
 
-namespace practice
+namespace finalproject
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -23,9 +24,24 @@ namespace practice
             InitializeComponent();
         }
 
-        private void InitializeComponent()
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            throw new NotImplementedException();
+
+        }
+
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void PasswordBox_KeyDown(object sender, KeyEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

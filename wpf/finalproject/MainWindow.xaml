@@ -9,7 +9,8 @@
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     mc:Ignorable="d"
     Title="Login" Height="600" Width="310" 
-    FontFamily="NanumGothic" >
+    FontFamily="NanumGothic"
+    Loaded="MetroWindow_Loaded">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="200" />
@@ -31,7 +32,7 @@
                              mah:TextBoxHelper.Watermark="아이디를 입력하시오"
                              mah:TextBoxHelper.ClearTextButton="True" 
                              mah:TextBoxHelper.UseFloatingWatermark="True"
-                             />
+                             KeyDown="TextBox_KeyDown"/>
             </StackPanel>
 
             <!-- 패스워드 입력 -->
@@ -40,11 +41,14 @@
                 <PasswordBox Width="180" FontSize="14" Background="LightGray" Foreground="White" BorderThickness="0"
                              mah:TextBoxHelper.Watermark="비밀번호를 입력하시오"
                              mah:TextBoxHelper.ClearTextButton="True" 
-                             mah:TextBoxHelper.UseFloatingWatermark="True"/>
+                             mah:TextBoxHelper.UseFloatingWatermark="True"
+                             KeyDown="PasswordBox_KeyDown"/>
             </StackPanel>
 
             <!-- 로그인 버튼 -->
-            <Button Content="로그인" Width="179" Height="40" Margin="0 20" Background="#4CAF50" Foreground="White" FontSize="14" FontWeight="Bold" />
+            <Button Content="로그인" Width="179" Height="40" Margin="0 20" Background="#4CAF50"
+                    Foreground="White" FontSize="14" FontWeight="Bold"
+                    Click="Button_Click" />
         </StackPanel>
     </Grid>
 </mah:MetroWindow>
