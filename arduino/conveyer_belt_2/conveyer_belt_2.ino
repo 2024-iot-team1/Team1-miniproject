@@ -35,11 +35,6 @@
 #define BOX_IR2 6
 #define BOX_IR3 7
 
-// 상자에 부착된 LED 핀
-#define BOX_LED1 8
-#define BOX_LED2 9
-#define BOX_LED3 10
-
 #define POS_RED 90   // 빨간 색 제품을 분류할 서보모터의 각도
 #define POS_GREEN 120  // 초록 색 제품을 분류할 서보모터의 각도
 #define POS_BLUE 150    // 파란 색 제품을 분류할 서보모터의 각도
@@ -68,9 +63,7 @@ void setup() {
   pinMode(BOX_IR1, INPUT);
   pinMode(BOX_IR2, INPUT);
   pinMode(BOX_IR3, INPUT);
-  pinMode(BOX_LED1, OUTPUT);
-  pinMode(BOX_LED2, OUTPUT);
-  pinMode(BOX_LED3, OUTPUT);
+
 
   Serial.println("공정 시작");
 }
@@ -85,7 +78,7 @@ void loop() {
   else if (digitalRead(PIN_IR) == LOW){
     Serial.println("Detected");
 
-    analogWrite(PIN_DC_SPEED, 0);                               // 적외선 센서에서 제품을 감지하여 일시 정지
+    analogWrite(PIN_DC_SPEED, railSpeed);                               // 적외선 센서에서 제품을 감지하여 일시 정지
     toneDetected();                                             // 감지되었을 때 나오는 소리를 부저에 출력
     delay(2000);                                                // 2초간 정지
     analogWrite(PIN_DC_SPEED, railSpeed - 20);                  // 레일을 컬러센서까지 움직이기 시작
@@ -118,6 +111,7 @@ void loop() {
   
   // 상자에 물품이 들어갔는지 확인
   checkBoxSensors();
+  delay(1000);
 }
 
 /* 적외선 센서, 색상감지 센서에서 물체를 감지했을 때 나오는 소리를 출력 */
@@ -131,23 +125,14 @@ void toneDetected() {
 // 상자에 물품이 들어갔는지 확인하는 함수
 void checkBoxSensors() {
   if (digitalRead(BOX_IR1) == LOW) { // 상자 1에 물품이 들어갔을 때
-    digitalWrite(BOX_LED1, HIGH);    // LED 켜기
     Serial.println("Item detected in Box 1");
-  } else {
-    digitalWrite(BOX_LED1, LOW);     // LED 끄기
-  }
+  } 
 
   if (digitalRead(BOX_IR2) == LOW) { // 상자 2에 물품이 들어갔을 때
-    digitalWrite(BOX_LED2, HIGH);    // LED 켜기
     Serial.println("Item detected in Box 2");
-  } else {
-    digitalWrite(BOX_LED2, LOW);     // LED 끄기
-  }
+  } 
 
   if (digitalRead(BOX_IR3) == LOW) { // 상자 3에 물품이 들어갔을 때
-    digitalWrite(BOX_LED3, HIGH);    // LED 켜기
     Serial.println("Item detected in Box 3");
-  } else {
-    digitalWrite(BOX_LED3, LOW);     // LED 끄기
   }
 }
