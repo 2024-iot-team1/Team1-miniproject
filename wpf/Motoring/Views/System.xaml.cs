@@ -10,23 +10,19 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace finalproject
+namespace Monitoring.Views
 {
     /// <summary>
-    /// Product.xaml에 대한 상호 작용 논리
+    /// System.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class Product : Window
+    public partial class System : Page
     {
-        public Product()
+        public System()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
