@@ -26,7 +26,7 @@
             <td align="center"><b> </b></td>
             <td align="center"><b>아두이노</b><br><b>자동 분류 시스템 구현</b></td>
             <td align="center"><b>더미 데이터 세팅</b></td>
-            <td align="center"><b> </b></td>
+            <td align="center"><b>메인화면 프레임 구현</b></td>
             <td align="center"><b>프레임 제작</b></td>
         <tr/>
             <td align="center"><b> </b></td>
@@ -81,3 +81,11 @@
     - CCTV 구현 준비
 
 ### 2024.07.05
+- Arduino
+    - 바코드 인식기 부착을 위한 보수작업
+
+- WPF
+    - 메인 창 페이지 전환 구현 성공
+    - 재고 관리 페이지 구현 시작
+    - 주문 관리 페이지 구현 시작
+    - 모니터링 페이지 구현 시작

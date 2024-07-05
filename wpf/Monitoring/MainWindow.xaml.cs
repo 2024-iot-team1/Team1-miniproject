@@ -28,7 +28,8 @@ namespace Monitoring
 
         private void Monitoring_Click(object sender, RoutedEventArgs e)
         {
-
+            ActiveItem.Content = new Views.ProcessMonitoring();
+            StsSelScreen.Content = "모니터링";
         }
 
         private void Order_Click(object sender, RoutedEventArgs e)
