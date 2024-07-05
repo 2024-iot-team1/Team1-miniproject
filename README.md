@@ -1,18 +1,63 @@
 # Team1-miniproject
-부경대학교 2024 IoT 개발자 과정 1조 미니프로젝트
+부경대학교 2024 IoT 개발자 과정 1조 미니프로젝트 : 스마트 물류 시스템
 
-## 1일차 (2024.07.02)
+## 팀원 소개
+<table>
+    <tbody>
+        <tr>
+            <td align="center"><b>팀장 : 고병학</b></td>
+            <td align="center"><b>부팀장 : 유왕권</b></td>
+            <td align="center"><b>팀원 : 김동주</b></td>
+            <td align="center"><b>팀원 : 황지환</b></td>
+            <td align="center"><b>팀원 : 홍승욱</b></td>
+        <tr/>
+            <td align="center"><a href="https://github.com/znah54/"><b>@znah54</b></a></td>
+            <td align="center"><a href="https://github.com/YooWangGwon"><b>@YooWangGwon</b></a></td>
+            <td align="center"><a href="https://github.com/kimdongju1"><b>@kimdongju1</b></a></td>
+            <td align="center"><a href="https://github.com/Hwangji99"><b>@Hwangji99</b></a></td>
+            <td align="center"><a href="https://github.com/sungouk1457"><b>@sungouk1457</b></a></td>
+        <tr/>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>DB 구축</b></td>
+            <td align="center"><b>CCTV 시스템 구현</b></td>
+            <td align="center"><b>로그인 화면 구현</b></td>
+            <td align="center"><b> </b></td>
+        <tr/>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>아두이노</b><br><b>자동 분류 시스템 구현</b></td>
+            <td align="center"><b>더미 데이터 세팅</b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
+        <tr/>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>아두이노 실내 환경</b><br><b>모니터링 시스템 구현</b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
+        <tr/>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>아두이노와 WPF</b><br><b>블루투스 통신 연결</b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
+        </tr>
+    </tbody>
+</table>
+
+
+## 진행 현황
+### 2024.07.02
 - 스마트 팩토리 키트 조립
 - 아두이노 회로 연결 및 모터 작동 시험
 
-## 2일차 (2024.07.03)
+### 2024.07.03
 - WPF
     - 로그인 화면 구현
 - Arduino
     - 아두이노간 통신 테스트 성공
     - 환경 모니터링 아두이노 코드 구현
 
-## 3일차 (2024.07.04)
+### 2024.07.04
 - WPF
     - 메인화면 프레임 구현
 
@@ -30,3 +75,5 @@
 
 - 라즈베리파이
     - CCTV 구현 준비
+
+### 2024.07.05
