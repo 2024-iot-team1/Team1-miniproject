@@ -189,6 +189,7 @@
     <Compile Include="Views\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\Models\InventoryDB.cs" />
     <Compile Include="Views\Order.xaml.cs">
       <DependentUpon>Order.xaml</DependentUpon>
     </Compile>

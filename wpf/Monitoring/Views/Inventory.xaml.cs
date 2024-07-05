@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +25,32 @@ namespace Monitoring.Views
         public Inventory()
         {
             InitializeComponent();
+        }
+        private string CONNSTRING = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            InitDateFormDB();
+        }
+
+        private void InitDateFormDB()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CONNSTRING))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("SELECT * FROM [Inventory]", connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    GrdResult.ItemsSource = dataTable.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
     }
 }
