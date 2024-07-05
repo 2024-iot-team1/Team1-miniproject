@@ -24,20 +24,20 @@
 
 /* 변수 선언 : HW객체, 측정값, 기타 변수, ...*/
 Servo servo;
-int railSpeed = 120;  // 레일 기본 속도
+int railSpeed = 200;  // 레일 기본 속도
 int value = 0;
 int scan_check = 0;
 int box_check;
 
-//SoftwareSerial mySerial(5, 6); // RX, TX
+SoftwareSerial mySerial(5, 6); // RX, TX
 
 void setup() {
   Serial.begin(9600);
-  //mySerial.begin(9600); // SoftwareSerial 통신 시작
+  mySerial.begin(9600); // SoftwareSerial 통신 시작
 
   /* 모터 설정 */
   pinMode(PIN_DC_DIRECTION, OUTPUT);     // DC모터의 방향을 제어하는 핀을 OUTPUT으로 설정
-  digitalWrite(PIN_DC_DIRECTION, HIGH);  // 방향은 전진. 의도한 방향과 반대일 경우 HIGH -> LOW로 변경
+  digitalWrite(PIN_DC_DIRECTION, LOW);  // 방향은 전진. 의도한 방향과 반대일 경우 HIGH -> LOW로 변경
   servo.attach(PIN_SERVO);               // 서보모터를 아두이노와 연결
   servo.write(120);                      // 초기 서보모터가 가리키는 각도는 0도
   delay(500);                            // 서보모터가 완전히 동작을 끝낸 후 detach를 위해 delay를 부여
@@ -60,7 +60,7 @@ void setup() {
 
 void loop() {
   /* 시리얼 통신 데이터 수신 확인 */
-  //checkSerial();
+  checkSerial();
 
   /* 제품 적재여부 확인 */
   if (digitalRead(PIN_IR) == HIGH) {  // 적외선 센서는 물건 감지 시 LOW값을 전달. HIGH라는 것은 감지되지 않았음
@@ -87,7 +87,7 @@ void loop() {
 
     scan_check = 0;
 
-    value = 4;
+    value = 6;
 
     // 서보모터 각도 조정
     servo.attach(PIN_SERVO);  // 서보모터를 아두이노와 연결
@@ -105,6 +105,7 @@ void loop() {
   // 상자에 물품이 들어갔는지 확인
     while (box_check == 0) {
       box_check = checkBoxSensors();
+      if (box_check == 1) toneDetected();
     }  
     box_check = 0;
     delay(1000);
@@ -113,19 +114,19 @@ void loop() {
 }
 
 /* 시리얼 통신 데이터 수신 확인 및 처리 */
-// void checkSerial() {
-//   if (mySerial.available() > 0) {  // 데이터가 있는지 확인
-//     String data = mySerial.readStringUntil('\n');  // 데이터를 문자열로 읽기
-//     int receivedData = data.toInt();  // 문자열을 정수로 변환
-//     if (receivedData == 0) {  // 수신된 데이터가 0이면
-//       analogWrite(PIN_DC_SPEED, 0);  // 레일을 급제동
-//       tone(PIN_BUZZER, 1000, 1000);  // 부저를 울림
-//       Serial.println("Emergency Stop!");
-//       delay(5000);  // 5초 대기 후 재개
-//       analogWrite(PIN_DC_SPEED, railSpeed);  // 레일 작동 재개
-//     }
-//   }
-// }
+void checkSerial() {
+  if (mySerial.available() > 0) {  // 데이터가 있는지 확인
+    String data = mySerial.readStringUntil('\n');  // 데이터를 문자열로 읽기
+    int receivedData = data.toInt();  // 문자열을 정수로 변환
+    if (receivedData == 0) {  // 수신된 데이터가 0이면
+      analogWrite(PIN_DC_SPEED, 0);  // 레일을 급제동
+      tone(PIN_BUZZER, 1000, 1000);  // 부저를 울림
+      Serial.println("Emergency Stop!");
+      delay(5000);  // 5초 대기 후 재개
+      analogWrite(PIN_DC_SPEED, railSpeed);  // 레일 작동 재개
+    }
+  }
+}
 
 /* 적외선 센서, 색상감지 센서에서 물체를 감지했을 때 나오는 소리를 출력 */
 void toneDetected() {

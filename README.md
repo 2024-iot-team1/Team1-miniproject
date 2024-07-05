@@ -21,13 +21,13 @@
             <td align="center"><b>DB 구축</b></td>
             <td align="center"><b>CCTV 시스템 구현</b></td>
             <td align="center"><b>로그인 화면 구현</b></td>
-            <td align="center"><b> </b></td>
+            <td align="center"><b>스마트팩토리 키트 조립</b></td>
         <tr/>
             <td align="center"><b> </b></td>
             <td align="center"><b>아두이노</b><br><b>자동 분류 시스템 구현</b></td>
             <td align="center"><b>더미 데이터 세팅</b></td>
             <td align="center"><b> </b></td>
-            <td align="center"><b> </b></td>
+            <td align="center"><b>프레임 제작</b></td>
         <tr/>
             <td align="center"><b> </b></td>
             <td align="center"><b>아두이노 실내 환경</b><br><b>모니터링 시스템 구현</b></td>
@@ -43,6 +43,10 @@
         </tr>
     </tbody>
 </table>
+
+## 개발 환경
+- Language
+    <img src="https://img.shields.io/badge/C#-61DAFB?style=for-the-badge&logo=React&logoColor=black"><img src="https://img.shields.io/badge/Css-1572B6?style=for-the-badge&logo=Css&logoColor=white"><img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=purple"><img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
 
 
 ## 진행 현황
