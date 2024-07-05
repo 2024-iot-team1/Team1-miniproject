@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ProductListMenu.Menu;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,10 +25,19 @@ namespace ProductListMenu
         {
             InitializeComponent();
         }
-
-        private void BtnOverview(object sender, RoutedEventArgs e)
+        private void BtnOverview_Click(object sender, RoutedEventArgs e)
         {
-            
+            //OrderList.xaml
+        }
+
+        private void BtnOrder_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void BtnProduct_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
