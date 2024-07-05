@@ -20,7 +20,7 @@
             <td align="center"><b> </b></td>
             <td align="center"><b>DB 구축</b></td>
             <td align="center"><b>CCTV 시스템 구현</b></td>
-            <td align="center"><b> </b></td>
+            <td align="center"><b>로그인 화면 구현</b></td>
             <td align="center"><b> </b></td>
         <tr/>
             <td align="center"><b> </b></td>
