@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.SqlClient;
+using System.Data;
 
 namespace Monitoring.Views
 {
@@ -20,14 +22,39 @@ namespace Monitoring.Views
     /// </summary>
     public partial class Order : UserControl
     {
+        private string connectionString = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
+
         public Order()
         {
             InitializeComponent();
+            LoadData();
         }
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+
+        private void LoadData()
         {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    // Orders 테이블과 Delivery 테이블을 Inner Join 하여 데이터 가져오는 쿼리
+                    string query @"SELECT O.OrderNum, O.InventoryNum, O.Quantity, O.OrderDT, D.DeliveryDate
+                                     FROM Orders O
+                                     INNER JOIN Delivery D ON O.OrderNum = D.OrderNum";
 
+                    SqlCommand command = new SqlCommand("SELECT * FROM [Orders]", connection);
+                    SqlDataAdapter adapter = new SqlDataAdapter(command);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    OrderDataGrid.ItemsSource = dataTable.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
+
     }
 }
