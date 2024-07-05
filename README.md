@@ -5,41 +5,41 @@
 <table>
     <tbody>
         <tr>
-            <td align="center"><a href=""><br/><b>팀장 : 고병학</b></a><br/></td>
-            <td align="center"><a href=""><br/><b>부팀장 : 유왕권</b></a><br/></td>
-            <td align="center"><a href=""><br/><b>팀원 : 김동주</b></a><br/></td>
-            <td align="center"><a href=""><br/><b>팀원 : 황지환</b></a><br/></td>
-            <td align="center"><a href=""><br/><b>팀원 : 홍승욱</b></a><br/></td>
+            <td align="center"><b>팀장 : 고병학</b></td>
+            <td align="center"><b>부팀장 : 유왕권</b></td>
+            <td align="center"><b>팀원 : 김동주</b></td>
+            <td align="center"><b>팀원 : 황지환</b></td>
+            <td align="center"><b>팀원 : 홍승욱</b></td>
         <tr/>
-            <td align="center"><a href="https://github.com/znah54/"><br/><b>@znah54</b></a><br/></td>
-            <td align="center"><a href="https://github.com/YooWangGwon"><br/><b>@YooWangGwon</b></a><br/></td>
-            <td align="center"><a href="https://github.com/kimdongju1"><br/><b>@kimdongju1</b></a><br/></td>
-            <td align="center"><a href="https://github.com/Hwangji99"><br/><b>@Hwangji99</b></a><br/></td>
-            <td align="center"><a href="https://github.com/sungouk1457"><br/><b>@sungouk1457</b></a><br/></td>
+            <td align="center"><a href="https://github.com/znah54/"><b>@znah54</b></a></td>
+            <td align="center"><a href="https://github.com/YooWangGwon"><b>@YooWangGwon</b></a></td>
+            <td align="center"><a href="https://github.com/kimdongju1"><b>@kimdongju1</b></a></td>
+            <td align="center"><a href="https://github.com/Hwangji99"><b>@Hwangji99</b></a></td>
+            <td align="center"><a href="https://github.com/sungouk1457"><b>@sungouk1457</b></a></td>
         <tr/>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b>DB 구축</b></a><br/></td>
-            <td align="center"><a href=""><br/><b>CCTV 시스템 구현</b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>DB 구축</b></td>
+            <td align="center"><b>CCTV 시스템 구현</b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
         <tr/>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b>아두이노 자동 분류 시스템 구현</b></a><br/></td>
-            <td align="center"><a href=""><br/><b>더미 데이터 세팅</b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>아두이노 자동 분류 시스템 구현</b></td>
+            <td align="center"><b>더미 데이터 세팅</b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
         <tr/>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b>아두이노 실내 환경 모니터링 시스템 구현</b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>아두이노 실내 환경 모니터링 시스템 구현</b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
         <tr/>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b>아두이노와 WPF 블루투스 통신 연결</b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
-            <td align="center"><a href=""><br/><b> </b></a><br/></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>아두이노와 WPF 블루투스 통신 연결</b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
+            <td align="center"><b> </b></td>
         </tr>
     </tbody>
 </table>
