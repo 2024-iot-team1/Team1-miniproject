@@ -28,25 +28,22 @@ namespace Monitoring
 
         private void Monitoring_Click(object sender, RoutedEventArgs e)
         {
-            //ActiveItem.Content = new Views.MainWindow();
+
         }
 
         private void Order_Click(object sender, RoutedEventArgs e)
         {
-            ActiveItem.Content = new Views.Order();
-            StsSelScreen.Content = "주문 목록 모니터링";
+
         }
 
         private void Product_Click(object sender, RoutedEventArgs e)
         {
-            ActiveItem.Content = new Views.Product();
-            StsSelScreen.Content = "재고 목록 모니터링";
+
         }
 
         private void System_Click(object sender, RoutedEventArgs e)
         {
-            ActiveItem.Content = new Views.System();
-            StsSelScreen.Content = "시스템 모니터링";
+
         }
     }
 }
