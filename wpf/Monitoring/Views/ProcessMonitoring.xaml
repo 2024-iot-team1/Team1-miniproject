@@ -4,6 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Monitoring.Views"
+      xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
@@ -11,33 +13,52 @@
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="1.5*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.RowSpan="2">
+        <StackPanel Grid.RowSpan="3">
             <DataGrid></DataGrid>
         </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="현재 온도 :" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="10,0,0,0" FontWeight="Bold"/>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label x:Name="LblSensingDt" Content="2023-07-06 22:00:00" FontSize="14" 
+                   VerticalAlignment="Center" Margin="20,0" Grid.Row="0"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <lvc:PieChart x:Name="ChtTemp" MinValue="0" MaxValue="100"></lvc:PieChart>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <lvc:PieChart x:Name="ChtHumid" MinValue="0" MaxValue="100"></lvc:PieChart>
+                    </Grid>
+                </Grid>
+                <!--<Label Content="현재 온도 :" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="10,0,0,0" FontWeight="Bold"/>
                 <TextBox x:Name="TbxTemp" HorizontalAlignment="Right" Margin="5,5" Height="40" Width="70" FontSize="20" FontWeight="DemiBold" BorderBrush="White" IsReadOnly="True"/>
                 <Label Content="%" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="5,0,0,0" FontWeight="Bold" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Label Content="현재 습도 :" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="10,0,0,0" FontWeight="Bold" />
                 <TextBox x:Name="TbxHumid" HorizontalAlignment="Right" Margin="5,5" Height="40" Width="70" FontSize="20" FontWeight="DemiBold" BorderBrush="White" IsReadOnly="True"/>
-                <Label Content="°C" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="5,0,0,0" FontWeight="Bold" />
-            </StackPanel>
+                <Label Content="°C" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="5,0,0,0" FontWeight="Bold" />-->
+        </Grid>
+        <StackPanel Grid.Row="2" Grid.Column="1">
             <TextBox x:Name="MessageTextBox" Margin="10,3" Height="20"></TextBox>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button x:Name="BtnSend" Content="Send" Margin="5" FontSize="15" Width="100" Click="BtnSend_Click" FontWeight="DemiBold"/>
-                <Button x:Name="BtnDisconnect" Content="Disconnect" FontSize="12" Margin="5" Width="100" Click="Button_Click" FontWeight="DemiBold"/>
+                <Button x:Name="BtnDisconnect" Content="Disconnect" FontSize="12" Margin="5" Width="100" Click="BtnDisconnect_Click" FontWeight="DemiBold"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="BtnStart" Content="Start" FontSize="15" Margin="5" Width="100" Click="BtnSend_Click" FontWeight="DemiBold"/>
-                <Button x:Name="BtnStop" Content="Stop" FontSize="15" Margin="5" Width="100" Click="Button_Click" FontWeight="DemiBold"/>
+                <Button x:Name="BtnStart" Content="Start" FontSize="15" Margin="5" Width="100" Click="BtnStart_Click" FontWeight="DemiBold"/>
+                <Button x:Name="BtnStop" Content="Stop" FontSize="15" Margin="5" Width="100" Click="BtnStop_Click" FontWeight="DemiBold"/>
             </StackPanel>
         </StackPanel>
     </Grid>

@@ -39,7 +39,7 @@ namespace Monitoring.Views
                 {
                     connection.Open();
                     // Orders 테이블과 Delivery 테이블을 Inner Join 하여 데이터 가져오는 쿼리
-                    string query @"SELECT O.OrderNum, O.InventoryNum, O.Quantity, O.OrderDT, D.DeliveryDate
+                    string query = @"SELECT O.OrderNum, O.InventoryNum, O.Quantity, O.OrderDT, D.DeliveryDate
                                      FROM Orders O
                                      INNER JOIN Delivery D ON O.OrderNum = D.OrderNum";
 

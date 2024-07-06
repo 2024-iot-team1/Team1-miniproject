@@ -60,7 +60,7 @@
                         </Style>
                     </Grid.Resources>
 
-                    <Menu IsMainMenu="True" Margin="-27,10,-20,88">
+                    <Menu IsMainMenu="True" Margin="-27,10,-20,88" Background="#4A65A2">
                         <MenuItem Header="Monitoring" Click="Monitoring_Click">
                             <MenuItem.Icon>
                                 <iconPacks:PackIconPixelartIcons Kind="Bulletlist" Width="20" Height="24" />
