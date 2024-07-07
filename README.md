@@ -52,7 +52,16 @@
 
 ## 개발 환경
 - Language
-    <img src="https://img.shields.io/badge/C#-61DAFB?style=for-the-badge&logo=React&logoColor=black"><img src="https://img.shields.io/badge/Css-1572B6?style=for-the-badge&logo=Css&logoColor=white"><img src="https://img.shields.io/badge/Redux-764ABC?style=for-the-badge&logo=Redux&logoColor=purple"><img src="https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=Next.js&logoColor=white">
+  
+    <img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white"><img src="https://img.shields.io/badge/-Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white">
+
+- IDE
+  
+    <img src = "https://img.shields.io/badge/Visual_Studio-5C2D91?style=for-the-badge&logo=visual%20studio&logoColor=white"><img src = "https://img.shields.io/badge/Arduino_IDE-00979D?style=for-the-badge&logo=arduino&logoColor=white">
+
+- Office
+  
+    <img src = "https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
 
 ## 진행 현황
@@ -93,5 +102,8 @@
 - WPF
     - 메인 창 페이지 전환 구현 성공
     - 재고 관리 페이지 구현 시작
+        - DB 로드
     - 주문 관리 페이지 구현 시작
+        - DB 로드
     - 모니터링 페이지 구현 시작
+        - 블루투스 통신을 통한 온습도 정보 출력 성공
