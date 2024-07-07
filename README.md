@@ -18,34 +18,34 @@
             <td align="center"><a href="https://github.com/sungouk1457"><b>@sungouk1457</b></a></td>
         <tr/>
             <td align="center"><b> </b></td>
-            <td align="center"><b>DB 구축</b></td>
-            <td align="center"><b>CCTV 시스템 구현</b></td>
-            <td align="center"><b>로그인 화면 구현</b></td>
-            <td align="center"><b>스마트팩토리 키트 조립</b></td>
+            <td align="center">DB 구축</td>
+            <td align="center">CCTV 시스템 구현</td>
+            <td align="center">로그인 화면 구현</td>
+            <td align="center">스마트팩토리 키트 조립</td>
         <tr/>
-            <td align="center"><b> </b></td>
-            <td align="center"><b>아두이노</b><br><b>자동 분류 시스템 구현</b></td>
-            <td align="center"><b>더미 데이터 세팅</b></td>
-            <td align="center"><b>메인화면 프레임 구현</b></td>
-            <td align="center"><b>프레임 제작</b></td>
+            <td align="center"></td>
+            <td align="center">아두이노<br>자동 분류 시스템 구현</td>
+            <td align="center">더미 데이터 세팅</td>
+            <td align="center">메인화면 프레임 구현</td>
+            <td align="center">프레임 제작</td>
         <tr/>
-            <td align="center"><b> </b></td>
-            <td align="center"><b>아두이노 실내 환경</b><br><b>모니터링 시스템 구현</b></td>
-            <td align="center"><b> </b></td>
-            <td align="center"><b>주문관리 화면 구현</b></td>
-            <td align="center"><b>재고관리 화면 구현</b></td>
+            <td align="center"></td>
+            <td align="center">아두이노 실내 환경<br>모니터링 시스템 구현</td>
+            <td align="center"></td>
+            <td align="center">주문관리 화면 구현</td>
+            <td align="center">재고관리 화면 구현</td>
         <tr/>
-            <td align="center"><b> </b></td>
-            <td align="center"><b>아두이노와 WPF</b><br><b>블루투스 통신 연결</b></td>
-            <td align="center"><b> </b></td>
-            <td align="center"><b> </b></td>
-            <td align="center"><b> </b></td>
+            <td align="center"></td>
+            <td align="center">아두이노와 WPF<br>블루투스 통신 연결</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
         <tr/>
-            <td align="center"><b> </b></td>
-            <td align="center"><b>모니터링 화면 구현</b></td>
-            <td align="center"><b> </b></td>
-            <td align="center"><b> </b></td>
-            <td align="center"><b> </b></td>
+            <td align="center"></td>
+            <td align="center">모니터링 화면 구현</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
         </tr>
     </tbody>
 </table>
@@ -53,7 +53,7 @@
 ## 개발 환경
 - Language
   
-    <img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white"><img src="https://img.shields.io/badge/-Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white">
+    <img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white"><img src="https://img.shields.io/badge/-Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white"><img src="https://img.shields.io/badge/Microsoft_SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white">
 
 - IDE
   
