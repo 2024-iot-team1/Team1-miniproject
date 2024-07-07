@@ -32,11 +32,17 @@
             <td align="center"><b> </b></td>
             <td align="center"><b>아두이노 실내 환경</b><br><b>모니터링 시스템 구현</b></td>
             <td align="center"><b> </b></td>
+            <td align="center"><b>주문관리 화면 구현</b></td>
+            <td align="center"><b>재고관리 화면 구현</b></td>
+        <tr/>
+            <td align="center"><b> </b></td>
+            <td align="center"><b>아두이노와 WPF</b><br><b>블루투스 통신 연결</b></td>
+            <td align="center"><b> </b></td>
             <td align="center"><b> </b></td>
             <td align="center"><b> </b></td>
         <tr/>
             <td align="center"><b> </b></td>
-            <td align="center"><b>아두이노와 WPF</b><br><b>블루투스 통신 연결</b></td>
+            <td align="center"><b>모니터링 화면 구현</b></td>
             <td align="center"><b> </b></td>
             <td align="center"><b> </b></td>
             <td align="center"><b> </b></td>
