@@ -106,7 +106,9 @@
             <StatusBarItem>Monitoring System</StatusBarItem>
             <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}" />
             <StatusBarItem>선택화면 :</StatusBarItem>
-            <StatusBarItem x:Name="StsSelScreen"></StatusBarItem>
+            <StatusBarItem x:Name="StsSelScreen" Width="700"></StatusBarItem>
+            <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}" />
+            <StatusBarItem x:Name="StsResult" HorizontalContentAlignment="Right" Margin="0,0,10,0"></StatusBarItem>
         </StatusBar>
     </Grid>
 </mah:MetroWindow>

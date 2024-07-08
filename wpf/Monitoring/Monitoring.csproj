@@ -233,6 +233,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\ArduinoBT.cs" />
     <Compile Include="Models\Orderlist.cs" />
+    <Compile Include="Models\ProMonitoring.cs" />
     <Compile Include="Views\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>

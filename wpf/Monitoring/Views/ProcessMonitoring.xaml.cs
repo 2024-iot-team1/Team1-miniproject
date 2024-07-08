@@ -9,6 +9,8 @@ using MahApps.Metro.Controls;
 using Monitoring.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 using System.IO.Ports;
 using System.Linq;
 using System.Text;
@@ -23,7 +25,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-
+using Monitoring.Models;
 
 namespace Monitoring.Views
 {
@@ -33,40 +35,68 @@ namespace Monitoring.Views
     public partial class ProcessMonitoring : UserControl
     {
         // 온습도 정보 수신용 블루투스 연결
-        private SerialPort _serialPort01;
+        private SerialPort port01;   // COM10, 9600
 
         // 컨베이어 벨트 블루투스 연결
-        private SerialPort _serialPort02;
+        private SerialPort port02;   // COM12, 9600
 
         // usb 포트를 위한 블루트스 연결
-        private SerialPort _serialPort03;
+        private SerialPort port03;
 
         private StringBuilder _dataBuffer = new StringBuilder();
-        public IEnumerable<VisualElement<SkiaSharpDrawingContext>> VisualElements { get; set; }
-        public NeedleVisual Needle { get; set; }
+        public IEnumerable<VisualElement<SkiaSharpDrawingContext>> TempVisualElements { get; set; }
+        public IEnumerable<VisualElement<SkiaSharpDrawingContext>> HumidVisualElements { get; set; }
+
+        public NeedleVisual TempNeedle { get; set; }
+        public NeedleVisual HumidNeedle { get; set; }
+        public IEnumerable<ISeries> TempSeries { get; set; }
         public IEnumerable<ISeries> HumidSeries { get; set; }
 
-        public ProcessMonitoring()
+        MainWindow MainWindow { get; set; }
+        public ProcessMonitoring(MainWindow e)
         {
-            // 블루투스 연결
             InitializeComponent();
-            try
-            {
-                _serialPort01 = new SerialPort("COM10", 9600); // COM 포트와 보드레이트 설정
-                _serialPort01.DataReceived += SerialPort_DataReceived;
-                _serialPort01.Open();
-                MessageBox.Show("연결됨");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"블루투스 연결 실패: {ex.Message}");
-            }
+            MainWindow = e;
+
+            port01 = MainWindow._serialPort01;
+            port01.DataReceived += SerialPort_DataReceived;
+
+            port02 = MainWindow._serialPort02;
+            port02.DataReceived += SerialPort_DataReceived;
+
+            // 앵귤러 차트 추가
+            CreateChart();
 
             // 타이머 설정
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);   // 1초마다
             timer.Tick += Timer_Tick;
             timer.Start();
+
+            // 데이터 출력
+            LoadData();
+        }
+        public ProcessMonitoring()
+        {
+            // 블루투스 연결
+            InitializeComponent();
+
+            //try
+            //{
+            //    _serialPort01 = new SerialPort("COM10", 9600); // COM 포트와 보드레이트 설정
+            //    _serialPort01.DataReceived += SerialPort_DataReceived;
+            //    _serialPort01.Open();
+
+            //    _serialPort02 = new SerialPort("COM12", 9600); // COM 포트와 보드레이트 설정
+            //    _serialPort02.DataReceived += SerialPort_DataReceived;
+            //    _serialPort02.Open();
+
+            //    MessageBox.Show("연결됨");
+            //}
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show($"블루투스 연결 실패: {ex.Message}");
+            //}
         }
         private void Timer_Tick(object sender, EventArgs e)
         {
@@ -77,15 +107,17 @@ namespace Monitoring.Views
         {
             try
             {
-                string data = _serialPort01.ReadLine();
+                string data1 = port01.ReadLine();
                 //_dataBuffer.Append(data);
-                Dispatcher.Invoke(() => UpdateChart(data));
+                Dispatcher.Invoke(() => UpdateChart(data1));
             }
             catch (Exception ex)
             {
                 Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
             }
         }
+
+        #region 온습도 정보 출력
         private void ProcessData(string data)   // 수신받은 데이터를 처리
         {
             string[] values = data.Split(',');
@@ -96,13 +128,73 @@ namespace Monitoring.Views
             }
             else
             {
-                MessageTextBox.Text = "데이터 형식 오류";
+                MainWindow.StsResult.Content = "데이터 형식 오류";
             }
         }
         private static void SetStyle(double sectionsOuter, double sectionsWidth, PieSeries<ObservableValue> series)
         {
             series.OuterRadiusOffset = sectionsOuter;
             series.MaxRadialColumnWidth = sectionsWidth;
+        }
+
+        private void CreateChart()
+        {
+            var sectionsOuter = 130;
+            var sectionsWidth = 60;
+
+            TempNeedle = new NeedleVisual { Value = 20 };   // 차트 바늘의 초기값이 20
+                                                              // 온도 차트 값 할당
+            TempSeries = GaugeGenerator.BuildAngularGaugeSections(
+                new GaugeItem(70, s => SetStyle(sectionsOuter, sectionsWidth, s)),
+                new GaugeItem(20, s => SetStyle(sectionsOuter, sectionsWidth, s)),
+                new GaugeItem(10, s => SetStyle(sectionsOuter, sectionsWidth, s))
+            );
+            ChtTemp.Series = TempSeries;
+
+            // 온도를 나타낼 앵귤러차트를 초기화
+            // 앵귤러 차트를 그리기 위한 속성들
+            TempVisualElements = new VisualElement<SkiaSharpDrawingContext>[]
+            {
+                new AngularTicksVisual
+                {
+                    // 앵귤러 차트를 꾸미는 속성들
+                    LabelsSize = 12,
+                    LabelsOuterOffset = 10,
+                    OuterOffset = 40, // 차트 선이 퍼져있는 정도
+                    TicksLength = 12 // 차트 실선 길이
+                },
+                TempNeedle
+            };
+
+            //위에서 만든 차트 화면 디자인을 실제 화면의 차트에 적용
+            ChtTemp.VisualElements = TempVisualElements;
+
+
+            // 습도 차트 값 할당
+            HumidSeries = GaugeGenerator.BuildAngularGaugeSections(
+                new GaugeItem(50,
+                s => SetStyle(sectionsOuter, sectionsWidth, s))
+            );
+            ChtHumid.Series = HumidSeries;
+
+            // 습도를 나타낼 앵귤러차트를 초기화
+            HumidNeedle = new NeedleVisual { Value = 50 };   // 차트 바늘의 초기값이 20
+                                                                // 앵귤러 차트를 그리기 위한 속성들
+            HumidVisualElements = new VisualElement<SkiaSharpDrawingContext>[]
+            {
+                new AngularTicksVisual
+                {
+                    // 앵귤러 차트를 꾸미는 속성들
+                    LabelsSize = 12,
+                    LabelsOuterOffset = 15,
+                    OuterOffset = 50, // 차트 선이 퍼져있는 정도
+                    TicksLength = 15 // 차트 실선 길이
+                },
+                HumidNeedle
+            };
+
+            //위에서 만든 차트 화면 디자인을 실제 화면의 차트에 적용
+            ChtHumid.VisualElements = HumidVisualElements;
         }
         private void UpdateChart(string data)
         {
@@ -113,75 +205,50 @@ namespace Monitoring.Views
                 var temp = Convert.ToDouble(values[0]);
                 var humid = Convert.ToDouble(values[1]);
 
-                // 온도차트 값
-                var tempVal = GaugeGenerator.BuildSolidGauge(new GaugeItem(
-                    temp,
-                    series =>
-                    {
-                        series.MaxRadialColumnWidth = 30;
-                        series.DataLabelsSize = 50;
-                    }
-                ));
-
-                ChtTemp.Series = tempVal;
-
-                //위에서 만든 차트 화면 디자인을 실제 화면의 차트에 적용
-
-                var sectionsOuter = 130;
-                var sectionsWidth = 20;
-                // 습도 차트 값 할당
-                HumidSeries = GaugeGenerator.BuildAngularGaugeSections(
-                    new GaugeItem(humid,
-                    s => SetStyle(sectionsOuter, sectionsWidth, s))
-                );
-
-                // 습도를 나타낼 앵귤러차트를 초기화
-                Needle = new NeedleVisual { Value = humid };   // 차트 바늘의 초기값이 20
-                // 앵귤러 차트를 그리기 위한 속성들
-                VisualElements = new VisualElement<SkiaSharpDrawingContext>[]
-                {
-                new AngularTicksVisual
-                {
-                    // 앵귤러 차트를 꾸미는 속성들
-                    LabelsSize = 12,
-                    LabelsOuterOffset = 15,
-                    OuterOffset = 65, // 차트 선이 퍼져있는 정도
-                    TicksLength = 15 // 차트 실선 길이
-                },
-                Needle
-                };
-
-                //위에서 만든 차트 화면 디자인을 실제 화면의 차트에 적용
-                ChtHumid.VisualElements = VisualElements;
+                TempNeedle.Value = temp;
+                HumidNeedle.Value = humid;
             });
         }
-
-        private void BtnDisconnect_Click(object sender, RoutedEventArgs e)
-        {
-            if (_serialPort01 != null && _serialPort01.IsOpen)
-            {
-                // Disconnect 버튼 클릭시 블루투스 연결 종료
-                _serialPort01.Close();
-            }
-        }
-
-        private void BtnSend_Click(object sender, RoutedEventArgs e)
-        {
-            if (_serialPort01 != null && _serialPort01.IsOpen)
-            {
-                var message = MessageTextBox.Text;
-                _serialPort01.WriteLine(message);
-            }
-        }
+        #endregion
 
         private void BtnStart_Click(object sender, RoutedEventArgs e)
         {
-
+            port02.WriteLine("1");
         }
 
         private void BtnStop_Click(object sender, RoutedEventArgs e)
         {
-
+            port02.WriteLine("0");
         }
+
+        private string connectionString = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
+        private void LoadData()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    // Orders 테이블과 Delivery 테이블을 Inner Join 하여 데이터 가져오는 쿼리
+                    string query = ProMonitoring.SELECT_QUERY;
+
+                    SqlCommand com = new SqlCommand(query, conn);
+                    SqlDataAdapter adapter = new SqlDataAdapter(com);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    DrdWorkStatus.ItemsSource = dataTable.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        public IEnumerable<ISeries> ProductSeries { get; set; } =
+            new[] { 2, 4, 1, 4, 3 }.AsPieSeries((value, series) =>
+            {
+                series.MaxRadialColumnWidth = 60;
+        });
     }
 }
