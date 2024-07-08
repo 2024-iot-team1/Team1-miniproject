@@ -20,7 +20,6 @@
         <DataGrid x:Name="GrdResult" Grid.Column="0" Margin="10,10,0,0"
                   IsReadOnly="True" ItemsSource="{Binding}"
                   AutoGenerateColumns="False"
-                  Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
                   HorizontalAlignment="Left" VerticalAlignment="Top"
                   Width="458" Height="390" GridLinesVisibility="All"
                   BorderBrush="Gray"
