@@ -1,9 +1,12 @@
 import cv2
 
-for i in range(10):  # 0���� 9���� ī�޶� �ε��� �׽�Ʈ
-    cap = cv2.VideoCapture(i)
-    if cap.isOpened():
-        print(f"ī�޶� {i}���� ���������� ���Ƚ��ϴ�.")
-        break
-    else:
-        print(f"ī�޶� {i}���� �� �� �����ϴ�.")
+capture = cv2.VideoCapture(0)
+
+while True:
+    ret, frame = capture.read()
+    cv2.imshow("video", frame)
+    if cv2.waitKey(1) == ord('q'):
+            break
+
+capture.release()
+cv2.destroyAllWindows()
