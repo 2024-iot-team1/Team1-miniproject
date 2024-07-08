@@ -27,6 +27,6 @@ def video_feed():
     return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame') # 그림파일들을 쌓아서 보여줌
 
 if __name__ == "__main__":  # 웹사이트를 호스팅항 접속자에게 보여주기 위한 부분
-   app.run(host="192.168.5.3", port = "18012")
+   app.run(host="192.168.5.3", port = "18013")
    # host는 현재 라즈베리파이의 내부 IP, port는 임의로 설정
    # 해당 내부 IP와 port를 포트포워딩 해두면 외부에서도 접속가능
