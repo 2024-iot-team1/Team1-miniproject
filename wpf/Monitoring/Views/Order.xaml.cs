@@ -14,6 +14,25 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
+using Monitoring.Models;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+using System.Data.SqlClient;
+using System.Data;
+using Monitoring.Models;
 
 namespace Monitoring.Views
 {
@@ -36,12 +55,7 @@ namespace Monitoring.Views
                     connection.Open();
 
                     // Orders 테이블과 Delivery 테이블을 INNER JOIN하고 Product 테이블도 INNER JOIN하여 데이터 가져오는 쿼리
-                    string query = @"SELECT O.OrderNum, P.ProductCode, P.ProductName,
-                                    O.Quantity, O.OrderDT, 
-                                    D.DeliveryNum, D.DeliveryStatus, D.StartDT, D.CompleteDT, D.Destination
-                             FROM Orders O
-                             INNER JOIN Delivery D ON O.OrderNum = D.OrderNum
-                             INNER JOIN Product P ON O.InventoryNum = P.InventoryNum";
+                    string query = Orderlist.SELECT_QUERY;
 
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -87,9 +101,11 @@ namespace Monitoring.Views
                                                    SET DeliveryStatus = @DeliveryStatus
                                                    WHERE DeliveryNum = @DeliveryNum";
 
-                    adapter.UpdateCommand = new SqlCommand(updateDeliveryQuery, connection);
-                    adapter.UpdateCommand.Parameters.Add("@DeliveryStatus", SqlDbType.NVarChar, 50, "DeliveryStatus");
-                    adapter.UpdateCommand.Parameters.Add("@DeliveryNum", SqlDbType.Int, 0, "DeliveryNum");
+                    SqlCommand updateDeliveryCommand = new SqlCommand(updateDeliveryQuery, connection);
+                    updateDeliveryCommand.Parameters.Add("@DeliveryStatus", SqlDbType.NVarChar, 50, "DeliveryStatus");
+                    updateDeliveryCommand.Parameters.Add("@DeliveryNum", SqlDbType.Int, 0, "DeliveryNum");
+
+                    adapter.UpdateCommand = updateDeliveryCommand;
 
                     // Orders 테이블 업데이트
                     string updateOrdersQuery = @"UPDATE Orders
@@ -97,10 +113,12 @@ namespace Monitoring.Views
                                                      OrderDT = @OrderDT
                                                  WHERE OrderNum = @OrderNum";
 
-                    adapter.InsertCommand = new SqlCommand(updateOrdersQuery, connection);
-                    adapter.InsertCommand.Parameters.Add("@Quantity", SqlDbType.Int, 0, "Quantity");
-                    adapter.InsertCommand.Parameters.Add("@OrderDT", SqlDbType.DateTime, 0, "OrderDT");
-                    adapter.InsertCommand.Parameters.Add("@OrderNum", SqlDbType.Int, 0, "OrderNum");
+                    SqlCommand updateOrdersCommand = new SqlCommand(updateOrdersQuery, connection);
+                    updateOrdersCommand.Parameters.Add("@Quantity", SqlDbType.Int, 0, "Quantity");
+                    updateOrdersCommand.Parameters.Add("@OrderDT", SqlDbType.DateTime, 0, "OrderDT");
+                    updateOrdersCommand.Parameters.Add("@OrderNum", SqlDbType.Int, 0, "OrderNum");
+
+                    adapter.UpdateCommand = updateOrdersCommand;
 
                     adapter.Update(changedDataTable);
 
