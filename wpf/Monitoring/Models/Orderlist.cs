@@ -20,6 +20,12 @@ namespace Monitoring.Models
         public int ProductCode { get; set; }
         public string ProductName { get; set; }
         public int Price { get; set; }
+        public int SalesRate { get; set; }
+        public int Stock {  get; set; }
+        public int SafeStockj { get; set; }
+        public int Procurement { get; set; }
+
+
 
 
 
