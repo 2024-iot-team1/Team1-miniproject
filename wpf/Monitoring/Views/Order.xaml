@@ -5,46 +5,101 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Monitoring.Views"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800" >
+      d:DesignHeight="450" d:DesignWidth="800">
 
-    <Grid Margin="20">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
-        <Border BorderBrush="LightGray" BorderThickness="1" CornerRadius="5" Grid.ColumnSpan="2">
-            <DataGrid x:Name="OrderDataGrid" Grid.Column="0" AutoGenerateColumns="False" Margin="10,10,0,0"
-                      HorizontalAlignment="Left" VerticalAlignment="Top"
-                      Width="336" Height="390" GridLinesVisibility="All"
-                      BorderBrush="Gray" BorderThickness="1" IsSynchronizedWithCurrentItem="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="주문 번호" Binding="{Binding OrderNum}" FontWeight="Bold"  />
-                    <DataGridTextColumn Header="제품 번호" Binding="{Binding InventoryNum}" FontWeight="Bold" />
-                    <DataGridTextColumn Header="수량" Binding="{Binding Quantity}" FontWeight="Bold" />
-                    <DataGridTextColumn Header="주문 날짜" Binding="{Binding OrderDT}" FontWeight="Bold" />
-                </DataGrid.Columns>
-                <!--<DataGrid.CellStyle>
-                    <Style TargetType="DataGridCell">
-                        <Setter Property="BorderBrush" Value="LightGray" />
-                        <Setter Property="BorderThickness" Value="1" />
-                        <Setter Property="Padding" Value="5" />
-                    </Style>
-                </DataGrid.CellStyle>
-                <DataGrid.ColumnHeaderStyle>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="BorderBrush" Value="Gray" />
-                        <Setter Property="BorderThickness" Value="0,0,1,1" />
-                        <Setter Property="HorizontalContentAlignment" Value="Center" />
-                        <Setter Property="Padding" Value="5" />
-                    </Style>
-                </DataGrid.ColumnHeaderStyle>
-                <DataGrid.RowStyle>
-                    <Style TargetType="DataGridRow">
-                        <Setter Property="BorderBrush" Value="Gray" />
-                        <Setter Property="BorderThickness" Value="0,0,0,1" />
-                    </Style>
-                </DataGrid.RowStyle>-->
-            </DataGrid>
-        </Border>
+    <Grid>
+        <DataGrid x:Name="OrderDataGrid" AutoGenerateColumns="False" Margin="10,10,0,0"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Width="635" Height="390" GridLinesVisibility="All"
+                  BorderBrush="Gray" BorderThickness="1" IsSynchronizedWithCurrentItem="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="주문 번호" Binding="{Binding OrderNum}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="배달 번호" Binding="{Binding DeliveryNum}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="제품명" Binding="{Binding ProductName}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="제품 번호" Binding="{Binding ProductCode}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="수량" Binding="{Binding Quantity}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="주문 날짜" Binding="{Binding OrderDT, StringFormat={}{0:yyyy/MM/dd}}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="배송 상태" Binding="{Binding DeliveryStatus}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="배송 시작일" Binding="{Binding StartDT, StringFormat={}{0:yyyy/MM/dd}}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="완료 날짜" Binding="{Binding CompleteDT, StringFormat={}{0:yyyy/MM/dd}}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="배송지" Binding="{Binding Destination}" IsReadOnly="True">
+                    <DataGridTextColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="HorizontalAlignment" Value="Center" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                        </Style>
+                    </DataGridTextColumn.ElementStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- 저장 버튼 -->
+        <Button Margin="0,0,100,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="저장" Height="30" Width="80" Click="Save_Click" />
+
+        <!-- 취소 버튼 -->
+        <Button Margin="0,0,10,10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Content="취소" Height="30" Width="80" Click="Cancel_Click" />
     </Grid>
 </UserControl>
