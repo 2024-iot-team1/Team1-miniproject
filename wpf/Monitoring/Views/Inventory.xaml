@@ -17,10 +17,13 @@
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
 
-        <DataGrid x:Name="GrdResult" Grid.Column="0" Margin="10"
+        <DataGrid x:Name="GrdResult" Grid.Column="0" Margin="10,10,0,0"
                   IsReadOnly="True" ItemsSource="{Binding}"
-                  AutoGenerateColumns="True"
-                  Style="{StaticResource MahApps.Styles.DataGrid.Azure}">
+                  AutoGenerateColumns="False"
+                  HorizontalAlignment="Left" VerticalAlignment="Top"
+                  Width="458" Height="390" GridLinesVisibility="All"
+                  BorderBrush="Gray"
+                  BorderThickness="1" IsSynchronizedWithCurrentItem="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding InventoryNum}" Header="상품명" FontWeight="Bold"/>
                 <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품 코드"/>
