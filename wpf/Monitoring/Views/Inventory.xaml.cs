@@ -40,7 +40,9 @@ namespace Monitoring.Views
                 using (SqlConnection connection = new SqlConnection(CONNSTRING))
                 {
                     connection.Open();
-                    SqlCommand command = new SqlCommand("SELECT * FROM [Inventory]", connection);
+                    SqlCommand command = new SqlCommand("SELECT i.*, p.* FROM [Inventory] i " +
+                                                        "INNER JOIN [Product] p ON i.[ProductCode] = p.[ProductCode]",
+                                                        connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
