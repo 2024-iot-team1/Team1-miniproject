@@ -75,6 +75,7 @@ namespace Monitoring.Views
 
             // 데이터 출력
             LoadData();
+            UpdateDoughnut();
         }
         public ProcessMonitoring()
         {
@@ -250,5 +251,10 @@ namespace Monitoring.Views
             {
                 series.MaxRadialColumnWidth = 60;
         });
+
+        private void UpdateDoughnut()
+        {
+            ChtProduct.Series = ProductSeries;
+        }
     }
 }

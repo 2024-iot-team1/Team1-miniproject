@@ -39,7 +39,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <lvc:PieChart x:Name="ChtProduct"  Series="{Binding ProductSeries}" Grid.Row="0"/>
+            <lvc:PieChart x:Name="ChtProduct" Grid.Row="0"/>
             <lvc:PieChart x:Name="ChtDefinition"  Series="{Binding DefinitionSeries}" Grid.Row="0"/>
         </Grid>
         
