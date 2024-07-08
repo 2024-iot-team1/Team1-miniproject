@@ -20,7 +20,8 @@
         <DataGrid x:Name="GrdResult" Grid.Column="0" Margin="10"
                   IsReadOnly="True" ItemsSource="{Binding}"
                   AutoGenerateColumns="True"
-                  Style="{StaticResource MahApps.Styles.DataGrid.Azure}">
+                  Style="{StaticResource MahApps.Styles.DataGrid.Azure}"
+                  BorderThickness="1" IsSynchronizedWithCurrentItem="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Binding="{Binding InventoryNum}" Header="상품명" FontWeight="Bold"/>
                 <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품 코드"/>
