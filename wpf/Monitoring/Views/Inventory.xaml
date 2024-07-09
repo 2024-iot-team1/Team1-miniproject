@@ -26,7 +26,6 @@
                       BorderThickness="1" IsSynchronizedWithCurrentItem="False"
                       ColumnWidth="*" SelectionMode="Single" SelectionChanged="GrdResult_SelectionChanged">
                 <DataGrid.Columns>
-<<<<<<< Updated upstream
                     <DataGridTextColumn Binding="{Binding InventoryNum}" Header="제고번호" FontWeight="Bold" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품코드" FontWeight="Bold" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" FontWeight="Bold" IsReadOnly="True"/>
@@ -35,14 +34,13 @@
                     <DataGridTextColumn Binding="{Binding Stock}" Header="제고 현황" FontWeight="Bold" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 제고" FontWeight="Bold" IsReadOnly="True"/>
                     <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" FontWeight="Bold" IsReadOnly="True"/>
-=======
+
                     <DataGridTextColumn Binding="{Binding InventoryNum}" Header="제고번호" FontWeight="Bold"/>
                     <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" FontWeight="Bold"/>
                     <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" FontWeight="Bold"/>
                     <DataGridTextColumn Binding="{Binding Stock}" Header="제고 현황" FontWeight="Bold"/>
                     <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 제고" FontWeight="Bold"/>
                     <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" FontWeight="Bold" />
->>>>>>> Stashed changes
                 </DataGrid.Columns>
             </DataGrid>
             <Button Grid.Row="1" Grid.Column="0"

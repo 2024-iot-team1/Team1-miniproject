@@ -127,15 +127,12 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-<<<<<<< Updated upstream
 
             <Button Grid.Row="1" Grid.Column="0"
                     Content="조회" Width="120" Height="40" Click="Check_Click"
                     Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Margin="140,17,140,18"/>
-=======
                 <Button Grid.Row="1" Grid.Column="0" 
                 Content="조회" Width="120" Height="40"/>
->>>>>>> Stashed changes
         </Grid>
 
         <GroupBox Grid.Column="1" Margin="10" Header="상품 정보">
