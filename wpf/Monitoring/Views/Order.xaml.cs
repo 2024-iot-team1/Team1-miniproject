@@ -15,34 +15,21 @@ using System.Windows.Shapes;
 using System.Data.SqlClient;
 using System.Data;
 using Monitoring.Models;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Data.SqlClient;
-using System.Data;
-using Monitoring.Models;
+using System.Diagnostics;
 
 namespace Monitoring.Views
 {
     public partial class Order : UserControl
     {
         private string connectionString = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
+        private DataTable dataTable; // 데이터 테이블을 클래스 레벨 변수로 선언
+
+
 
         public Order()
         {
             InitializeComponent();
+            // 데이터 테이블 초기화 및 데이터 로드
             LoadData();
         }
 
@@ -59,8 +46,10 @@ namespace Monitoring.Views
 
                     SqlCommand command = new SqlCommand(query, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
-                    DataTable dataTable = new DataTable();
+                    dataTable = new DataTable();
                     adapter.Fill(dataTable);
+
+                    // DataGrid에 데이터 바인딩
                     OrderDataGrid.ItemsSource = dataTable.DefaultView;
                 }
             }
@@ -92,8 +81,6 @@ namespace Monitoring.Views
                 {
                     connection.Open();
 
-                    DataTable changedDataTable = ((DataView)OrderDataGrid.ItemsSource).Table;
-
                     SqlDataAdapter adapter = new SqlDataAdapter();
 
                     // Delivery 테이블 업데이트
@@ -120,7 +107,7 @@ namespace Monitoring.Views
 
                     adapter.UpdateCommand = updateOrdersCommand;
 
-                    adapter.Update(changedDataTable);
+                    adapter.Update(dataTable);
 
                     MessageBox.Show("변경 사항이 저장되었습니다.");
                 }
@@ -131,9 +118,49 @@ namespace Monitoring.Views
             }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void Check_Click(object sender, RoutedEventArgs e)
         {
+            try
+            {
+                // 데이터 테이블 초기화
+                dataTable.Clear();
 
+                // 데이터 다시 로드
+                LoadData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("데이터를 로드하는 동안 오류가 발생했습니다: " + ex.Message);
+            }
+        }
+        private void OrderDataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (OrderDataGrid.SelectedItem != null)
+            {
+                // 선택된 행의 데이터 가져오기
+                DataRowView selectedRow = (DataRowView)OrderDataGrid.SelectedItem;
+
+                // 각각의 필드에 데이터 바인딩
+                ProductCode.Text = selectedRow["ProductCode"].ToString();
+                ProductName.Text = selectedRow["ProductName"].ToString();
+                Price.Text = selectedRow["Price"].ToString();
+                Stock.Text = selectedRow["Stock"].ToString();
+            }
+        }
+
+        private void OrderDataGrid_SelectedCellsChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (OrderDataGrid.SelectedItem != null)
+            {
+                // 선택된 행의 데이터 가져오기
+                DataRowView selectedRow = (DataRowView)OrderDataGrid.SelectedItem;
+
+                // 각각의 필드에 데이터 바인딩
+                ProductCode.Text = selectedRow["ProductCode"].ToString();
+                ProductName.Text = selectedRow["ProductName"].ToString();
+                Price.Text = selectedRow["Price"].ToString();
+                Stock.Text = selectedRow["Stock"].ToString();
+            }
         }
     }
 }
