@@ -1,7 +1,7 @@
 #include <SoftwareSerial.h>
  
-#define BT_RXD 3  // 4
-#define BT_TXD 2  // 3
+#define BT_RXD 4  // 4
+#define BT_TXD 3 // 3
 // #define LED_PIN 8
 // #define RELAY_PIN 9
 

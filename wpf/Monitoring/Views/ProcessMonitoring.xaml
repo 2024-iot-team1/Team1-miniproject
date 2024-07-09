@@ -5,10 +5,20 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Monitoring.Views"
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
-             
+      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+      xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
-
+    <UserControl.Resources>
+        <Style x:Key="CenteredHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+        <Style x:Key="CustomDataGridStyle" TargetType="DataGrid">
+            <Setter Property="GridLinesVisibility" Value="All"/>
+            <Setter Property="BorderBrush" Value="Gray"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+    </UserControl.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -21,26 +31,34 @@
         </Grid.ColumnDefinitions>
         <!-- 작업 DataGrid 영역 -->
         <StackPanel Grid.RowSpan="3">
-            <DataGrid x:Name="DrdWorkStatus" AutoGenerateColumns="False" Margin="10" IsReadOnly="True" HorizontalAlignment="Left" 
-                      VerticalAlignment="Top" GridLinesVisibility="All" BorderBrush="Gray" BorderThickness="1" 
-                      IsSynchronizedWithCurrentItem="False">
+            <DataGrid x:Name="DrdWorkStatus" AutoGenerateColumns="False" Margin="10" 
+            VerticalAlignment="Top" IsReadOnly="True" Style="{StaticResource MahApps.Styles.DataGrid.Azure}">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding WorkNum}" Header="작업번호" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding OrderNum}" Header="주문번호" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding DeliveryNum}" Header="배송번호" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding ProcessDT}" Width="100" Header="작업일시" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding CompleteOrNot}" Header="성공여부" FontWeight="Bold"/>
+                    <DataGridTextColumn Binding="{Binding WorkNum}" Width="1*" Header="작업번호" FontWeight="Bold" />
+                    <DataGridTextColumn Binding="{Binding OrderNum}" Width="1*" Header="주문번호" FontWeight="Bold" />
+                    <DataGridTextColumn Binding="{Binding DeliveryNum}" Width="1*" Header="배송번호" FontWeight="Bold"/>
+                    <DataGridTextColumn Binding="{Binding ProcessDT}" Width="1*" Header="작업일시" FontWeight="Bold"/>
+                    <DataGridTextColumn Binding="{Binding CompleteOrNot}" Width="1*" Header="성공여부" FontWeight="Bold"/>
                 </DataGrid.Columns>
             </DataGrid>
         </StackPanel>
         <!-- 작업 현황 차트 영역 -->
         <Grid Grid.Row="0" Grid.Column="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
-            <lvc:PieChart x:Name="ChtProduct" Grid.Row="0"/>
-            <lvc:PieChart x:Name="ChtDefinition"  Series="{Binding DefinitionSeries}" Grid.Row="0"/>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Label Content="상품별 물량" HorizontalAlignment="Center" Grid.Row="0"
+                   FontWeight="DemiBold" FontFamily="Seoge UI" FontSize="20" Margin="0,15,0,0"/>
+            <lvc:PieChart x:Name="ChtProduct" Margin="10,0,10,10" Grid.Row="1" Grid.Column="0"/>
+            <Label Content="지역별 물량" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"
+                   FontWeight="DemiBold" FontFamily="Seoge UI" FontSize="20" Margin="0,15,0,0"/>
+            <lvc:CartesianChart x:Name="ChtDestination" LegendPosition="Hidden" Grid.Row="1" Grid.Column="1"
+                                Margin="10,0,10,10"/>
         </Grid>
         
         <!-- 온습도 차트 영역 -->
@@ -49,20 +67,19 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <Label x:Name="LblSensingDt" Content="2023-07-06 22:00:00" FontSize="14" 
-                   VerticalAlignment="Center" Margin="20,0" Grid.Row="0"/>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                    <lvc:PieChart x:Name="ChtTemp" MinValue="0" MaxValue="100" MaxAngle="270" InitialRotation="-225" Margin="10"></lvc:PieChart>
-                    </Grid>
-                    <Grid Grid.Column="1">
-                    <lvc:PieChart x:Name="ChtHumid" MinValue="0" MaxValue="100" MaxAngle="270" InitialRotation="-225" Margin="10"></lvc:PieChart>
-                    </Grid>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <Grid Grid.Column="0">
+                    <lvc:PieChart x:Name="ChtTemp" MinValue="0" MaxValue="100" MaxAngle="270" 
+                                  InitialRotation="-225" Margin="20,10,10,10"></lvc:PieChart>
                 </Grid>
+                <Grid Grid.Column="1">
+                    <lvc:PieChart x:Name="ChtHumid" MinValue="0" MaxValue="100" MaxAngle="270" InitialRotation="-225" Margin="10,10,20,10"></lvc:PieChart>
+                </Grid>
+            </Grid>
                 <!--<Label Content="현재 온도 :" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="10,0,0,0" FontWeight="Bold"/>
                 <TextBox x:Name="TbxTemp" HorizontalAlignment="Right" Margin="5,5" Height="40" Width="70" FontSize="20" FontWeight="DemiBold" BorderBrush="White" IsReadOnly="True"/>
                 <Label Content="%" VerticalAlignment="Center" FontFamily="NanumGothic" FontSize="20" Margin="5,0,0,0" FontWeight="Bold" />
