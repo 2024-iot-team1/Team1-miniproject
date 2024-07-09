@@ -130,5 +130,10 @@ namespace Monitoring.Views
                 MessageBox.Show("변경 사항을 저장하는 동안 오류가 발생했습니다: " + ex.Message);
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
