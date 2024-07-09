@@ -68,14 +68,6 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="제품 번호" Binding="{Binding ProductCode}" IsReadOnly="True">
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center" />
-                                <Setter Property="FontWeight" Value="Normal" />
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
                     <DataGridTextColumn Header="수량" Binding="{Binding Quantity}" IsReadOnly="True">
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
@@ -124,6 +116,15 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                    <DataGridTextColumn Header="주문취소 여부" Binding="{Binding CancelOrNot}" IsReadOnly="True">
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                                <Setter Property="FontWeight" Value="Normal" />
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
 
@@ -144,43 +145,53 @@
                     <RowDefinition />
                     <RowDefinition />
                     <RowDefinition />
+                    <RowDefinition />
                 </Grid.RowDefinitions>
-                <Label Grid.Row ="0" Grid.Column="0" Content="제품번호" FontWeight="Bold"
+                <Label Grid.Row ="0" Grid.Column="0" Content="주문번호" FontWeight="Bold"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
                 <Label Grid.Row ="1" Grid.Column="0" Content="상품명" FontWeight="Bold"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="2" Grid.Column="0" Content="가격" FontWeight="Bold"
+                <Label Grid.Row ="2" Grid.Column="0" Content="주문일자" FontWeight="Bold"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="3" Grid.Column="0" Content="재고수량" FontWeight="Bold"
+                <Label Grid.Row ="3" Grid.Column="0" Content="배송상태" FontWeight="Bold"
+                       VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
+                <Label Grid.Row ="4" Grid.Column="0" Content="취소여부" FontWeight="Bold"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
 
-                <TextBox x:Name="ProductCode" Grid.Row="0" Grid.Column="1"
+                <TextBox x:Name="OrderNum" Grid.Row="0" Grid.Column="1"
                          VerticalAlignment="Center" Height="40"
+                         mah:TextBoxHelper.Watermark="주문번호"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
                 <TextBox x:Name="ProductName" Grid.Row="1" Grid.Column="1"
                          VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="상품명 입력"
+                         mah:TextBoxHelper.Watermark="상품명"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
-                <TextBox x:Name="Price" Grid.Row="2" Grid.Column="1"
+                <TextBox x:Name="OrderDT" Grid.Row="2" Grid.Column="1"
                          VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="가격"
+                         mah:TextBoxHelper.Watermark="주문일자"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
-                <TextBox x:Name="Stock" Grid.Row="3" Grid.Column="1"
+                <TextBox x:Name="DeliveryStatus" Grid.Row="3" Grid.Column="1"
                          VerticalAlignment="Center" Height="40"
+                         mah:TextBoxHelper.Watermark="배송상태"
+                         mah:TextBoxHelper.UseFloatingWatermark="True"
+                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
+                <TextBox x:Name="CancelOrNot" Grid.Row="4" Grid.Column="1"
+                         VerticalAlignment="Center" Height="40"
+                         mah:TextBoxHelper.Watermark="취소여부"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
 
-                <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                             Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="저장" x:Name="SaveData"
-                            Width="100" Height="40" Margin="10,0,10,0"
+                            Width="70" Height="40" Margin="10,0,10,0"
                             Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                             Click="Save_Click"/>
                     <Button Content="취소" x:Name="CancleOrder"
-                            Width="100" Height="40" Margin="10,0,10,0"
+                            Width="70" Height="40" Margin="10,0,10,0"
                             Style="{StaticResource MahApps.Styles.Button.Square}"
                             Click="Cancel_Click"/>
                 </StackPanel>
