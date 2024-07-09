@@ -1,30 +1,34 @@
 from flask import Flask, render_template, Response
 import cv2
+from picamera2 import Picamera2
 
 app = Flask(__name__)
-capture = cv2.VideoCapture(0)
-capture.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
-capture.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
+
+# 카메라 설정
+width = 640
+height = 480
+middle = ((width/2),(height/2))
+
+cam = Picamera2()
+cam.configure(cam.create_video_configuration(main={'format': 'XRGB8888', 'size': (width,height)}))
+cam.start()
 
 def gen_frames():  
     while True:
-        success, frame = capture.read()  # 현재 영상을 받아옴
-        if not success:
-            break
-        else:
-            ret, buffer = cv2.imencode('.jpg', frame)   # 현재 영상을 그림파일의형태로 바꿈
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # 그림파일들을 쌓아두고 호출을 기다림
-
+        frame = cam.capture_array()
+        
+        ret, buffer = cv2.imencode('.jpg', frame)   # 프레임을 JPEG 포맷으로 인코딩
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # 프레임을 바이트로 변환
 
 @app.route('/')
 def index():
-    return render_template('index.html')             # index4#2.html의 형식대로 웹페이지를 보여줌
+    return render_template('index.html')    # 메인 페이지 렌더링
 
 @app.route('/video_feed')
 def video_feed():
-    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame') # 그림파일들을 쌓아서 보여줌
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame') # 비디오 스트리밍
 
 if __name__ == "__main__":  # 웹사이트를 호스팅항 접속자에게 보여주기 위한 부분
    app.run(host="192.168.5.3", port = "8080")
