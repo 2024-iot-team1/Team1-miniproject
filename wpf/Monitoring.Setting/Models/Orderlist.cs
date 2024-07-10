@@ -24,27 +24,34 @@ namespace Monitoring.Models
         public int Stock {  get; set; }
         public int SafeStock { get; set; }
         public int Procurement { get; set; }
+        public string CancelOrNot { get; set; }
         
 
 
         public static readonly string SELECT_QUERY = @"SELECT D.DeliveryNum,
-                                                       D.OrderNum,
-                                                       D.DeliveryStatus,
-                                                       D.StartDT,
-                                                       D.CompleteDT,
-                                                       D.Destination,
-                                                       O.InventoryNum,
-                                                       O.Quantity,
-                                                       O.OrderDT,
-                                                       P.ProductCode,
-                                                       P.ProductName,
-                                                       P.Price,
-                                                       I.InventoryNum,
-                                                       I.ProductCode
-                                                FROM [dbo].[Delivery] D
-                                                INNER JOIN [dbo].[Orders] O ON D.OrderNum = O.OrderNum
-                                                INNER JOIN [dbo].[Inventory] I ON O.InventoryNum = I.InventoryNum
-                                                INNER JOIN [dbo].[Product] P ON I.ProductCode = P.ProductCode;";
+                                                              D.OrderNum,
+                                                              D.DeliveryStatus,
+                                                              D.StartDT,
+                                                              D.CompleteDT,
+                                                              D.Destination,
+                                                              O.InventoryNum,
+                                                              O.Quantity,
+                                                              O.OrderDT,
+                                                              O.OrderNum,
+                                                              O.CancelOrNot,
+                                                              P.ProductCode,
+                                                              P.ProductName,
+                                                              P.Price,
+                                                              I.Stock,
+                                                              I.SafeStock,
+                                                              I.SalesRate,
+                                                              I.Procurement,
+                                                              I.InventoryNum,
+                                                              I.ProductCode
+                                                         FROM [dbo].[Delivery] D
+                                                        INNER JOIN [dbo].[Orders] O ON D.OrderNum = O.OrderNum
+                                                        INNER JOIN [dbo].[Inventory] I ON O.InventoryNum = I.InventoryNum
+                                                        INNER JOIN [dbo].[Product] P ON I.ProductCode = P.ProductCode;";
 
         public static readonly string INSERT_QUERY = @"INSERT INTO [dbo].[Product]
                                                                        ([ProductCode]
@@ -59,7 +66,8 @@ namespace Monitoring.Models
                                                                        ([OrderNum]
                                                                        ,[InventoryNum]
                                                                        ,[Quantity]
-                                                                       ,[OrderDT])
+                                                                       ,[OrderDT]
+                                                                       ,[CancelOrNot])
                                                                  VALUES
                                                                        (@OrderNum
                                                                        ,@InventoryNum
@@ -110,7 +118,8 @@ namespace Monitoring.Models
                                                           SET O.OrderNum = @OrderNum,
                                                               O.InventoryNum = @InventoryNum,
                                                               O.Quantity = @Quantity,
-                                                              O.OrderDT = @OrderDT
+                                                              O.OrderDT = @OrderDT,
+                                                              O.CancelOrNot = @CancelOrNot
                                                          FROM [dbo].[Orders] O
                                                    INNER JOIN [dbo].[Inventory] I ON O.InventoryNum = I.InventoryNum
                                                    INNER JOIN [dbo].[Product] P ON I.ProductCode = P.ProductCode

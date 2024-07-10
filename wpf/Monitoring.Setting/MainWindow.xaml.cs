@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using MahApps.Metro.Controls;
 
 namespace Monitoring
@@ -28,7 +29,7 @@ namespace Monitoring
         // 컨베이어 벨트 블루투스 연결
         internal SerialPort _serialPort02;   // COM12, 9600
 
-        // usb 포트를 위한 블루트스 연결
+        // 바코드 및 QR코드 스캐너를 위한 블루트스 연결
         internal SerialPort _serialPort03;
         public MainWindow()
         {
@@ -44,14 +45,27 @@ namespace Monitoring
                 _serialPort02 = new SerialPort("COM12", 9600); // COM 포트와 보드레이트 설정
                 _serialPort02.Open();
 
+                _serialPort03 = new SerialPort("COM14", 9600); // COM 포트와 보드레이트 설정
+                _serialPort03.Open();
+
                 StsResult.Content = "연결됨";
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"블루투스 연결 실패: {ex.Message}");
             }
-        }
 
+            // 타이머 설정
+            DispatcherTimer timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 1);   // 1초마다
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+        // 타이머
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            LblSensingDt.Content = DateTime.Now.ToString("yyyy년 MM월 dd일 HH시 mm분 ss초");
+        }
         private void Monitoring_Click(object sender, RoutedEventArgs e)
         {
             ActiveItem.Content = new Views.ProcessMonitoring(this);

@@ -22,7 +22,8 @@ namespace Monitoring.Models
                                                              ,[CompleteOrNot]
                                                          FROM [dbo].[WorkStatus]";
 
-        public static readonly string INSERT_QUERY = @"
-            ";
+        public static readonly string DESTINATION_SELECT_QUERY = @"SELECT Destination
+                                                                     FROM Delivery
+                                                                    WHERE OrderNum = @OrderNum";
     }
 }
