@@ -26,6 +26,10 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Monitoring.Models;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using System.Drawing;
+using LiveChartsCore.SkiaSharpView.WPF;
 
 namespace Monitoring.Views
 {
@@ -59,52 +63,28 @@ namespace Monitoring.Views
             MainWindow = e;
 
             port01 = MainWindow._serialPort01;
-            port01.DataReceived += SerialPort_DataReceived;
+            port01.DataReceived += SerialPort01_DataReceived;
 
             port02 = MainWindow._serialPort02;
-            port02.DataReceived += SerialPort_DataReceived;
+            port02.DataReceived += SerialPort01_DataReceived;
 
+            port03 = MainWindow._serialPort03;
+            port03.DataReceived += SerialPort03_DataReceived;
             // 앵귤러 차트 추가
             CreateChart();
-
-            // 타이머 설정
-            DispatcherTimer timer = new DispatcherTimer();
-            timer.Interval = new TimeSpan(0, 0, 1);   // 1초마다
-            timer.Tick += Timer_Tick;
-            timer.Start();
 
             // 데이터 출력
             LoadData();
             UpdateDoughnut();
+            UpdateBars();
         }
         public ProcessMonitoring()
         {
-            // 블루투스 연결
             InitializeComponent();
-
-            //try
-            //{
-            //    _serialPort01 = new SerialPort("COM10", 9600); // COM 포트와 보드레이트 설정
-            //    _serialPort01.DataReceived += SerialPort_DataReceived;
-            //    _serialPort01.Open();
-
-            //    _serialPort02 = new SerialPort("COM12", 9600); // COM 포트와 보드레이트 설정
-            //    _serialPort02.DataReceived += SerialPort_DataReceived;
-            //    _serialPort02.Open();
-
-            //    MessageBox.Show("연결됨");
-            //}
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show($"블루투스 연결 실패: {ex.Message}");
-            //}
-        }
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            LblSensingDt.Content = DateTime.Now.ToString("yyyy년 MM월 dd일 HH:mm:ss");
         }
 
-        private void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
+
+        private void SerialPort01_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
         {
             try
             {
@@ -116,6 +96,52 @@ namespace Monitoring.Views
             {
                 Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
             }
+        }
+
+        private void SerialPort03_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
+        {
+            try
+            {
+                string data3 = port03.ReadLine();
+                //_dataBuffer.Append(data);
+                Dispatcher.Invoke(() => SendData(data3));
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() => MessageBox.Show($"데이터 송수신 오류: {ex.Message}"));
+            }
+        }
+
+        private void SendData(string data)
+        {
+            object result = null;
+            int orderNum = Convert.ToInt32(data);
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    // Orders 테이블과 Delivery 테이블을 Inner Join 하여 데이터 가져오는 쿼리
+                    string query = ProMonitoring.DESTINATION_SELECT_QUERY;
+
+                    SqlCommand com = new SqlCommand(query, conn);
+                    com.Parameters.AddWithValue("@OrderNum", orderNum);
+                    conn.Open();
+                    result = com.ExecuteScalar();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            string destination = result?.ToString();
+            MessageBox.Show(destination);
+
+            string send_data = "";
+            if (destination == "서울") send_data = "2";
+            else if(destination == "대구") send_data = "4";
+            else if(destination == "부산") send_data = "6";
+            port02.Write(send_data);
         }
 
         #region 온습도 정보 출력
@@ -141,14 +167,13 @@ namespace Monitoring.Views
         private void CreateChart()
         {
             var sectionsOuter = 130;
-            var sectionsWidth = 60;
+            var sectionsWidth = 30;
 
             TempNeedle = new NeedleVisual { Value = 20 };   // 차트 바늘의 초기값이 20
                                                               // 온도 차트 값 할당
             TempSeries = GaugeGenerator.BuildAngularGaugeSections(
-                new GaugeItem(70, s => SetStyle(sectionsOuter, sectionsWidth, s)),
-                new GaugeItem(20, s => SetStyle(sectionsOuter, sectionsWidth, s)),
-                new GaugeItem(10, s => SetStyle(sectionsOuter, sectionsWidth, s))
+                new GaugeItem(25, s => SetStyle(sectionsOuter, sectionsWidth, s)),
+                new GaugeItem(75, s => SetStyle(sectionsOuter, sectionsWidth, s))
             );
             ChtTemp.Series = TempSeries;
 
@@ -173,13 +198,14 @@ namespace Monitoring.Views
 
             // 습도 차트 값 할당
             HumidSeries = GaugeGenerator.BuildAngularGaugeSections(
-                new GaugeItem(50,
-                s => SetStyle(sectionsOuter, sectionsWidth, s))
+                new GaugeItem(70, s => SetStyle(sectionsOuter, sectionsWidth, s)),
+                new GaugeItem(20, s => SetStyle(sectionsOuter, sectionsWidth, s)),
+                new GaugeItem(10, s => SetStyle(sectionsOuter, sectionsWidth, s))
             );
             ChtHumid.Series = HumidSeries;
 
             // 습도를 나타낼 앵귤러차트를 초기화
-            HumidNeedle = new NeedleVisual { Value = 50 };   // 차트 바늘의 초기값이 20
+            HumidNeedle = new NeedleVisual { Value = 50, ScalesXAt = 10 };   // 차트 바늘의 초기값이 20
                                                                 // 앵귤러 차트를 그리기 위한 속성들
             HumidVisualElements = new VisualElement<SkiaSharpDrawingContext>[]
             {
@@ -189,7 +215,8 @@ namespace Monitoring.Views
                     LabelsSize = 12,
                     LabelsOuterOffset = 15,
                     OuterOffset = 50, // 차트 선이 퍼져있는 정도
-                    TicksLength = 15 // 차트 실선 길이
+                    TicksLength = 15, // 차트 실선 길이
+
                 },
                 HumidNeedle
             };
@@ -247,14 +274,76 @@ namespace Monitoring.Views
         }
 
         public IEnumerable<ISeries> ProductSeries { get; set; } =
-            new[] { 2, 4, 1, 4, 3 }.AsPieSeries((value, series) =>
+            new[]
             {
-                series.MaxRadialColumnWidth = 60;
-        });
+                    new PieSeries<int> { Values = new[]{ 2 }, Name = "A", InnerRadius = 30,
+                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                                        DataLabelsSize = 15,
+                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements"},
+                    new PieSeries<int> { Values = new[]{ 4 }, Name = "B", InnerRadius = 30,
+                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                                        DataLabelsSize = 15,
+                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements" },
+                    new PieSeries<int> { Values = new[]{ 1 }, Name = "C", InnerRadius = 30,                                
+                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                                        DataLabelsSize = 15,
+                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements" },
+                    new PieSeries<int> { Values = new[]{ 4 }, Name = "D", InnerRadius = 30,
+                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                                        DataLabelsSize = 15,
+                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") + " elements" },
+                    new PieSeries<int> { Values = new[]{ 3 }, Name = "E", InnerRadius = 30,
+                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                                        DataLabelsSize = 15,
+                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") + " elements" },
+            };
 
         private void UpdateDoughnut()
         {
             ChtProduct.Series = ProductSeries;
+            ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Right;
+        }
+
+        public ISeries[] DestinationSeries { get; set; } =
+        {
+            new ColumnSeries<double>
+            {
+                Name = "",
+                Values = new double[] { 2, 5, 4 },
+                MaxBarWidth = 30,
+                DataLabelsSize = 0,
+                Padding = 10
+            }
+        };
+
+        public Axis[] DestinationXAxes { get; set; } =
+        {
+            new Axis
+            {
+                Labels = new string[] { "Seoul", "Busan", "Daegu" },
+                LabelsRotation = 0,
+                SeparatorsPaint = new SolidColorPaint(new SKColor(200, 200, 200)),
+                ShowSeparatorLines = false,
+                SeparatorsAtCenter = false,
+                //TicksPaint = new SolidColorPaint(new SKColor(35, 35, 35)),
+                //TicksAtCenter = true,
+                // By default the axis tries to optimize the number of 
+                // labels to fit the available space, 
+                // when you neeed to force the axis to show all the labels then you must: 
+                ForceStepToMin = true,
+                MinStep = 1,
+            }
+        };
+
+        private void UpdateBars()
+        {
+            ChtDestination.Series = DestinationSeries;
+            ChtDestination.XAxes = DestinationXAxes;
         }
     }
 }
