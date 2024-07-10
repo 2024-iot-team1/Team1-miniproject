@@ -200,6 +200,7 @@ namespace Monitoring.Views
             {
                 MessageBox.Show(ex.Message);
             }
+            LoadData();
         }
 
         #region 온습도 앵귤러 차트 영역
@@ -319,41 +320,41 @@ namespace Monitoring.Views
         }
 
         #region 상품별 처리량 도넛 그래프
-        public IEnumerable<ISeries> ProductSeries { get; set; } =
-            new[]
-            {
-                    new PieSeries<int> { Values = new[]{ 2 }, Name = "A", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements"},
-                    new PieSeries<int> { Values = new[]{ 4 }, Name = "B", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements" },
-                    new PieSeries<int> { Values = new[]{ 1 }, Name = "C", InnerRadius = 30,                                
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements" },
-                    new PieSeries<int> { Values = new[]{ 4 }, Name = "D", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") + " elements" },
-                    new PieSeries<int> { Values = new[]{ 3 }, Name = "E", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") + " elements" },
-            };
+        //public IEnumerable<ISeries> ProductSeries { get; set; } =
+        //    new[]
+        //    {
+        //            new PieSeries<int> { Values = new[]{ 2 }, Name = "A", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2")},
+        //            new PieSeries<int> { Values = new[]{ 4 }, Name = "B", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") },
+        //            new PieSeries<int> { Values = new[]{ 1 }, Name = "C", InnerRadius = 30,                                
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2")},
+        //            new PieSeries<int> { Values = new[]{ 4 }, Name = "D", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N1")},
+        //            new PieSeries<int> { Values = new[]{ 3 }, Name = "E", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") },
+        //    };
 
-        private void UpdateDoughnut()
-        {
-            ChtProduct.Series = ProductSeries;
-            ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
-        }
+        //private void UpdateDoughnut()
+        //{
+        //    ChtProduct.Series = ProductSeries;
+        //    ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
+        //}
         #endregion
 
         #region 지역별 처리량 막대 그래프
@@ -378,11 +379,6 @@ namespace Monitoring.Views
                 SeparatorsPaint = new SolidColorPaint(new SKColor(200, 200, 200)),
                 ShowSeparatorLines = false,
                 SeparatorsAtCenter = false,
-                //TicksPaint = new SolidColorPaint(new SKColor(35, 35, 35)),
-                //TicksAtCenter = true,
-                // By default the axis tries to optimize the number of 
-                // labels to fit the available space, 
-                // when you neeed to force the axis to show all the labels then you must: 
                 ForceStepToMin = true,
                 MinStep = 1,
             }

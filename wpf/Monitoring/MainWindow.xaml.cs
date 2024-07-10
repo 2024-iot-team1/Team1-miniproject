@@ -39,13 +39,13 @@ namespace Monitoring
 
             try
             {
-                _serialPort01 = new SerialPort("COM10", 9600); // COM 포트와 보드레이트 설정
+                _serialPort01 = new SerialPort("COM11", 9600); // COM 포트와 보드레이트 설정
                 _serialPort01.Open();
 
-                _serialPort02 = new SerialPort("COM12", 9600); // COM 포트와 보드레이트 설정
+                _serialPort02 = new SerialPort("COM14", 9600); // COM 포트와 보드레이트 설정
                 _serialPort02.Open();
 
-                _serialPort03 = new SerialPort("COM14", 9600); // COM 포트와 보드레이트 설정
+                _serialPort03 = new SerialPort("COM12", 9600); // COM 포트와 보드레이트 설정
                 _serialPort03.Open();
 
                 StsResult.Content = "연결됨";
