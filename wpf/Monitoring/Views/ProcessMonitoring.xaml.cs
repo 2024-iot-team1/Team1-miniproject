@@ -66,7 +66,7 @@ namespace Monitoring.Views
             port01.DataReceived += SerialPort01_DataReceived;
 
             port02 = MainWindow._serialPort02;
-            port02.DataReceived += SerialPort01_DataReceived;
+            port02.DataReceived += SerialPort02_DataReceived;
 
             port03 = MainWindow._serialPort03;
             port03.DataReceived += SerialPort03_DataReceived;
@@ -84,6 +84,7 @@ namespace Monitoring.Views
         }
 
 
+        // 실내 환경 모니터링 아두이노
         private void SerialPort01_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
         {
             try
@@ -98,6 +99,22 @@ namespace Monitoring.Views
             }
         }
 
+        // 컨베이어 벨트 분류기 아두이노
+        private void SerialPort02_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
+        {
+            try
+            {
+                string data = port02.ReadLine();
+                //_dataBuffer.Append(data);
+                Dispatcher.Invoke(() => UpdateDB(data));
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
+            }
+        }
+
+        // 바코드(QR) 스캐너 아두이노
         private void SerialPort03_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
         {
             try
@@ -112,6 +129,7 @@ namespace Monitoring.Views
             }
         }
 
+        // 바코드에서 얻은 주문번호를 기반으로 목적지 확인
         private void SendData(string data)
         {
             object result = null;
@@ -135,7 +153,7 @@ namespace Monitoring.Views
                 MessageBox.Show(ex.Message);
             }
             string destination = result?.ToString();
-            MessageBox.Show(destination);
+            MainWindow.StsResult.Content = destination;
 
             string send_data = "";
             if (destination == "서울") send_data = "2";
@@ -144,20 +162,12 @@ namespace Monitoring.Views
             port02.Write(send_data);
         }
 
-        #region 온습도 정보 출력
-        private void ProcessData(string data)   // 수신받은 데이터를 처리
+        private void UpdateDB(string data)
         {
-            string[] values = data.Split(',');
-            if (values.Length == 2)
-            {
-                //TbxTemp.Text = $"{values[0]}";
-                //TbxHumid.Text = $"{values[1]}";
-            }
-            else
-            {
-                MainWindow.StsResult.Content = "데이터 형식 오류";
-            }
+
         }
+
+        #region 온습도 앵귤러 차트 영역
         private static void SetStyle(double sectionsOuter, double sectionsWidth, PieSeries<ObservableValue> series)
         {
             series.OuterRadiusOffset = sectionsOuter;
@@ -273,6 +283,7 @@ namespace Monitoring.Views
             }
         }
 
+#region 상품별 처리량 도넛 그래프
         public IEnumerable<ISeries> ProductSeries { get; set; } =
             new[]
             {
@@ -306,9 +317,11 @@ namespace Monitoring.Views
         private void UpdateDoughnut()
         {
             ChtProduct.Series = ProductSeries;
-            ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Right;
+            ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
         }
+        #endregion
 
+#region 지역별 처리량 막대 그래프
         public ISeries[] DestinationSeries { get; set; } =
         {
             new ColumnSeries<double>
@@ -345,5 +358,6 @@ namespace Monitoring.Views
             ChtDestination.Series = DestinationSeries;
             ChtDestination.XAxes = DestinationXAxes;
         }
+#endregion
     }
 }
