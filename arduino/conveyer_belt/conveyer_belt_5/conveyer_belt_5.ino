@@ -27,7 +27,7 @@
 
 /* 변수 선언 : HW객체, 측정값, 기타 변수, ...*/
 Servo servo;
-int railSpeed = 100;  // 레일 기본 속도
+int railSpeed = 120;  // 레일 기본 속도
 int scan_stop_check = 0;
 int scan_check = 0;
 int box_check;
@@ -199,16 +199,19 @@ void toneDetected() {
 int checkBoxSensors() {
   if (digitalRead(BOX_IR1) == LOW) {  // 상자 1에 물품이 들어갔을 때
     Serial.println("Item detected in Box 1");
+    bluetooth.println("1");
     return 1;
   } 
 
   if (digitalRead(BOX_IR2) == LOW) {  // 상자 2에 물품이 들어갔을 때
     Serial.println("Item detected in Box 2");
+    bluetooth.println("2");
     return 1;
   } 
 
   if (digitalRead(BOX_IR3) == LOW) {  // 상자 3에 물품이 들어갔을 때
     Serial.println("Item detected in Box 3");
+    bluetooth.println("3");
     return 1;
   }
   return 0;

@@ -26,6 +26,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <UseVSHostingProcess>true</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -337,6 +338,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\ArduinoBT.cs" />
+    <Compile Include="Models\Common.cs" />
     <Compile Include="Models\Orderlist.cs" />
     <Compile Include="Models\ProMonitoring.cs" />
     <Compile Include="Views\Inventory.xaml.cs">

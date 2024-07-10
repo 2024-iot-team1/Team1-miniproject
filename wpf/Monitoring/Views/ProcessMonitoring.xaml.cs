@@ -47,7 +47,9 @@ namespace Monitoring.Views
         // usb 포트를 위한 블루트스 연결
         private SerialPort port03;
 
-        private StringBuilder _dataBuffer = new StringBuilder();
+        // private StringBuilder _dataBuffer = new StringBuilder();
+
+        #region 온습도 정보 출력을 위한 프로퍼티 선언
         public IEnumerable<VisualElement<SkiaSharpDrawingContext>> TempVisualElements { get; set; }
         public IEnumerable<VisualElement<SkiaSharpDrawingContext>> HumidVisualElements { get; set; }
 
@@ -56,6 +58,9 @@ namespace Monitoring.Views
         public IEnumerable<ISeries> TempSeries { get; set; }
         public IEnumerable<ISeries> HumidSeries { get; set; }
 
+        #endregion
+        public int OrderNum { get; set; }
+        public int DeliveryNum { get; set; }
         MainWindow MainWindow { get; set; }
         public ProcessMonitoring(MainWindow e)
         {
@@ -90,7 +95,6 @@ namespace Monitoring.Views
             try
             {
                 string data1 = port01.ReadLine();
-                //_dataBuffer.Append(data);
                 Dispatcher.Invoke(() => UpdateChart(data1));
             }
             catch (Exception ex)
@@ -105,8 +109,7 @@ namespace Monitoring.Views
             try
             {
                 string data = port02.ReadLine();
-                //_dataBuffer.Append(data);
-                Dispatcher.Invoke(() => UpdateDB(data));
+                Dispatcher.Invoke(() => UpdateDB());
             }
             catch (Exception ex)
             {
@@ -120,7 +123,7 @@ namespace Monitoring.Views
             try
             {
                 string data3 = port03.ReadLine();
-                //_dataBuffer.Append(data);
+                OrderNum = Convert.ToInt32(data3);
                 Dispatcher.Invoke(() => SendData(data3));
             }
             catch (Exception ex)
@@ -129,30 +132,33 @@ namespace Monitoring.Views
             }
         }
 
-        // 바코드에서 얻은 주문번호를 기반으로 목적지 확인
+        // 바코드에서 얻은 주문번호를 기반으로 목적지 확인 -> 컨베이어 벨트 아두이노로 전송
         private void SendData(string data)
         {
-            object result = null;
             int orderNum = Convert.ToInt32(data);
-
+            string destination = "";
             try
             {
                 using (SqlConnection conn = new SqlConnection(connectionString))
                 {
-                    // Orders 테이블과 Delivery 테이블을 Inner Join 하여 데이터 가져오는 쿼리
                     string query = ProMonitoring.DESTINATION_SELECT_QUERY;
 
                     SqlCommand com = new SqlCommand(query, conn);
                     com.Parameters.AddWithValue("@OrderNum", orderNum);
                     conn.Open();
-                    result = com.ExecuteScalar();
+                    SqlDataReader reader = com.ExecuteReader();
+                    if (reader.Read()) 
+                    {
+                        destination = reader["Destination"].ToString();
+                        DeliveryNum = reader.GetInt32(reader.GetOrdinal("DeliveryNum"));
+                    }
+                    reader.Close();
                 }
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            string destination = result?.ToString();
             MainWindow.StsResult.Content = destination;
 
             string send_data = "";
@@ -162,9 +168,38 @@ namespace Monitoring.Views
             port02.Write(send_data);
         }
 
-        private void UpdateDB(string data)
+        private void UpdateDB()
         {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    // WorkStatus 테이블에 처리결과 삽입
+                    string query2 = ProMonitoring.DELIVERY_UPDATE_QUERY;
+                    DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
 
+                    SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
+
+                    insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
+                    insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
+                    insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
+                    insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'Y');
+
+
+                    int result = insertCmd.ExecuteNonQuery();
+
+                    SqlCommand updateCom = new SqlCommand(query2, conn);
+                    updateCom.Parameters.AddWithValue("@OrderNum", OrderNum);
+                    updateCom.Parameters.AddWithValue("@StartDT", nowDT);
+
+                    updateCom.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
         }
 
         #region 온습도 앵귤러 차트 영역
@@ -283,7 +318,7 @@ namespace Monitoring.Views
             }
         }
 
-#region 상품별 처리량 도넛 그래프
+        #region 상품별 처리량 도넛 그래프
         public IEnumerable<ISeries> ProductSeries { get; set; } =
             new[]
             {
@@ -321,7 +356,7 @@ namespace Monitoring.Views
         }
         #endregion
 
-#region 지역별 처리량 막대 그래프
+        #region 지역별 처리량 막대 그래프
         public ISeries[] DestinationSeries { get; set; } =
         {
             new ColumnSeries<double>
