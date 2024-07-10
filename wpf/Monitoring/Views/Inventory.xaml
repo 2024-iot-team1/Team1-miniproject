@@ -47,11 +47,26 @@
             </DataGrid>
             <Button Grid.Row="1" Grid.Column="0"
                     Content="조회" Width="120" Height="40" Click="BtnSearch_Click"
-                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}"/>
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconIonicons Kind="RefreshMD" Margin="5" />
+                            <TextBlock Text="{Binding}" Margin="5"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
                     
         </Grid>
 
-        <GroupBox Grid.Column="1" Margin="10" Header="--">
+        <GroupBox Grid.Column="1" Margin="10">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Margin="5"/>
+                    <TextBlock Text="재고 정보" VerticalAlignment="Center"/>
+                </StackPanel>
+            </GroupBox.Header>
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -114,14 +129,41 @@
                     <Button Content="신규" x:Name="NewEmployee"
                             Width="100" Height="40"
                             Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
-                            Click="BtnNew_Click"/>           
+                            Click="BtnNew_Click">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="NewBox" Margin="5" />
+                                    <TextBlock Text="{Binding}" Margin="5"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
                     <Button Content="저장" x:Name="SaveEmployee"
                             Width="100" Height="40" Margin="10,0,10,0"
                             Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
-                            Click="SaveEmployee_Click"/>
+                            Click="SaveEmployee_Click">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ContentSaveCheck" Margin="5"/>
+                                    <TextBlock Text="{Binding}" Margin="5"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
                     <Button Content="삭제" x:Name="DelEmployee"
                             Width="100" Height="40"
-                            Style="{StaticResource MahApps.Styles.Button.Square}"/>
+                            Style="{StaticResource MahApps.Styles.Button.Square}">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconRemixIcon Kind="DeleteBin2Fill" Margin="5" />
+                                    <TextBlock Text="{Binding}" Margin="5"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
                 </StackPanel>
             </Grid>
         </GroupBox>
