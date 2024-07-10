@@ -33,6 +33,12 @@
                 <DataGrid.Resources>
                     <Style TargetType="DataGridColumnHeader">
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Background" Value="#007ACC"/>
+                        <!-- 헤더 배경색 -->
+                        <Setter Property="Foreground" Value="White"/>
+                        <!-- 헤더 글자색 -->
+                        <Setter Property="BorderThickness" Value="0"/>
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
@@ -145,8 +151,8 @@
         <GroupBox Grid.Column="1" Margin="10">
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconOcticons Kind="Archive" Margin="5"/>
-                    <TextBlock Text="상품 정보" VerticalAlignment="Center"/>
+                    <iconPacks:PackIconOcticons Kind="Archive" Margin="5" Foreground="White"/>
+                    <TextBlock Text="상품 정보" VerticalAlignment="Center" Foreground="White"/>
                 </StackPanel>
             </GroupBox.Header>
             <Grid Margin="10">
@@ -174,30 +180,34 @@
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
 
                 <TextBox x:Name="OrderNum" Grid.Row="0" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="주문번호"
+                         VerticalAlignment="Center" Height="30" Width="120"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
+                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="False"
+                         HorizontalAlignment="Center"/>
                 <TextBox x:Name="ProductName" Grid.Row="1" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="상품명"
+                         VerticalAlignment="Center" Height="30" Width="120"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
-                <TextBox x:Name="OrderDT" Grid.Row="2" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="주문일자"
+                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="False"
+                         HorizontalAlignment="Center"/>
+                <DatePicker x:Name="OrderDT" Grid.Row="2" Grid.Column="1"
+                         VerticalAlignment="Center" Height="30" Width="120"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
-                <TextBox x:Name="DeliveryStatus" Grid.Row="3" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="배송상태"
+                         mah:TextBoxHelper.ClearTextButton="False"
+                         HorizontalAlignment="Center"/>
+                <ComboBox x:Name="DeliveryStatus" Grid.Row="3" Grid.Column="1"
+                         VerticalAlignment="Center" Height="30" Width="120"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
+                         mah:TextBoxHelper.ClearTextButton="False" IsReadOnly="True"
+                         HorizontalAlignment="Center">
+                    <ComboBoxItem Content="배송준비중"/>
+                    <ComboBoxItem Content="배송중"/>
+                    <ComboBoxItem Content="배송완료"/>
+                </ComboBox>
                 <TextBox x:Name="CancelOrNot" Grid.Row="4" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="취소여부"
+                         VerticalAlignment="Center" Height="30" Width="120"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="True"/>
+                         mah:TextBoxHelper.ClearTextButton="False" IsReadOnly="True"
+                         HorizontalAlignment="Center"/>
 
                 <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"
                             Orientation="Horizontal" HorizontalAlignment="Center">
