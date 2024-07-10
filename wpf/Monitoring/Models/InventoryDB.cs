@@ -69,5 +69,5 @@ namespace Monitoring.Views.Models
                                                               ,[Price] = @Price
                                                               ,[Classification] = @Classification
                                                          WHERE ProductCode = @ProductCode";
-                }
+    }
 }

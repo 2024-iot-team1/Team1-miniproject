@@ -7,6 +7,14 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:Monitoring.Views"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!-- 중앙 정렬 스타일 리소스 정의 -->
+        <Style x:Key="CenterAlignedCellStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -22,27 +30,28 @@
                       IsReadOnly="True" ItemsSource="{Binding}"
                       AutoGenerateColumns="False" BorderBrush="Gray"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      GridLinesVisibility="All"
+                      GridLinesVisibility="All" 
                       BorderThickness="1" IsSynchronizedWithCurrentItem="False"
                       ColumnWidth="*" SelectionMode="Single" SelectionChanged="GrdResult_SelectionChanged">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="제고번호" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="재고번호" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품코드" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Price}" Header="상품가격" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding SalesRate}" Header="판매량" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Stock}" Header="재고 현황" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 재고" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" FontWeight="Bold" IsReadOnly="True"/>
-
-                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="제고번호" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding Stock}" Header="제고 현황" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 제고" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" FontWeight="Bold" />
+                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="재고번호" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품코드" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Header="상품가격" Binding="{Binding Price, StringFormat='{}{0:#,##0}'}" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}" />
+                    <DataGridTextColumn Binding="{Binding SalesRate}" Header="판매량" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Stock}" Header="재고 현황" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 재고" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Grid.Row="1" Grid.Column="0"
@@ -154,7 +163,9 @@
                     </Button>
                     <Button Content="삭제" x:Name="DelEmployee"
                             Width="100" Height="40"
-                            Style="{StaticResource MahApps.Styles.Button.Square}">
+                            Style="{StaticResource MahApps.Styles.Button.Square}"
+                            Click="BtnDelete_Click" IsEnabled="{Binding IsDeleteButtonEnabled}">
+                        
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

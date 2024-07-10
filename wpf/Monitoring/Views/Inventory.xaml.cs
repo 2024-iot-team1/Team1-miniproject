@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Windows;
@@ -199,6 +200,8 @@ namespace Monitoring.Views
                 Price.Text = price.ToString();
                 Stock.Text = stock.ToString();
                 InventoryNum.Text = inventoryNum.ToString(); // InventoryNum도 UI에 출력
+
+                IsDeleteButtonEnabled = GrdResult.SelectedItem != null;
             }
         }
 
@@ -227,6 +230,51 @@ namespace Monitoring.Views
             return inventoryNum;
         }
 
+        private void BtnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            if (GrdResult.SelectedItem != null)
+            {
+                DataRowView row = (DataRowView)GrdResult.SelectedItem;
+                string productCode = row["ProductCode"].ToString();
+
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(CONNSTRING))
+                    {
+                        conn.Open();
+
+                        // DELETE from Inventory table
+                        SqlCommand deleteInventoryCmd = new SqlCommand("DELETE FROM Inventory WHERE ProductCode = @ProductCode", conn);
+                        deleteInventoryCmd.Parameters.AddWithValue("@ProductCode", productCode);
+                        int resultInventory = deleteInventoryCmd.ExecuteNonQuery();
+
+                        // DELETE from Product table
+                        SqlCommand deleteProductCmd = new SqlCommand("DELETE FROM Product WHERE ProductCode = @ProductCode", conn);
+                        deleteProductCmd.Parameters.AddWithValue("@ProductCode", productCode);
+                        int resultProduct = deleteProductCmd.ExecuteNonQuery();
+
+                        if (resultInventory > 0 && resultProduct > 0)
+                        {
+                            MessageBox.Show("제품과 재고량을 삭제했습니다.", "삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
+                            GetInventory(); // Reload data after delete to update the grid
+                            ClearControls(); // Clear input controls
+                        }
+                        else
+                        {
+                            MessageBox.Show("제품 삭제 중 오류가 발생했습니다.", "삭제 실패", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("삭제할 제품을 선택하세요.", "경고", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
 
 
         private void ClearControls()
@@ -251,5 +299,26 @@ namespace Monitoring.Views
 
             // InventoryNum은 자동 증가되므로 여기서 초기화만 해주면 됩니다.
         }
+
+        // INotifyPropertyChanged interface implementation
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private bool _isDeleteButtonEnabled;
+        public bool IsDeleteButtonEnabled
+        {
+            get { return _isDeleteButtonEnabled; }
+            set
+            {
+                _isDeleteButtonEnabled = value;
+                OnPropertyChanged(nameof(IsDeleteButtonEnabled));
+            }
+        }
+
+        // OnPropertyChanged 메서드 추가
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
     }
 }
