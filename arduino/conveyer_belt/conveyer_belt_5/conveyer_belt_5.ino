@@ -27,7 +27,7 @@
 
 /* 변수 선언 : HW객체, 측정값, 기타 변수, ...*/
 Servo servo;
-int railSpeed = 200;  // 레일 기본 속도
+int railSpeed = 100;  // 레일 기본 속도
 int scan_stop_check = 0;
 int scan_check = 0;
 int box_check;
