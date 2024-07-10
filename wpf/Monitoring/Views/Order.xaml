@@ -8,7 +8,7 @@
       xmlns:local="clr-namespace:Monitoring.Views"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
-
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -128,13 +128,27 @@
                 </DataGrid.Columns>
             </DataGrid>
 
-            <Button Grid.Row="1" Grid.Column="0"
-                    Content="조회" Width="120" Height="40" Click="Check_Click"
-                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Margin="140,17,140,18"/>
+            <Button Grid.Row="1" Grid.Column="0" Content="조회" Width="120" Height="40" Click="Check_Click"
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" Margin="140,17,140,18">
+                <Button.ContentTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <iconPacks:PackIconIonicons Kind="RefreshMD" Margin="5" />
+                            <TextBlock Text="{Binding}" Margin="5"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </Button.ContentTemplate>
+            </Button>
 
         </Grid>
 
-        <GroupBox Grid.Column="1" Margin="10" Header="상품 정보">
+        <GroupBox Grid.Column="1" Margin="10">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal">
+                    <iconPacks:PackIconOcticons Kind="Archive" Margin="5"/>
+                    <TextBlock Text="상품 정보" VerticalAlignment="Center"/>
+                </StackPanel>
+            </GroupBox.Header>
             <Grid Margin="10">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -190,11 +204,29 @@
                     <Button Content="저장" x:Name="SaveData"
                             Width="70" Height="40" Margin="10,0,10,0"
                             Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
-                            Click="Save_Click"/>
+                            Click="Save_Click">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterial Kind="ContentSaveCheck" Margin="5"/>
+                                    <TextBlock Text="{Binding}" Margin="5" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
                     <Button Content="취소" x:Name="CancleOrder"
                             Width="70" Height="40" Margin="10,0,10,0"
                             Style="{StaticResource MahApps.Styles.Button.Square}"
-                            Click="Cancel_Click"/>
+                            Click="Cancel_Click">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconMaterialDesign Kind="Cancel"  Margin="5"/>
+                                    <TextBlock Text="{Binding}" Margin="5" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
                 </StackPanel>
             </Grid>
         </GroupBox>
