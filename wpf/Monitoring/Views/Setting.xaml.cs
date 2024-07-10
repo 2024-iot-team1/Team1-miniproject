@@ -12,6 +12,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.Remoting.Channels;
+
 
 namespace Monitoring.Views
 {
@@ -20,9 +24,66 @@ namespace Monitoring.Views
     /// </summary>
     public partial class Setting : UserControl
     {
+        private Process _flaskProcess;
+
         public Setting()
         {
             InitializeComponent();
+        }
+
+        private void OnButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_flaskProcess == null)
+            {
+                StartFlaskServer();
+            }
+
+            ChromeWeb.Address = "http://192.168.5.3:18088/";
+        }
+
+        private void OffButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (_flaskProcess != null)
+            {
+                StopFlaskServer();
+            }
+
+            ChromeWeb.Address = "about:blank";
+        }
+
+        private void StartFlaskServer()
+        {
+            var startInfo = new ProcessStartInfo
+            {
+                FileName = "python",
+                Arguments = "\"C:\\Sources\\Team1-miniproject\\CCTV\\gdsb_cctv_project\\cctv#3 flask webcam with text.py\"",
+                UseShellExecute = false,
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                CreateNoWindow = true,
+            };
+
+            _flaskProcess = new Process
+            {
+                StartInfo = startInfo
+            };
+
+            _flaskProcess.OutputDataReceived += (sender, args) => Debug.WriteLine(args.Data);
+            _flaskProcess.ErrorDataReceived += (sender, args) => Debug.WriteLine(args.Data);
+
+            _flaskProcess.Start();
+            _flaskProcess.BeginOutputReadLine();
+            _flaskProcess.BeginErrorReadLine();
+        }
+
+        private void StopFlaskServer()
+        {
+            if (_flaskProcess != null && !_flaskProcess.HasExited)
+            {
+                _flaskProcess.Kill();
+                _flaskProcess.Dispose();
+                _flaskProcess = null;
+            }
         }
     }
 }
