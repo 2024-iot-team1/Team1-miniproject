@@ -17,36 +17,54 @@
             <td align="center"><a href="https://github.com/Hwangji99"><b>@Hwangji99</b></a></td>
             <td align="center"><a href="https://github.com/sungouk1457"><b>@sungouk1457</b></a></td>
         <tr/>
-            <td align="center"><b> </b></td>
+            <td align="center">주문관리 화면 구현 보조</td>
             <td align="center">DB 구축</td>
-            <td align="center">CCTV 시스템 구현</td>
+            <td align="center">CCTV 화면 출력용<br>서버 구축</td>
             <td align="center">로그인 화면 구현</td>
             <td align="center">스마트팩토리 키트 조립</td>
         <tr/>
-            <td align="center"></td>
+            <td align="center">재고관리 화면 구현 보조</td>
             <td align="center">아두이노<br>자동 분류 시스템 구현</td>
             <td align="center">더미 데이터 세팅</td>
             <td align="center">메인화면 프레임 구현</td>
-            <td align="center">프레임 제작</td>
+            <td align="center">공장 프레임 제작</td>
         <tr/>
             <td align="center"></td>
             <td align="center">아두이노 실내 환경<br>모니터링 시스템 구현</td>
-            <td align="center"></td>
+            <td align="center">WPF CCTV 화면 출력</td>
             <td align="center">주문관리 화면 구현</td>
             <td align="center">재고관리 화면 구현</td>
         <tr/>
             <td align="center"></td>
             <td align="center">아두이노와 WPF<br>블루투스 통신 연결</td>
-            <td align="center"></td>
+            <td align="center">공장 프레임 제작 보조</td>
             <td align="center"></td>
             <td align="center"></td>
         <tr/>
             <td align="center"></td>
             <td align="center">모니터링 화면 구현</td>
             <td align="center"></td>
+            <td align="center">주문&배송<br>데이터베이스 관리</td>
+            <td align="center">재고&상품<br>데이터베이스 관리</td>
+        </tr>
+            <td align="center"></td>
+            <td align="center">설정 조정 화면 구현</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>        
+            <td align="center"></td>
+            <td align="center">공정 처리<br>데이터베이스 관리</td>
+            <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
         </tr>
+            <td align="center"></td>
+            <td align="center">LiveChart2로<br>DB, 온습도 정보 출력</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr> 
     </tbody>
 </table>
 
@@ -142,6 +160,7 @@
 - Arduino
     - 바코드&QR 스캐너를 USB 호스트 쉴드에 부착 완료
     - USB 호스트 쉴드에 블루투스 모듈을 연결하여 WPF와 통신 가능
+
 - WPF
     - 재고 관리 페이지
         - 상품 추가 및 상품 정보 수정 기능 구현
@@ -169,7 +188,13 @@
 
 - Raspberry Pi
     - flask를 이용하여 웹 페이지에 라즈베리파이 카메라가 촬영한 화면 출력
+
+<img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject002.jpg">
+
 ### 2024.07.11
+
+
+
 - WPF
     - 모니터링 페이지
         - 지역별 처리량에 따라 막대그래프가 실시간으로 변경되는 기능 구현
@@ -183,3 +208,5 @@
         - CCTV 화면 크기 및 비율 조정
         - 환기팬 ON/OFF, 경고 부저 OFF, 경고 온습도 수준을 설정할 수 있도록 화면 구현
         - 설정 저장 버튼을 누르면 블루투스 통신을 통해 아두이노로 전달되어 설정이 변경되도록 함
+
+<img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject003.jpg">

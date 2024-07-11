@@ -68,6 +68,8 @@ namespace Monitoring.Views
         {
             string fanStatus = string.Empty;
             string buzzStatus = string.Empty;
+            string temp = TempNum.Value.ToString();
+            string humid = HumidNum.Value.ToString();
 
             if (SwitchFan.IsOn)
             {
@@ -78,7 +80,8 @@ namespace Monitoring.Views
             if (SwitchBuzz.IsOn) buzzStatus = "1";
             else buzzStatus = "0";
 
-            string setting_data = fanStatus + "," + buzzStatus + "," + TempNum.Value.ToString() + "," + HumidNum.Value.ToString();
+            // string setting_data1 = fanStatus + "," + buzzStatus + "," + TempNum.Value.ToString() + "," + HumidNum.Value.ToString();
+            string setting_data = $"{temp},{humid},{fanStatus},{buzzStatus}";
             port.WriteLine(setting_data);
         }
 
