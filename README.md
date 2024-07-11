@@ -1,7 +1,7 @@
 # Team1-miniproject
 부경대학교 2024 IoT 개발자 과정 1조 미니프로젝트 : 스마트 물류 시스템
 
-## 팀원 소개
+## 👷 팀원 소개
 <table>
     <tbody>
         <tr>
@@ -32,23 +32,23 @@
             <td align="center"></td>
             <td align="center">아두이노 실내 환경<br>모니터링 시스템 구현</td>
             <td align="center">WPF CCTV 화면 출력</td>
-            <td align="center">주문관리 화면 구현</td>
-            <td align="center">재고관리 화면 구현</td>
+            <td align="center">주문관리<br>화면 및 기능 구현</td>
+            <td align="center">재고관리<br>화면 및 기능 구현</td>
         <tr/>
             <td align="center"></td>
             <td align="center">아두이노와 WPF<br>블루투스 통신 연결</td>
             <td align="center">공장 프레임 제작 보조</td>
-            <td align="center"></td>
-            <td align="center"></td>
-        <tr/>
-            <td align="center"></td>
-            <td align="center">모니터링 화면 구현</td>
-            <td align="center"></td>
             <td align="center">주문&배송<br>데이터베이스 관리</td>
             <td align="center">재고&상품<br>데이터베이스 관리</td>
+        <tr/>
+            <td align="center"></td>
+            <td align="center">공정 모니터링<br>화면 및 기능 구현</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
         </tr>
             <td align="center"></td>
-            <td align="center">설정 조정 화면 구현</td>
+            <td align="center">설정 조정<br>화면 및 기능 구현</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
@@ -60,7 +60,7 @@
             <td align="center"></td>
         </tr>
             <td align="center"></td>
-            <td align="center">LiveChart2로<br>DB, 온습도 정보 출력</td>
+            <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
@@ -68,7 +68,7 @@
     </tbody>
 </table>
 
-## 개발 환경
+## 🌐 개발 환경
 - Language
   
     <img src="https://img.shields.io/badge/C%23-239120?style=for-the-badge&logo=c-sharp&logoColor=white"><img src="https://img.shields.io/badge/-Arduino-00979D?style=for-the-badge&logo=Arduino&logoColor=white"><img src="https://img.shields.io/badge/Microsoft_SQL_Server-CC2927?style=for-the-badge&logo=microsoft-sql-server&logoColor=white">
@@ -81,7 +81,7 @@
   
     <img src = "https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
 
-## 사용 모듈 및 장치
+## 🔌 사용 모듈 및 장치
 - 아두이노 UNO 호환보드 * 2 + UNO 정품
 - 라즈베리파이 4
 - L298P 쉴드
@@ -98,19 +98,25 @@
 - 쿨러(CT-5010L05R-2P(5V))
 - 아두이노 수동 부저
 
-## 진행 현황
-### 2024.07.02
+## 📃 진행 현황
+
+### 📝 2024.07.02
+
 - 스마트 팩토리 키트 조립
 - 아두이노 회로 연결 및 모터 작동 시험
 
-### 2024.07.03
+
+### 📝 2024.07.03
+
 - WPF
     - 로그인 화면 구현
 - Arduino
     - 아두이노간 통신 테스트 성공
     - 환경 모니터링 아두이노 코드 구현
 
-### 2024.07.04
+
+### 📝 2024.07.04
+
 - WPF
     - 메인화면 프레임 구현
 
@@ -121,7 +127,7 @@
     - 개별 상자마다 적외선 센서를 부착하여 상자에 물건이 들어갈 때마다 감지하여 신호 전송
     - 컨베이어 벨트 위에 적외선 센서 2개를 부착하여 각 단계마다 일정 시간동안 정지 기능 구현
     - 아두이노의 블루투스 모듈을 연결하여 PC의 WPF와 통신 구현
-    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject001.jpg">
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject001.jpg" width="80%">
 
 - 데이터베이스
     - 초기 데이터 베이스에 더미 데이터 추가
@@ -129,7 +135,9 @@
 - 라즈베리파이
     - CCTV 구현 준비
 
-### 2024.07.05
+
+### 📝 2024.07.05
+
 - Arduino
     - 바코드 인식기 부착을 위한 보수작업
 
@@ -142,7 +150,9 @@
     - 모니터링 페이지 구현 시작
         - 블루투스 통신을 통한 온습도 정보 출력 성공
 
-### 2024.07.08
+
+### 📝 2024.07.08
+
 - Arduino
     - 컨베이어 벨트 담당 아두이노에 블루투스 모듈을 장착하여 WPF에서 제어 가능
 
@@ -154,9 +164,12 @@
     - 모니터링 페이지
         - LiveChartsCore를 활용하여 블루투스 통신을 통해 받아온 정보를 Angular Chart로 출력 기능 구현
         - WorkStatus 테이블 로드
-        - 버튼을 클릭하면 컨베이어 벨트 이동/정지 구현 
+        - 버튼을 클릭하면 컨베이어 벨트 이동/정지 구현
 
-### 2024.07.09
+
+
+### 📝 2024.07.09
+
 - Arduino
     - 바코드&QR 스캐너를 USB 호스트 쉴드에 부착 완료
     - USB 호스트 쉴드에 블루투스 모듈을 연결하여 WPF와 통신 가능
@@ -170,8 +183,11 @@
         - LiveChartsCore를 활용하여 상품별, 지역별 처리량 출력 기능 구현
         - 리더기로 바코드나 QR을 읽으면 담겨있던 주문번호에 대한 정보를 기반으로 Delivery 테이블에서 배송지를 조회
         - 조회한 배송지를 기반으로 블루투스 통신을 통해 컨베이어 벨트 아두이노로 데이터를 전송하여 서보모터 각도 조절
+        - 
 
-### 2024.07.10
+
+### 📝 2024.07.10
+
 - Arduino
     - 바코드 리더기에서 읽은 데이터를 블루투스 통신을 통해 WPF로 전송
     - WPF에서 블루투스 통신을 통해 받은 데이터를 받아 서보모터 각도 조절
@@ -189,11 +205,11 @@
 - Raspberry Pi
     - flask를 이용하여 웹 페이지에 라즈베리파이 카메라가 촬영한 화면 출력
 
-<img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject002.jpg">
-
-### 2024.07.11
+<img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject002.jpg" width="80%">
 
 
+
+### 📝 2024.07.11
 
 - WPF
     - 모니터링 페이지
@@ -209,4 +225,4 @@
         - 환기팬 ON/OFF, 경고 부저 OFF, 경고 온습도 수준을 설정할 수 있도록 화면 구현
         - 설정 저장 버튼을 누르면 블루투스 통신을 통해 아두이노로 전달되어 설정이 변경되도록 함
 
-<img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject003.jpg">
+<img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject003.jpg" width="80%">
