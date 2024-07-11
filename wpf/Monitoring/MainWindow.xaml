@@ -17,7 +17,7 @@
     </mah:MetroWindow.IconTemplate>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
@@ -60,7 +60,7 @@
                         </Style>
                     </Grid.Resources>
 
-                    <Menu IsMainMenu="True" Margin="-25,10,-22,88" Background="#4A65A2">
+                    <Menu IsMainMenu="True" Margin="-25,10,-30,88" Background="#4A65A2">
                         <MenuItem Header="Monitoring" Click="Monitoring_Click">
                             <MenuItem.Icon>
                                 <iconPacks:PackIconPixelartIcons Kind="Bulletlist" Width="20" Height="24" />
@@ -71,17 +71,12 @@
                                 <iconPacks:PackIconBootstrapIcons Kind="CartCheck" Width="20" Height="24" />
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Product" Click="Product_Click">
-                            <MenuItem.Icon>
-                                <iconPacks:PackIconOcticons Kind="Archive" Width="20" Height="24"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
                         <MenuItem Header="Inventory" Click="Inventory_Click">
                             <MenuItem.Icon>
                                 <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Width="20" Height="24"/>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="Setting" Click="Setting_Click">
+                        <MenuItem Header="Setting&amp;CCTV" Click="Setting_Click">
                             <MenuItem.Icon>
                                 <iconPacks:PackIconRemixIcon Kind="Settings5Line" Width="20" Height="24"/>
                             </MenuItem.Icon>
