@@ -25,10 +25,18 @@ namespace Monitoring.Views
     public partial class Setting : UserControl
     {
         private Process _flaskProcess;
+        
+        MainWindow MainWindow { get; set; }
 
         public Setting()
         {
             InitializeComponent();
+        }
+
+        public Setting(MainWindow e)
+        {
+            InitializeComponent();
+            MainWindow = e;
         }
 
         private void OnButton_Click(object sender, RoutedEventArgs e)
@@ -49,6 +57,11 @@ namespace Monitoring.Views
             }
 
             ChromeWeb.Address = "about:blank";
+        }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void StartFlaskServer()
@@ -84,11 +97,6 @@ namespace Monitoring.Views
                 _flaskProcess.Dispose();
                 _flaskProcess = null;
             }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

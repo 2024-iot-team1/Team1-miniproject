@@ -83,7 +83,12 @@ namespace Monitoring.Views
 
             // 데이터 출력
             LoadData();
+
+            // 지역별 처리량 차트 생성
             UpdateBars();
+
+            // 지역별 처리량을 DB에서 조회하여 지역별 처리량 차트에 넣기
+            UpdateValues();
         }
         public ProcessMonitoring()
         {
@@ -203,6 +208,7 @@ namespace Monitoring.Views
                 MessageBox.Show(ex.Message);
             }
             LoadData();
+            UpdateValues();
         }
 
         #region 온습도 앵귤러 차트 영역
@@ -297,7 +303,7 @@ namespace Monitoring.Views
             port02.WriteLine("0");
         }
 
-        private string connectionString = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
+        private string connectionString = Common.CONNSTRING;
         private void LoadData()
         {
             try
