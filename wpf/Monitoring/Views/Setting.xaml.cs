@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting.Channels;
+using System.IO.Ports;
+using System.IdentityModel.Protocols.WSTrust;
 
 
 namespace Monitoring.Views
@@ -25,7 +27,9 @@ namespace Monitoring.Views
     public partial class Setting : UserControl
     {
         private Process _flaskProcess;
-        
+
+        private SerialPort port;
+
         MainWindow MainWindow { get; set; }
 
         public Setting()
@@ -37,6 +41,7 @@ namespace Monitoring.Views
         {
             InitializeComponent();
             MainWindow = e;
+            port = MainWindow._serialPort01;
         }
 
         private void OnButton_Click(object sender, RoutedEventArgs e)
@@ -61,7 +66,20 @@ namespace Monitoring.Views
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
+            string fanStatus = string.Empty;
+            string buzzStatus = string.Empty;
 
+            if (SwitchFan.IsOn)
+            {
+                fanStatus = "1";
+            }
+            else fanStatus = "0";
+
+            if (SwitchBuzz.IsOn) buzzStatus = "1";
+            else buzzStatus = "0";
+
+            string setting_data = fanStatus + "," + buzzStatus + "," + TempNum.Value.ToString() + "," + HumidNum.Value.ToString();
+            port.WriteLine(setting_data);
         }
 
         private void StartFlaskServer()
