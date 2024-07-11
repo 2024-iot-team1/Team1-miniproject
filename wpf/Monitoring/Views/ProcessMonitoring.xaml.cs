@@ -30,6 +30,9 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System.Drawing;
 using LiveChartsCore.SkiaSharpView.WPF;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Monitoring.Views
 {
@@ -357,37 +360,112 @@ namespace Monitoring.Views
         #endregion
 
         #region 지역별 처리량 막대 그래프
-        public ISeries[] DestinationSeries { get; set; } =
+        private ObservableCollection<ISeries> _destinationSeries;
+        public ObservableCollection<ISeries> DestinationSeries
         {
-            new ColumnSeries<double>
+            get => _destinationSeries;
+            set
             {
-                Name = "",
-                Values = new double[] { 2, 5, 4 },
-                MaxBarWidth = 30,
-                DataLabelsSize = 0,
-                Padding = 10
+                _destinationSeries = value;
+                OnPropertyChanged();
             }
-        };
+        }
 
-        public Axis[] DestinationXAxes { get; set; } =
+        private ObservableCollection<Axis> _destinationXAxes;
+        public ObservableCollection<Axis> DestinationXAxes
         {
-            new Axis
+            get => _destinationXAxes;
+            set
             {
-                Labels = new string[] { "Seoul", "Busan", "Daegu" },
-                LabelsRotation = 0,
-                SeparatorsPaint = new SolidColorPaint(new SKColor(200, 200, 200)),
-                ShowSeparatorLines = false,
-                SeparatorsAtCenter = false,
-                ForceStepToMin = true,
-                MinStep = 1,
+                _destinationXAxes = value;
+                OnPropertyChanged();
             }
-        };
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private void UpdateBars()
         {
+            DestinationSeries = new ObservableCollection<ISeries>
+            {
+                new ColumnSeries<double>
+                {
+                    Name = "Count",
+                    Values = new double[] { 2, 5, 4 },
+                    MaxBarWidth = 50,
+                    DataLabelsSize = 15,
+                    Padding = 10
+                }
+            };
+
+            DestinationXAxes = new ObservableCollection<Axis>
+            {
+                new Axis
+                {
+                    Labels = new string[] { "Seoul", "Busan", "Daegu" },
+                    LabelsRotation = 0,
+
+                    SeparatorsPaint = new SolidColorPaint(new SKColor(200, 200, 200)),
+                    ShowSeparatorLines = false,
+                    SeparatorsAtCenter = false,
+                    ForceStepToMin = true,
+                    //MinStep = 1
+                }
+            };
+
             ChtDestination.Series = DestinationSeries;
             ChtDestination.XAxes = DestinationXAxes;
         }
-#endregion
+
+        public int SeoulValue { get; set; }
+        public int BusanValue { get; set; }
+        public int DaeguValue { get; set; }
+
+        private void UpdateValues()
+        {
+            // 값을 업데이트 하기 위한 sql 파트
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = ProMonitoring.GROUP_BY_DES_SELECT_QUERY;
+                    SqlCommand com = new SqlCommand(query, conn);
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        string cityName = reader["Destination"].ToString();
+                        int sumValue = Convert.ToInt32(reader["SUM"]);
+
+                        switch (cityName)
+                        {
+                            case "서울":
+                                SeoulValue = sumValue;
+                                break;
+                            case "부산":
+                                BusanValue = sumValue;
+                                break;
+                            case "대구":
+                                DaeguValue = sumValue;
+                                break;
+                        }
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            // 새로운 값으로 업데이트
+            DestinationSeries[0].Values = new double[] { SeoulValue, BusanValue, DaeguValue };
+        }
+        #endregion
     }
 }

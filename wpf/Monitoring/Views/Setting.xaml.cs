@@ -85,5 +85,10 @@ namespace Monitoring.Views
                 _flaskProcess = null;
             }
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

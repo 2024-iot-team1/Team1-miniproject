@@ -21,10 +21,11 @@
             <RowDefinition Height="50" />
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Grid.Column="0" Orientation="Horizontal">
-            <Label Content="Factory CCTV" VerticalAlignment="Center" FontWeight="Bold"
-                   FontSize="22" Margin="10,0,0,0"/>
-        </StackPanel>
+        <Label Content="공장 내부 CCTV" VerticalAlignment="Center" HorizontalAlignment="Center" 
+               FontWeight="Bold" FontSize="22" Margin="10,0,0,0" Grid.Column="0"/>
+        <Label Content="센서 설정" VerticalAlignment="Center" HorizontalAlignment="Center" 
+               FontWeight="Bold" FontSize="22" Margin="10,0,0,0" Grid.Column="1"/>
+
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" Margin="10" BorderThickness="1">
             <Grid>
                 <cefSharp:ChromiumWebBrowser x:Name="ChromeWeb" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
@@ -33,9 +34,9 @@
 
         <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
             <Button Content="CCTV ON" Name="OnButton" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                    Width="130" Click="OnButton_Click" Margin="10,5" Height="35" FontSize="15"/>
+                    Width="130" Click="OnButton_Click" Margin="10,0,0,10" Height="40" FontSize="15"/>
             <Button Content="CCTV OFF" Name="OffButton"  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                    Width="130" Click="OffButton_Click" Margin="5" Height="35" FontSize="15"/>
+                    Width="130" Click="OffButton_Click" Margin="10,0,0,10" Height="40" FontSize="15"/>
         </StackPanel>
 
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Grid.Column="1" 
@@ -46,30 +47,33 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="0.6*"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="50"/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Label Content="환기팬 ON/OFF" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right"
+                <Label Content="환기팬 ON/OFF" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
                    Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="경고 부저 ON/OFF" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                <Label Content="경고 부저 ON/OFF" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
                    Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="경고 온도 수준" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
+                <Label Content="경고 온도 수준" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
                    Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="경고 습도 수준" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
+                <Label Content="경고 습도 수준" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"
                    Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="0" Margin="5,10"
-                                  OnContent="FAN ON" OffContent="FAN OFF"/>
-                <mah:ToggleSwitch x:Name="SwitchBuzz" Grid.Column="1" Grid.Row="1" Margin="5,10"/>
-                <mah:NumericUpDown x:Name="TempNum" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"
-                                   Margin="5,10" Width="100" Value="30"/>
-                <mah:NumericUpDown x:Name="HumidNum" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"
-                                   Margin="5,10" Width="100" Value="70"/>
+                <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="1" Margin="5,10"
+                                  OnContent="FAN ON" OffContent="FAN OFF" FontWeight="DemiBold"/>
+                <mah:ToggleSwitch x:Name="SwitchBuzz" Grid.Column="1" Grid.Row="2" Margin="5,10"
+                                  OnContent="Buzzer ON" OffContent="Buzzer OFF" FontWeight="DemiBold"/>
+                <mah:NumericUpDown x:Name="TempNum" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"
+                                   Margin="5,10" Width="100" Value="30" FontWeight="DemiBold"/>
+                <mah:NumericUpDown x:Name="HumidNum" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left"
+                                   Margin="5,10" Width="100" Value="70" FontWeight="DemiBold"/>
             </Grid>
         </Border>
+        <Button Content="설정 저장" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"
+                FontSize="15" Width="130" Height="40" Margin="0,0,10,10" Click="Button_Click"/>
     </Grid>
 </UserControl>
