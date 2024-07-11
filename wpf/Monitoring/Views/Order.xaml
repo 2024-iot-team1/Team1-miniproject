@@ -181,13 +181,12 @@
 
                 <TextBox x:Name="OrderNum" Grid.Row="0" Grid.Column="1"
                          VerticalAlignment="Center" Height="30" Width="120"
-                         mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="False"
+                         IsReadOnly="True"
                          HorizontalAlignment="Center"/>
                 <TextBox x:Name="ProductName" Grid.Row="1" Grid.Column="1"
                          VerticalAlignment="Center" Height="30" Width="120"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" IsReadOnly="False"
+                         mah:TextBoxHelper.ClearTextButton="False" IsReadOnly="True"
                          HorizontalAlignment="Center"/>
                 <DatePicker x:Name="OrderDT" Grid.Row="2" Grid.Column="1"
                          VerticalAlignment="Center" Height="30" Width="120"
@@ -224,8 +223,8 @@
                             </DataTemplate>
                         </Button.ContentTemplate>
                     </Button>
-                    <Button Content="취소" x:Name="CancleOrder"
-                            Width="70" Height="40" Margin="10,0,10,0"
+                    <Button Content="주문취소" x:Name="CancleOrder"
+                            Width="100" Height="40" Margin="10,0,10,0"
                             Style="{StaticResource MahApps.Styles.Button.Square}"
                             Click="Cancel_Click">
                         <Button.ContentTemplate>

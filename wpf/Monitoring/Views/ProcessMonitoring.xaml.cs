@@ -80,7 +80,6 @@ namespace Monitoring.Views
 
             // 데이터 출력
             LoadData();
-            UpdateDoughnut();
             UpdateBars();
         }
         public ProcessMonitoring()
