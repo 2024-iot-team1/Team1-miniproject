@@ -1,23 +1,47 @@
-<html>
-	<head>
-		<!-- Required meta tags -->
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	
-		<!-- Bootstrap CSS -->
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-			  integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	
-		<title>Factory Cam</title>
-	</head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Factory Cam</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .video-container {
+            display: flex;
+            justify-content: flex-start; /* Align items to the start (left) */
+            align-items: flex-start; /* Align items to the top */
+            height: 100%;
+        }
+        .video-container img {
+            max-width: 100%; /* Adjust image to the width of the container */
+            height: 100%; /* Maintain aspect ratio */
+        }
+    </style>
+</head>
 <body>
-	<div class="container">
-		<div class="row">
-			<div class="col-lg-8  offset-lg-2">
-				<h3 class="mt-5">Live CCTV</h3> 	<!-- mt-5는 공백을 주기 위한 것 -->
-				<img src="{{ url_for('video_feed') }}" width="100%">
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid video-container">
+        <img src="{{ url_for('video_feed') }}" alt="CCTV Feed">
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBkH4gstIlJ2/Jr59E+P5LGVo4lPc1hNJGIlK16xa"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
 </body>
 </html>
