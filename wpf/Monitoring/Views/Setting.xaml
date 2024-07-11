@@ -13,7 +13,7 @@
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="300" />
+            <ColumnDefinition Width="320" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="50" />
@@ -26,7 +26,9 @@
                    FontSize="22" Margin="10,0,0,0"/>
         </StackPanel>
         <Border Grid.Row="1" Grid.Column="0" BorderBrush="Black" Margin="10" BorderThickness="1">
-            <cefSharp:ChromiumWebBrowser x:Name="ChromeWeb" />
+            <Grid>
+                <cefSharp:ChromiumWebBrowser x:Name="ChromeWeb" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+            </Grid>
         </Border>
 
         <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
@@ -44,23 +46,24 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Label Content="Fan Switch" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right"
+                <Label Content="환기팬 ON/OFF" Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Right"
                    Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="Buzzer Switch" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                <Label Content="경고 부저 ON/OFF" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
                    Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="Warning Humidity" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="5" FontSize="12" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="Warning Temperature" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="5" FontSize="12" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="0" Margin="5,10"/>
+                <Label Content="경고 온도 수준" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
+                   Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
+                <Label Content="경고 습도 수준" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
+                   Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
+                <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="0" Margin="5,10"
+                                  OnContent="FAN ON" OffContent="FAN OFF"/>
                 <mah:ToggleSwitch x:Name="SwitchBuzz" Grid.Column="1" Grid.Row="1" Margin="5,10"/>
                 <mah:NumericUpDown x:Name="TempNum" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left"
                                    Margin="5,10" Width="100" Value="30"/>

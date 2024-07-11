@@ -38,7 +38,7 @@ namespace Monitoring.Views
                 StartFlaskServer();
             }
 
-            ChromeWeb.Address = "http://192.168.5.3:18088/";
+            ChromeWeb.Address = "http://210.119.12.59:18088/";
         }
 
         private void OffButton_Click(object sender, RoutedEventArgs e)
