@@ -1,28 +1,42 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Monitoring.Views
 {
-    /// <summary>
-    /// Inventory.xaml에 대한 상호 작용 논리
-    /// </summary>
-    public partial class Inventory : UserControl
+    public partial class Inventory : UserControl, INotifyPropertyChanged
     {
         private string CONNSTRING = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
+
+        public ObservableCollection<Classification> Classifications { get; set; }
+        private Classification _selectedClassification;
+        public Classification SelectedClassification
+        {
+            get { return _selectedClassification; }
+            set
+            {
+                _selectedClassification = value;
+                OnPropertyChanged(nameof(SelectedClassification));
+            }
+        }
 
         public Inventory()
         {
             InitializeComponent();
+            DataContext = this;
+            Classifications = new ObservableCollection<Classification>();
             GetInventory();
+            LoadClassifications();
         }
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
         {
-            GetInventory(); // 조회 버튼 클릭 시 인벤토리 데이터 조회
+            GetInventory();
         }
 
         public void GetInventory()
@@ -45,6 +59,31 @@ namespace Monitoring.Views
             }
         }
 
+        private void LoadClassifications()
+        {
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(CONNSTRING))
+                {
+                    connection.Open();
+                    SqlCommand command = new SqlCommand("SELECT ClassificationCode, ClassificationName FROM Classification", connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        Classifications.Add(new Classification
+                        {
+                            ClassificationCode = reader["ClassificationCode"].ToString(),
+                            ClassificationName = reader["ClassificationName"].ToString()
+                        });
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void SaveEmployee_Click(object sender, RoutedEventArgs e)
         {
             SaveInventory();
@@ -52,21 +91,13 @@ namespace Monitoring.Views
 
         private void SaveInventory()
         {
-            // Fetch ProductCode, ProductName, Classification, and Price from UI
             string productCode = ProductCode.Text;
             string productName = ProductName.Text;
-            string classification = Classification.Text;
+            string classification = SelectedClassification?.ClassificationCode;
             string priceStr = Price.Text;
-            string stockStr = Stock.Text; // New field: Stock
+            string stockStr = Stock.Text;
 
-            // Convert string inputs to numeric types
-            decimal price;
-            int stock;
-
-            bool isPriceValid = decimal.TryParse(priceStr, out price);
-            bool isStockValid = int.TryParse(stockStr, out stock);
-
-            if (!isPriceValid || !isStockValid)
+            if (!decimal.TryParse(priceStr, out decimal price) || !int.TryParse(stockStr, out int stock))
             {
                 MessageBox.Show("유효하지 않은 가격 또는 재고량입니다. 숫자를 입력하세요.", "입력 오류", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -78,45 +109,39 @@ namespace Monitoring.Views
                 {
                     conn.Open();
 
-                    // Check if ProductCode already exists in Product table
                     SqlCommand checkProductCmd = new SqlCommand("SELECT COUNT(*) FROM Product WHERE ProductCode = @ProductCode", conn);
                     checkProductCmd.Parameters.AddWithValue("@ProductCode", productCode);
                     int productCount = (int)checkProductCmd.ExecuteScalar();
 
                     if (productCount > 0)
                     {
-                        // UPDATE Product query: Update existing product in Product table
                         SqlCommand updateProductCmd = new SqlCommand(@"UPDATE Product 
-                                                          SET ProductName = @ProductName,
-                                                              Classification = @Classification,
-                                                              Price = @Price
-                                                          WHERE ProductCode = @ProductCode", conn);
+                                                                        SET ProductName = @ProductName,
+                                                                            Classification = @Classification,
+                                                                            Price = @Price
+                                                                        WHERE ProductCode = @ProductCode", conn);
                         updateProductCmd.Parameters.AddWithValue("@ProductCode", productCode);
                         updateProductCmd.Parameters.AddWithValue("@ProductName", productName);
                         updateProductCmd.Parameters.AddWithValue("@Classification", classification);
                         updateProductCmd.Parameters.AddWithValue("@Price", price);
-
                         int resultProduct = updateProductCmd.ExecuteNonQuery();
 
                         if (resultProduct > 0)
                         {
-                            // UPDATE Inventory query: Update Stock in Inventory table
                             SqlCommand updateInventoryCmd = new SqlCommand(@"UPDATE Inventory 
-                                                                SET Stock = @Stock
-                                                                WHERE ProductCode = @ProductCode", conn);
+                                                                            SET Stock = @Stock
+                                                                            WHERE ProductCode = @ProductCode", conn);
                             updateInventoryCmd.Parameters.AddWithValue("@ProductCode", productCode);
                             updateInventoryCmd.Parameters.AddWithValue("@Stock", stock);
-
                             int resultInventory = updateInventoryCmd.ExecuteNonQuery();
 
                             if (resultInventory > 0)
                             {
-                                // UI update is performed using Dispatcher to ensure it runs on the UI thread
                                 Dispatcher.Invoke(() =>
                                 {
                                     MessageBox.Show("제품 정보와 재고량을 업데이트했습니다.", "저장 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                                    GetInventory(); // Reload data after save to update the grid
-                                    ClearControls(); // Clear input controls
+                                    GetInventory();
+                                    ClearControls();
                                 });
                             }
                             else
@@ -131,34 +156,29 @@ namespace Monitoring.Views
                     }
                     else
                     {
-                        // INSERT Product query: Add new product to Product table with provided ProductCode
                         SqlCommand insertProductCmd = new SqlCommand(@"INSERT INTO Product (ProductCode, ProductName, Classification, Price) 
-                                                          VALUES (@ProductCode, @ProductName, @Classification, @Price)", conn);
+                                                                        VALUES (@ProductCode, @ProductName, @Classification, @Price)", conn);
                         insertProductCmd.Parameters.AddWithValue("@ProductCode", productCode);
                         insertProductCmd.Parameters.AddWithValue("@ProductName", productName);
                         insertProductCmd.Parameters.AddWithValue("@Classification", classification);
                         insertProductCmd.Parameters.AddWithValue("@Price", price);
-
                         int resultProduct = insertProductCmd.ExecuteNonQuery();
 
-                        // INSERT Inventory query: Add new product to Inventory table
                         if (resultProduct > 0)
                         {
                             SqlCommand insertInventoryCmd = new SqlCommand(@"INSERT INTO Inventory (ProductCode, Stock) 
-                                                                VALUES (@ProductCode, @Stock)", conn);
+                                                                            VALUES (@ProductCode, @Stock)", conn);
                             insertInventoryCmd.Parameters.AddWithValue("@ProductCode", productCode);
                             insertInventoryCmd.Parameters.AddWithValue("@Stock", stock);
-
                             int resultInventory = insertInventoryCmd.ExecuteNonQuery();
 
                             if (resultInventory > 0)
                             {
-                                // UI update is performed using Dispatcher to ensure it runs on the UI thread
                                 Dispatcher.Invoke(() =>
                                 {
                                     MessageBox.Show("새로운 제품과 재고량을 추가했습니다.", "저장 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                                    GetInventory(); // Reload data after save to update the grid
-                                    ClearControls(); // Clear input controls
+                                    GetInventory();
+                                    ClearControls();
                                 });
                             }
                             else
@@ -181,32 +201,27 @@ namespace Monitoring.Views
 
         private void GrdResult_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            // 데이터 그리드에서 선택한 행의 데이터를 UI 컨트롤에 표시
             if (GrdResult.SelectedItem != null)
             {
                 DataRowView row = (DataRowView)GrdResult.SelectedItem;
                 string productCode = row["ProductCode"].ToString();
                 string productName = row["ProductName"].ToString();
-                string classification = row["Classification"].ToString();
+                string classificationName = row["ClassificationName"].ToString();
                 decimal price = Convert.ToDecimal(row["Price"]);
                 int stock = Convert.ToInt32(row["Stock"]);
-
-                // InventoryNum 가져오기
                 int inventoryNum = GetInventoryNum(productCode);
 
-                // UI 컨트롤에 데이터 출력
                 ProductCode.Text = productCode;
                 ProductName.Text = productName;
-                Classification.Text = classification;
+                SelectedClassification = Classifications.FirstOrDefault(c => c.ClassificationName == classificationName);
                 Price.Text = price.ToString();
                 Stock.Text = stock.ToString();
-                InventoryNum.Text = inventoryNum.ToString(); // InventoryNum도 UI에 출력
+                InventoryNum.Text = inventoryNum.ToString();
 
-                IsDeleteButtonEnabled = GrdResult.SelectedItem != null;
+                IsDeleteButtonEnabled = true;
             }
         }
 
-        // InventoryNum 가져오는 메서드
         private int GetInventoryNum(string productCode)
         {
             int inventoryNum = 0;
@@ -244,12 +259,10 @@ namespace Monitoring.Views
                     {
                         conn.Open();
 
-                        // DELETE from Inventory table
                         SqlCommand deleteInventoryCmd = new SqlCommand("DELETE FROM Inventory WHERE ProductCode = @ProductCode", conn);
                         deleteInventoryCmd.Parameters.AddWithValue("@ProductCode", productCode);
                         int resultInventory = deleteInventoryCmd.ExecuteNonQuery();
 
-                        // DELETE from Product table
                         SqlCommand deleteProductCmd = new SqlCommand("DELETE FROM Product WHERE ProductCode = @ProductCode", conn);
                         deleteProductCmd.Parameters.AddWithValue("@ProductCode", productCode);
                         int resultProduct = deleteProductCmd.ExecuteNonQuery();
@@ -257,8 +270,8 @@ namespace Monitoring.Views
                         if (resultInventory > 0 && resultProduct > 0)
                         {
                             MessageBox.Show("제품과 재고량을 삭제했습니다.", "삭제 성공", MessageBoxButton.OK, MessageBoxImage.Information);
-                            GetInventory(); // Reload data after delete to update the grid
-                            ClearControls(); // Clear input controls
+                            GetInventory();
+                            ClearControls();
                         }
                         else
                         {
@@ -277,12 +290,11 @@ namespace Monitoring.Views
             }
         }
 
-
         private void ClearControls()
         {
             ProductCode.Text = string.Empty;
             ProductName.Text = string.Empty;
-            Classification.Text = string.Empty;
+            SelectedClassification = null;
             Price.Text = string.Empty;
             Stock.Text = string.Empty;
             InventoryNum.Text = string.Empty;
@@ -290,18 +302,9 @@ namespace Monitoring.Views
 
         private void BtnNew_Click(object sender, RoutedEventArgs e)
         {
-            // 새로운 제품 등록을 위해 UI 초기화
-            ProductCode.Text = string.Empty;
-            ProductName.Text = string.Empty;
-            Classification.Text = string.Empty;
-            Price.Text = string.Empty;
-            Stock.Text = string.Empty;
-            InventoryNum.Text = string.Empty;
-
-            // InventoryNum은 자동 증가되므로 여기서 초기화만 해주면 됩니다.
+            ClearControls();
         }
 
-        // INotifyPropertyChanged interface implementation
         public event PropertyChangedEventHandler PropertyChanged;
 
         private bool _isDeleteButtonEnabled;
@@ -315,7 +318,6 @@ namespace Monitoring.Views
             }
         }
 
-        // OnPropertyChanged 메서드 추가
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -325,12 +327,17 @@ namespace Monitoring.Views
         {
             if (decimal.TryParse(Price.Text.Replace(",", ""), out decimal value))
             {
-                Price.TextChanged -= Price_TextChanged; // 무한 루프 방지
-                Price.Text = string.Format("{0:N0}", value); // 천 단위로 포맷팅
-                Price.CaretIndex = Price.Text.Length; // 커서를 맨 끝으로 이동
-                Price.TextChanged += Price_TextChanged; // 이벤트 다시 연결
+                Price.TextChanged -= Price_TextChanged;
+                Price.Text = string.Format("{0:N0}", value);
+                Price.CaretIndex = Price.Text.Length;
+                Price.TextChanged += Price_TextChanged;
             }
         }
+    }
 
+    public class Classification
+    {
+        public string ClassificationCode { get; set; }
+        public string ClassificationName { get; set; }
     }
 }

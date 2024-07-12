@@ -14,7 +14,7 @@
             <Setter Property="HorizontalAlignment" Value="Center"/>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -75,7 +75,7 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" IsReadOnly="True" >
+                    <DataGridTextColumn Binding="{Binding ClassificationName}" Header="상품분류" IsReadOnly="True" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -197,13 +197,14 @@
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True" FontFamily="Helvetica"
                          HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="Classification" Grid.Row="3" Grid.Column="1"
-                         VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
-                         mah:TextBoxHelper.Watermark="상품분류" 
-                         mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True" FontFamily="Helvetica"
-                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="Price" Grid.Row="4" Grid.Column="1" 
+                <ComboBox x:Name="ClassificationName" Grid.Row="3" Grid.Column="1" 
+                          VerticalAlignment="Center"
+                          ItemsSource="{Binding Classifications}"
+                          SelectedItem="{Binding SelectedClassification, Mode=TwoWay}"
+                          DisplayMemberPath="ClassificationName"
+                          SelectedValuePath="ClassificationCode"
+                          Margin="5,0,0,0" Height="45" Width="180"/>
+                    <TextBox x:Name="Price" Grid.Row="4" Grid.Column="1" 
                          VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
                          mah:TextBoxHelper.Watermark="상품가격"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
