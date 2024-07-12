@@ -44,7 +44,7 @@
             <td align="center"></td>
             <td align="center">공정 모니터링<br>화면 및 기능 구현</td>
             <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">WPF 디자인 통일화</td>
             <td align="center"></td>
         </tr>
             <td align="center"></td>
@@ -60,7 +60,7 @@
             <td align="center"></td>
         </tr>
             <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">Livechart2를 활용한<br>데이터 출력</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
@@ -79,7 +79,7 @@
 
 - Office
   
-    <img src = "https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white">
+    <img src = "https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white"><img src = "https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white">
 
 ## 🔌 사용 모듈 및 장치
 - 아두이노 UNO 호환보드 * 2 + UNO 정품
@@ -133,7 +133,7 @@
 
 - 라즈베리파이
     - CCTV 구현 준비
-
+<br>
     <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject001.jpg" width="80%">
 
 ### 📝 2024.07.05
@@ -211,7 +211,7 @@
 
 - Raspberry Pi
     - flask를 이용하여 웹 페이지에 라즈베리파이 카메라가 촬영한 화면 출력
-
+<br>
     <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject002.jpg" width="80%">
 
 
@@ -233,7 +233,7 @@
     - CCTV & 설정 페이지
         - CCTV 화면 크기 및 비율 조정
         - 환기팬 ON/OFF, 경고 부저 OFF, 경고 온습도 수준을 설정할 수 있도록 화면 구현
-
+<br>
     <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject003.jpg" width="80%">
 
 ### 📝 2024.07.12
@@ -246,5 +246,5 @@
 
 - DB
     - 상품 분류 테이블 추가 및 데이터 삽입
-
+<br>
     <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject004.jpg" width="80%">
