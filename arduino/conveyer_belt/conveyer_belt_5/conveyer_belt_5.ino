@@ -19,7 +19,7 @@
 #define SCAN_PIN A4
 
 #define POS_RED 120   // 서울행 화물
-#define POS_GREEN 150 // 부산행 화물
+#define POS_GREEN 160 // 부산행 화물
 #define POS_BLUE 210  // 대구행 화물
 
 #define BT_RXD 3
@@ -27,7 +27,7 @@
 
 /* 변수 선언 : HW객체, 측정값, 기타 변수, ...*/
 Servo servo;
-int railSpeed = 250;  // 레일 기본 속도
+int railSpeed = 70;  // 레일 기본 속도
 int scan_stop_check = 0;
 int scan_check = 0;
 int box_check;
