@@ -17,6 +17,7 @@ namespace Monitoring.Views
         public Inventory()
         {
             InitializeComponent();
+            GetInventory();
         }
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
@@ -318,6 +319,17 @@ namespace Monitoring.Views
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private void Price_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (decimal.TryParse(Price.Text.Replace(",", ""), out decimal value))
+            {
+                Price.TextChanged -= Price_TextChanged; // 무한 루프 방지
+                Price.Text = string.Format("{0:N0}", value); // 천 단위로 포맷팅
+                Price.CaretIndex = Price.Text.Length; // 커서를 맨 끝으로 이동
+                Price.TextChanged += Price_TextChanged; // 이벤트 다시 연결
+            }
         }
 
     }

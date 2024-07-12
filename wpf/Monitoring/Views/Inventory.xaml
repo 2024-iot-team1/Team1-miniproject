@@ -27,7 +27,7 @@
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
             <DataGrid x:Name="GrdResult" Grid.Column="0" Grid.Row="0" Margin="10" RowHeight="30"
-                      IsReadOnly="True" ItemsSource="{Binding}" FontFamily="Noto Sans KR"
+                      IsReadOnly="True" ItemsSource="{Binding}" FontFamily="Helvetica"
                       AutoGenerateColumns="False" BorderBrush="#2E85C9"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
                       GridLinesVisibility="All" 
@@ -44,32 +44,96 @@
                         <Setter Property="Foreground" Value="White"/>
                         <Setter Property="BorderThickness" Value="1"/>
                         <Setter Property="BorderBrush" Value="#2E85C9"/>
+                        <Setter Property="FontFamily" Value="Helvetica"/>
                     </Style>
                 </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="재고번호" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
-                    <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품코드" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
-                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
-                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
-                    <DataGridTextColumn Header="상품가격" Binding="{Binding Price, StringFormat='{}{0:#,##0}'}" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}" />
-                    <DataGridTextColumn Binding="{Binding SalesRate}" Header="판매량" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
-                    <DataGridTextColumn Binding="{Binding Stock}" Header="재고 현황" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
-                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 재고" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
-                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" IsReadOnly="True"
-                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="재고번호" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품코드" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="상품가격" Binding="{Binding Price, StringFormat='{}{0:#,##0}'}" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding SalesRate}" Header="판매량" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Stock}" Header="재고 현황" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 재고" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" IsReadOnly="True" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Grid.Row="1" Grid.Column="0"
-                    Content="조회" Width="120" Height="40" Click="BtnSearch_Click"
-                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontSize="15">
+                    Content="새로고침" Width="120" Height="40" Click="BtnSearch_Click"
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontSize="15" >
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -86,7 +150,7 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal" Height="35">
                     <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Margin="10" Foreground="White" />
-                    <TextBlock Text="재고 정보" VerticalAlignment="Center" Foreground="White" FontSize="17" FontWeight="Bold"/>
+                    <TextBlock Text="재고 정보" VerticalAlignment="Center" Foreground="White" FontSize="17" FontWeight="Bold" />
                 </StackPanel>
             </GroupBox.Header>
             <Grid Margin="10">
@@ -103,48 +167,57 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Label Grid.Row ="0" Grid.Column="0" Content="재고번호" FontWeight="Bold" FontSize="16"
+                <Label Grid.Row ="0" Grid.Column="0" Content="재고번호" FontWeight="Bold" FontSize="16" FontFamily="Helvetica"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="1" Grid.Column="0" Content="상품코드" FontWeight="Bold" FontSize="16"
+                <Label Grid.Row ="1" Grid.Column="0" Content="상품코드" FontWeight="Bold" FontSize="16" FontFamily="Helvetica"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="2" Grid.Column="0" Content="상품명" FontWeight="Bold" FontSize="16"
+                <Label Grid.Row ="2" Grid.Column="0" Content="상품명" FontWeight="Bold" FontSize="16" FontFamily="Helvetica"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="3" Grid.Column="0" Content="상품분류" FontWeight="Bold" FontSize="16"
+                <Label Grid.Row ="3" Grid.Column="0" Content="상품분류" FontWeight="Bold" FontSize="16" FontFamily="Helvetica"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="4" Grid.Column="0" Content="상품가격" FontWeight="Bold" FontSize="16"
+                <Label Grid.Row ="4" Grid.Column="0" Content="상품가격" FontWeight="Bold" FontSize="16" FontFamily="Helvetica"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="5" Grid.Column="0" Content="재고수량" FontWeight="Bold" FontSize="16"
+                <Label Grid.Row ="5" Grid.Column="0" Content="재고수량" FontWeight="Bold" FontSize="16" FontFamily="Helvetica"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
 
                 <TextBox x:Name="InventoryNum" Grid.Row="0" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40" FontSize="16"
+                         VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         IsEnabled="False"/>
+                         IsEnabled="False" FontFamily="Helvetica"
+                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 <TextBox x:Name="ProductCode" Grid.Row="1" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40" FontSize="16"
+                         VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
                           mah:TextBoxHelper.Watermark="상품코드 입력"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True"/>
+                         mah:TextBoxHelper.ClearTextButton="True" FontFamily="Helvetica"
+                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 <TextBox x:Name="ProductName" Grid.Row="2" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40" FontSize="16"
+                         VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
                          mah:TextBoxHelper.Watermark="상품명 입력"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True"/>
+                         mah:TextBoxHelper.ClearTextButton="True" FontFamily="Helvetica"
+                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 <TextBox x:Name="Classification" Grid.Row="3" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40" FontSize="16"
+                         VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
                          mah:TextBoxHelper.Watermark="상품분류" 
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True"/>
-                <TextBox x:Name="Price" Grid.Row="4" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40" FontSize="16"
+                         mah:TextBoxHelper.ClearTextButton="True" FontFamily="Helvetica"
+                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="Price" Grid.Row="4" Grid.Column="1" 
+                         VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
                          mah:TextBoxHelper.Watermark="상품가격"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True"/>
+                         mah:TextBoxHelper.ClearTextButton="True" 
+                         FontFamily="Helvetica"
+                         HorizontalContentAlignment="Center" 
+                         VerticalContentAlignment="Center"
+                         TextChanged="Price_TextChanged"/>  
                 <TextBox x:Name="Stock" Grid.Row="5" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40" FontSize="16"
+                         VerticalAlignment="Center" Height="45" Width="180" FontSize="16"
                          mah:TextBoxHelper.Watermark="재고수량"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
-                         mah:TextBoxHelper.ClearTextButton="True"/>
+                         mah:TextBoxHelper.ClearTextButton="True" FontFamily="Helvetica"
+                         HorizontalContentAlignment="Center" VerticalContentAlignment="Center"/>
                 
                 <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
                             Orientation="Horizontal" HorizontalAlignment="Center">
@@ -155,7 +228,7 @@
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
-                                    <iconPacks:PackIconMaterial Kind="NewBox" Margin="5" />
+                                    <iconPacks:PackIconMaterial Kind="ArchivePlus" Margin="5" />
                                     <TextBlock Text="{Binding}" Margin="5"/>
                                 </StackPanel>
                             </DataTemplate>

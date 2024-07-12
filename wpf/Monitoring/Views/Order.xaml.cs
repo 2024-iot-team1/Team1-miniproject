@@ -20,6 +20,7 @@ namespace Monitoring.Views
             InitializeComponent();
             // 데이터 테이블 초기화
             dataTable = new DataTable();
+            LoadData();
         }
 
         private void LoadData()
@@ -131,8 +132,16 @@ namespace Monitoring.Views
                 DataRowView selectedRow = (DataRowView)OrderDataGrid.SelectedItem;
 
                 // 데이터 업데이트
-                selectedRow["OrderDT"] = OrderDT.SelectedDate.Value.ToString("yyyy-MM-dd");
-                selectedRow["DeliveryStatus"] = ((ComboBoxItem)DeliveryStatus.SelectedItem).Content.ToString();
+                if (OrderDT.SelectedDate.HasValue)
+                {
+                    selectedRow["OrderDT"] = OrderDT.SelectedDate.Value.ToString("yyyy-MM-dd");
+                }
+
+                if (DeliveryStatus.SelectedItem != null)
+                {
+                    selectedRow["DeliveryStatus"] = ((ComboBoxItem)DeliveryStatus.SelectedItem).Content.ToString();
+                }
+
                 selectedRow["CancelOrNot"] = CancelOrNot.Text;
 
                 // DB에 즉시 반영
@@ -146,6 +155,7 @@ namespace Monitoring.Views
                 MessageBox.Show("저장할 항목을 선택해주세요.");
             }
         }
+
 
         private void Check_Click(object sender, RoutedEventArgs e)
         {
