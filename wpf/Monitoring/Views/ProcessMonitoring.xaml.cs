@@ -166,7 +166,6 @@ namespace Monitoring.Views
             {
                 MessageBox.Show(ex.Message);
             }
-            MainWindow.StsResult.Content = destination;
 
             string send_data = "";
             if (destination == "서울") send_data = "2";
@@ -403,7 +402,7 @@ namespace Monitoring.Views
                 {
                     Name = "Count",
                     Values = new double[] { 2, 5, 4 },
-                    MaxBarWidth = 50,
+                    MaxBarWidth = 100,
                     DataLabelsSize = 15,
                     Padding = 10
                 }
@@ -420,7 +419,6 @@ namespace Monitoring.Views
                     ShowSeparatorLines = false,
                     SeparatorsAtCenter = false,
                     ForceStepToMin = true,
-                    //MinStep = 1
                 }
             };
 

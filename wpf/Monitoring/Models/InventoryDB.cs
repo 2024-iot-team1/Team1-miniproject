@@ -22,14 +22,15 @@ namespace Monitoring.Views.Models
         public static readonly string SELECT_QUERY = @"SELECT p.[ProductCode]
                                                               ,p.[ProductName]
                                                               ,p.[Price]                                                              
-                                                              ,p.[Classification]
+                                                              ,c.[ClassificationName]
                                                               ,i.[InventoryNum]
                                                               ,i.[SalesRate]
                                                               ,i.[Stock]
                                                               ,i.[SafeStock]
                                                               ,i.[Procurement]
                                                         FROM [AutoSortingDB].[dbo].[Product] p
-                                                        INNER JOIN [AutoSortingDB].[dbo].[Inventory] i ON p.[ProductCode] = i.[ProductCode];";
+                                                        INNER JOIN [Inventory] i ON p.[ProductCode] = i.[ProductCode]
+                                                        INNER JOIN [Classification] c ON p.[Classification] = c.[ClassificationCode];";
 
         public static readonly string INSERT_QUERY = @"INSERT INTO [dbo].[Inventory]
                                                            ([ProductCode]
