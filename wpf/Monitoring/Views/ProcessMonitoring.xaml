@@ -31,7 +31,7 @@
         </Grid.ColumnDefinitions>
         <!-- 작업 DataGrid 영역 -->
         <StackPanel Grid.RowSpan="3">
-            <DataGrid x:Name="DrdWorkStatus" AutoGenerateColumns="False" Margin="20" RowHeight="30"
+            <DataGrid x:Name="DrdWorkStatus" AutoGenerateColumns="False" Margin="10" RowHeight="30"
                       BorderBrush="#2E85C9" FontFamily="Noto Sans KR" ItemsSource="{Binding}"
                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
                       IsReadOnly="True" GridLinesVisibility="All"
@@ -60,6 +60,9 @@
             </DataGrid>
         </StackPanel>
         <!-- 작업 현황 차트 영역 -->
+        <Border Grid.Row="0" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="10">
+
+        </Border>
         <Grid Grid.Row="0" Grid.Column="1">
             <!--<Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -79,6 +82,9 @@
         </Grid>
         
         <!-- 온습도 차트 영역 -->
+        <Border Grid.Row="1" Grid.Column="1" BorderBrush="Black" BorderThickness="1" Margin="10">
+            
+        </Border>
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
