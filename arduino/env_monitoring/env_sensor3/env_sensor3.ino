@@ -78,7 +78,7 @@ void loop() {
     readDHT();
   }
 
-  부저 제어
+  //부저 제어
   if (currentTime - lastBuzzerCheckTime >= BUZZER_INTERVAL) {
     lastBuzzerCheckTime = currentTime;
     controlBuzzer();
@@ -101,48 +101,32 @@ void loop() {
     lastFanCheckTime = currentTime;
     controlRelay();
   }
-  if (bluetooth.available()) {
-    char c = bluetooth.read();
-    Serial.write(c);
-    // WPF로부터 특정 명령을 수신했을 때 처리
-    if (c == '1') {
-      Serial.println("LED 켜기 명령 수신");
-      // digitalWrite(LED_PIN, LOW); // 실제 LED 핀 제어 코드
-    } else if (c == '0') {
-      Serial.println("LED 끄기 명령 수신");
-      // digitalWrite(LED_PIN, HIGH); // 실제 LED 핀 제어 코드
-    } else if (c == '3') {
-      Serial.println("FAN ON!!");
-      // digitalWrite(RELAY_PIN, HIGH);
-    } else if (c == '4') {
-      Serial.println("FAN OFF!");
-      // digitalWrite(RELAY_PIN, LOW);
-    }
-  }
+
+  recvSetting();
 }
 
 // DHT11에서 온습도 정보 획득
-void readDHT() {
-  humidity = dht.readHumidity();
-  temperature = dht.readTemperature();
-  if (isnan(humidity) || isnan(temperature)) {
-    Serial.println("Failed to read from DHT sensor!");
-  } else {
-    Serial.print("Humidity: ");
-    Serial.print(humidity);
-    Serial.print(" %\t");
-    Serial.print("Temperature: ");
-    Serial.print(temperature);
-    Serial.println(" *C");
+  void readDHT() {
+    humidity = dht.readHumidity();
+    temperature = dht.readTemperature();
+    if (isnan(humidity) || isnan(temperature)) {
+      Serial.println("Failed to read from DHT sensor!");
+    } else {
+      Serial.print("Humidity: ");
+      Serial.print(humidity);
+      Serial.print(" %\t");
+      Serial.print("Temperature: ");
+      Serial.print(temperature);
+      Serial.println(" *C");
 
-    char tempString[10];
-    char humString[10];
-    dtostrf(temperature, 6, 2, tempString); // 온도 변환
-    dtostrf(humidity, 6, 2, humString);  // 습도 변환
+      char tempString[10];
+      char humString[10];
+      dtostrf(temperature, 6, 2, tempString); // 온도 변환
+      dtostrf(humidity, 6, 2, humString);  // 습도 변환
 
-    String data = String(tempString) + "," + String(humString);
+      String data = String(tempString) + "," + String(humString);
 
-    bluetooth.println(data);
+      bluetooth.println(data);
   }
 }
 
@@ -175,6 +159,10 @@ void controlBuzzer() {
       else {
         sirenStartTime = millis();
       }
+    }
+    else{
+      noTone(BUZZER_PIN);
+      policeSiren = false;
     }
   } 
   else {
