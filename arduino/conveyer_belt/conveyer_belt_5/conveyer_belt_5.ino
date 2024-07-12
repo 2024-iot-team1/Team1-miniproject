@@ -4,8 +4,8 @@
 #include <SoftwareSerial.h>
 
 /* 상수 선언 : 핀 번호, 속도제어, 서보모터의 각도*/
-#define PIN_DC_DIRECTION 13  // DC모터(레일) 방향을 정하는 핀
-#define PIN_DC_SPEED 11      // DC모터(레일) 속도를 정하는 핀
+#define PIN_DC_DIRECTION 13  // 13 DC모터(레일) 방향을 정하는 핀
+#define PIN_DC_SPEED 11      // 11 DC모터(레일) 속도를 정하는 핀
 #define PIN_SERVO 9          // 서보모터 연결 핀
 #define PIN_IR A0            // 적외선 IR센서 연결 핀
 #define PIN_BUZZER 4         // 부저 핀
@@ -18,16 +18,16 @@
 // 바코드(QR) 스캐너에 부착된 적외선 센서 핀
 #define SCAN_PIN A4
 
-#define POS_RED 120   // 빨간 색 제품을 분류할 서보모터의 각도
-#define POS_GREEN 165 // 초록 색 제품을 분류할 서보모터의 각도
-#define POS_BLUE 210  // 파란 색 제품을 분류할 서보모터의 각도
+#define POS_RED 120   // 서울행 화물
+#define POS_GREEN 150 // 부산행 화물
+#define POS_BLUE 210  // 대구행 화물
 
 #define BT_RXD 3
 #define BT_TXD 2
 
 /* 변수 선언 : HW객체, 측정값, 기타 변수, ...*/
 Servo servo;
-int railSpeed = 120;  // 레일 기본 속도
+int railSpeed = 250;  // 레일 기본 속도
 int scan_stop_check = 0;
 int scan_check = 0;
 int box_check;
@@ -44,7 +44,7 @@ void setup() {
 
   /* 모터 설정 */
   pinMode(PIN_DC_DIRECTION, OUTPUT);     // DC모터의 방향을 제어하는 핀을 OUTPUT으로 설정
-  digitalWrite(PIN_DC_DIRECTION, LOW);  // 방향은 전진. 의도한 방향과 반대일 경우 HIGH -> LOW로 변경
+  digitalWrite(PIN_DC_DIRECTION, HIGH);  // 방향은 전진. 의도한 방향과 반대일 경우 HIGH -> LOW로 변경
   servo.attach(PIN_SERVO);               // 서보모터를 아두이노와 연결
   servo.write(120);                      // 초기 서보모터가 가리키는 각도는 0도
   delay(500);                            // 서보모터가 완전히 동작을 끝낸 후 detach를 위해 delay를 부여
