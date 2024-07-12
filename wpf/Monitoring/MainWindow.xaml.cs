@@ -87,7 +87,7 @@ namespace Monitoring
 
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
-            ActiveItem.Content = new Views.Setting();
+            ActiveItem.Content = new Views.Setting(this);
             StsSelScreen.Content = "시스템 모니터링";
         }
 

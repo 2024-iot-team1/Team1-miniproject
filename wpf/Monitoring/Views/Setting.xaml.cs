@@ -28,7 +28,7 @@ namespace Monitoring.Views
     {
         private Process _flaskProcess;
 
-        private SerialPort port;
+        private SerialPort port01;
 
         MainWindow MainWindow { get; set; }
 
@@ -41,7 +41,7 @@ namespace Monitoring.Views
         {
             InitializeComponent();
             MainWindow = e;
-            port = MainWindow._serialPort01;
+            port01 = MainWindow._serialPort01;
         }
 
         private void OnButton_Click(object sender, RoutedEventArgs e)
@@ -66,23 +66,33 @@ namespace Monitoring.Views
 
         private void BtnSave_Click(object sender, RoutedEventArgs e)
         {
-            string fanStatus = string.Empty;
-            string buzzStatus = string.Empty;
-            string temp = TempNum.Value.ToString();
-            string humid = HumidNum.Value.ToString();
-
-            if (SwitchFan.IsOn)
+            try
             {
-                fanStatus = "1";
+                if (port01 == null)
+                {
+                    MessageBox.Show("Serial port is not initialized.");
+                    return;
+                }
+
+                if (!port01.IsOpen)
+                {
+                    MessageBox.Show("Serial port is not open.");
+                    return;
+                }
+
+                string temp = TempNum.Value.ToString();
+                string humid = HumidNum.Value.ToString();
+
+                var buzzStatus = SwitchBuzz.IsOn ? "1" : "0";
+                var fanStatus = SwitchFan.IsOn ? "1" : "0";
+
+                var setting_data = $"{temp},{humid},{fanStatus},{buzzStatus}";
+                port01.WriteLine(setting_data);
             }
-            else fanStatus = "0";
-
-            if (SwitchBuzz.IsOn) buzzStatus = "1";
-            else buzzStatus = "0";
-
-            // string setting_data1 = fanStatus + "," + buzzStatus + "," + TempNum.Value.ToString() + "," + HumidNum.Value.ToString();
-            string setting_data = $"{temp},{humid},{fanStatus},{buzzStatus}";
-            port.WriteLine(setting_data);
+            catch (Exception ex)
+            {
+                MessageBox.Show("데이터 전송 실패 : " + ex.Message);
+            }
         }
 
         private void StartFlaskServer()
