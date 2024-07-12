@@ -30,6 +30,9 @@ using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using System.Drawing;
 using LiveChartsCore.SkiaSharpView.WPF;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace Monitoring.Views
 {
@@ -80,8 +83,12 @@ namespace Monitoring.Views
 
             // 데이터 출력
             LoadData();
-            UpdateDoughnut();
+
+            // 지역별 처리량 차트 생성
             UpdateBars();
+
+            // 지역별 처리량을 DB에서 조회하여 지역별 처리량 차트에 넣기
+            UpdateValues();
         }
         public ProcessMonitoring()
         {
@@ -200,6 +207,8 @@ namespace Monitoring.Views
             {
                 MessageBox.Show(ex.Message);
             }
+            LoadData();
+            UpdateValues();
         }
 
         #region 온습도 앵귤러 차트 영역
@@ -294,7 +303,7 @@ namespace Monitoring.Views
             port02.WriteLine("0");
         }
 
-        private string connectionString = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
+        private string connectionString = Common.CONNSTRING;
         private void LoadData()
         {
             try
@@ -319,80 +328,150 @@ namespace Monitoring.Views
         }
 
         #region 상품별 처리량 도넛 그래프
-        public IEnumerable<ISeries> ProductSeries { get; set; } =
-            new[]
-            {
-                    new PieSeries<int> { Values = new[]{ 2 }, Name = "A", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements"},
-                    new PieSeries<int> { Values = new[]{ 4 }, Name = "B", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements" },
-                    new PieSeries<int> { Values = new[]{ 1 }, Name = "C", InnerRadius = 30,                                
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") + " elements" },
-                    new PieSeries<int> { Values = new[]{ 4 }, Name = "D", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") + " elements" },
-                    new PieSeries<int> { Values = new[]{ 3 }, Name = "E", InnerRadius = 30,
-                                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-                                        DataLabelsSize = 15,
-                                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-                                        DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") + " elements" },
-            };
+        //public IEnumerable<ISeries> ProductSeries { get; set; } =
+        //    new[]
+        //    {
+        //            new PieSeries<int> { Values = new[]{ 2 }, Name = "A", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2")},
+        //            new PieSeries<int> { Values = new[]{ 4 }, Name = "B", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") },
+        //            new PieSeries<int> { Values = new[]{ 1 }, Name = "C", InnerRadius = 30,                                
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2")},
+        //            new PieSeries<int> { Values = new[]{ 4 }, Name = "D", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N1")},
+        //            new PieSeries<int> { Values = new[]{ 3 }, Name = "E", InnerRadius = 30,
+        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+        //                                DataLabelsSize = 15,
+        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
+        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") },
+        //    };
 
-        private void UpdateDoughnut()
-        {
-            ChtProduct.Series = ProductSeries;
-            ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
-        }
+        //private void UpdateDoughnut()
+        //{
+        //    ChtProduct.Series = ProductSeries;
+        //    ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
+        //}
         #endregion
 
         #region 지역별 처리량 막대 그래프
-        public ISeries[] DestinationSeries { get; set; } =
+        private ObservableCollection<ISeries> _destinationSeries;
+        public ObservableCollection<ISeries> DestinationSeries
         {
-            new ColumnSeries<double>
+            get => _destinationSeries;
+            set
             {
-                Name = "",
-                Values = new double[] { 2, 5, 4 },
-                MaxBarWidth = 30,
-                DataLabelsSize = 0,
-                Padding = 10
+                _destinationSeries = value;
+                OnPropertyChanged();
             }
-        };
+        }
 
-        public Axis[] DestinationXAxes { get; set; } =
+        private ObservableCollection<Axis> _destinationXAxes;
+        public ObservableCollection<Axis> DestinationXAxes
         {
-            new Axis
+            get => _destinationXAxes;
+            set
             {
-                Labels = new string[] { "Seoul", "Busan", "Daegu" },
-                LabelsRotation = 0,
-                SeparatorsPaint = new SolidColorPaint(new SKColor(200, 200, 200)),
-                ShowSeparatorLines = false,
-                SeparatorsAtCenter = false,
-                //TicksPaint = new SolidColorPaint(new SKColor(35, 35, 35)),
-                //TicksAtCenter = true,
-                // By default the axis tries to optimize the number of 
-                // labels to fit the available space, 
-                // when you neeed to force the axis to show all the labels then you must: 
-                ForceStepToMin = true,
-                MinStep = 1,
+                _destinationXAxes = value;
+                OnPropertyChanged();
             }
-        };
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
 
         private void UpdateBars()
         {
+            DestinationSeries = new ObservableCollection<ISeries>
+            {
+                new ColumnSeries<double>
+                {
+                    Name = "Count",
+                    Values = new double[] { 2, 5, 4 },
+                    MaxBarWidth = 50,
+                    DataLabelsSize = 15,
+                    Padding = 10
+                }
+            };
+
+            DestinationXAxes = new ObservableCollection<Axis>
+            {
+                new Axis
+                {
+                    Labels = new string[] { "Seoul", "Busan", "Daegu" },
+                    LabelsRotation = 0,
+
+                    SeparatorsPaint = new SolidColorPaint(new SKColor(200, 200, 200)),
+                    ShowSeparatorLines = false,
+                    SeparatorsAtCenter = false,
+                    ForceStepToMin = true,
+                    //MinStep = 1
+                }
+            };
+
             ChtDestination.Series = DestinationSeries;
             ChtDestination.XAxes = DestinationXAxes;
         }
-#endregion
+
+        public int SeoulValue { get; set; }
+        public int BusanValue { get; set; }
+        public int DaeguValue { get; set; }
+
+        private void UpdateValues()
+        {
+            // 값을 업데이트 하기 위한 sql 파트
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(connectionString))
+                {
+                    conn.Open();
+                    string query = ProMonitoring.GROUP_BY_DES_SELECT_QUERY;
+                    SqlCommand com = new SqlCommand(query, conn);
+                    SqlDataReader reader = com.ExecuteReader();
+
+                    while (reader.Read())
+                    {
+                        string cityName = reader["Destination"].ToString();
+                        int sumValue = Convert.ToInt32(reader["SUM"]);
+
+                        switch (cityName)
+                        {
+                            case "서울":
+                                SeoulValue = sumValue;
+                                break;
+                            case "부산":
+                                BusanValue = sumValue;
+                                break;
+                            case "대구":
+                                DaeguValue = sumValue;
+                                break;
+                        }
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            // 새로운 값으로 업데이트
+            DestinationSeries[0].Values = new double[] { SeoulValue, BusanValue, DaeguValue };
+        }
+        #endregion
     }
 }

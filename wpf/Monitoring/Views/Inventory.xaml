@@ -7,6 +7,14 @@
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:local="clr-namespace:Monitoring.Views"
              mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <!-- 중앙 정렬 스타일 리소스 정의 -->
+        <Style x:Key="CenterAlignedCellStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="HorizontalAlignment" Value="Center"/>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
@@ -18,36 +26,50 @@
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <DataGrid x:Name="GrdResult" Grid.Column="0" Grid.Row="0" Margin="10"
-                      IsReadOnly="True" ItemsSource="{Binding}"
-                      AutoGenerateColumns="False" BorderBrush="Gray"
+            <DataGrid x:Name="GrdResult" Grid.Column="0" Grid.Row="0" Margin="10" RowHeight="30"
+                      IsReadOnly="True" ItemsSource="{Binding}" FontFamily="Noto Sans KR"
+                      AutoGenerateColumns="False" BorderBrush="#2E85C9"
                       HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                      GridLinesVisibility="All"
+                      GridLinesVisibility="All" 
                       BorderThickness="1" IsSynchronizedWithCurrentItem="False"
                       ColumnWidth="*" SelectionMode="Single" SelectionChanged="GrdResult_SelectionChanged">
+                <DataGrid.Resources>
+                    <Style TargetType="DataGridColumnHeader">
+                        <Setter Property="Height" Value="45" />
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="FontSize" Value="15" />
+                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Background" Value="#3393DF"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="BorderThickness" Value="1"/>
+                        <Setter Property="BorderBrush" Value="#2E85C9"/>
+                    </Style>
+                </DataGrid.Resources>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="제고번호" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="재고번호" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품코드" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Price}" Header="상품가격" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding SalesRate}" Header="판매량" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Stock}" Header="재고 현황" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 재고" FontWeight="Bold" IsReadOnly="True"/>
-                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" FontWeight="Bold" IsReadOnly="True"/>
-
-                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="제고번호" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding Stock}" Header="제고 현황" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 제고" FontWeight="Bold"/>
-                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" FontWeight="Bold" />
+                    <DataGridTextColumn Binding="{Binding InventoryNum}" Header="재고번호" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding ProductCode}" Header="상품코드" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding ProductName}" Header="상품명" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Classification}" Header="상품분류" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Header="상품가격" Binding="{Binding Price, StringFormat='{}{0:#,##0}'}" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}" />
+                    <DataGridTextColumn Binding="{Binding SalesRate}" Header="판매량" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Stock}" Header="재고 현황" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding SafeStock}" Header="안전 재고" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
+                    <DataGridTextColumn Binding="{Binding Procurement}" Header="조달 예정 물량" IsReadOnly="True"
+                                        ElementStyle="{StaticResource CenterAlignedCellStyle}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Grid.Row="1" Grid.Column="0"
                     Content="조회" Width="120" Height="40" Click="BtnSearch_Click"
-                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontSize="15">
                 <Button.ContentTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
@@ -62,9 +84,9 @@
 
         <GroupBox Grid.Column="1" Margin="10">
             <GroupBox.Header>
-                <StackPanel Orientation="Horizontal">
-                    <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Margin="5"/>
-                    <TextBlock Text="재고 정보" VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Height="35">
+                    <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Margin="10" Foreground="White" />
+                    <TextBlock Text="재고 정보" VerticalAlignment="Center" Foreground="White" FontSize="17" FontWeight="Bold"/>
                 </StackPanel>
             </GroupBox.Header>
             <Grid Margin="10">
@@ -81,45 +103,45 @@
                     <RowDefinition />
                     <RowDefinition />
                 </Grid.RowDefinitions>
-                <Label Grid.Row ="0" Grid.Column="0" Content="재고번호" FontWeight="Bold"
+                <Label Grid.Row ="0" Grid.Column="0" Content="재고번호" FontWeight="Bold" FontSize="16"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="1" Grid.Column="0" Content="상품코드" FontWeight="Bold"
+                <Label Grid.Row ="1" Grid.Column="0" Content="상품코드" FontWeight="Bold" FontSize="16"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="2" Grid.Column="0" Content="상품명" FontWeight="Bold"
+                <Label Grid.Row ="2" Grid.Column="0" Content="상품명" FontWeight="Bold" FontSize="16"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="3" Grid.Column="0" Content="상품분류" FontWeight="Bold"
+                <Label Grid.Row ="3" Grid.Column="0" Content="상품분류" FontWeight="Bold" FontSize="16"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="4" Grid.Column="0" Content="상품가격" FontWeight="Bold"
+                <Label Grid.Row ="4" Grid.Column="0" Content="상품가격" FontWeight="Bold" FontSize="16"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
-                <Label Grid.Row ="5" Grid.Column="0" Content="재고수량" FontWeight="Bold"
+                <Label Grid.Row ="5" Grid.Column="0" Content="재고수량" FontWeight="Bold" FontSize="16"
                        VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,0"/>
 
                 <TextBox x:Name="InventoryNum" Grid.Row="0" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
+                         VerticalAlignment="Center" Height="40" FontSize="16"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          IsEnabled="False"/>
                 <TextBox x:Name="ProductCode" Grid.Row="1" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
+                         VerticalAlignment="Center" Height="40" FontSize="16"
                           mah:TextBoxHelper.Watermark="상품코드 입력"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True"/>
                 <TextBox x:Name="ProductName" Grid.Row="2" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
+                         VerticalAlignment="Center" Height="40" FontSize="16"
                          mah:TextBoxHelper.Watermark="상품명 입력"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True"/>
                 <TextBox x:Name="Classification" Grid.Row="3" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
-                         mah:TextBoxHelper.Watermark="상품분류"
+                         VerticalAlignment="Center" Height="40" FontSize="16"
+                         mah:TextBoxHelper.Watermark="상품분류" 
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True"/>
                 <TextBox x:Name="Price" Grid.Row="4" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
+                         VerticalAlignment="Center" Height="40" FontSize="16"
                          mah:TextBoxHelper.Watermark="상품가격"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True"/>
                 <TextBox x:Name="Stock" Grid.Row="5" Grid.Column="1"
-                         VerticalAlignment="Center" Height="40"
+                         VerticalAlignment="Center" Height="40" FontSize="16"
                          mah:TextBoxHelper.Watermark="재고수량"
                          mah:TextBoxHelper.UseFloatingWatermark="True"
                          mah:TextBoxHelper.ClearTextButton="True"/>
@@ -127,7 +149,7 @@
                 <StackPanel Grid.Row="6" Grid.Column="0" Grid.ColumnSpan="2"
                             Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="신규" x:Name="NewEmployee"
-                            Width="100" Height="40"
+                            Width="110" Height="40"
                             Style="{StaticResource MahApps.Styles.Button.Square.Highlight}"
                             Click="BtnNew_Click">
                         <Button.ContentTemplate>
@@ -140,7 +162,7 @@
                         </Button.ContentTemplate>
                     </Button>
                     <Button Content="저장" x:Name="SaveEmployee"
-                            Width="100" Height="40" Margin="10,0,10,0"
+                            Width="110" Height="40" Margin="10,0,10,0"
                             Style="{StaticResource MahApps.Styles.Button.Square.Accent}"
                             Click="SaveEmployee_Click">
                         <Button.ContentTemplate>
@@ -153,8 +175,10 @@
                         </Button.ContentTemplate>
                     </Button>
                     <Button Content="삭제" x:Name="DelEmployee"
-                            Width="100" Height="40"
-                            Style="{StaticResource MahApps.Styles.Button.Square}">
+                            Width="110" Height="40"
+                            Style="{StaticResource MahApps.Styles.Button.Square}"
+                            Click="BtnDelete_Click" IsEnabled="{Binding IsDeleteButtonEnabled}">
+                        
                         <Button.ContentTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Remoting.Channels;
+using System.IO.Ports;
+using System.IdentityModel.Protocols.WSTrust;
 
 
 namespace Monitoring.Views
@@ -26,9 +28,20 @@ namespace Monitoring.Views
     {
         private Process _flaskProcess;
 
+        private SerialPort port;
+
+        MainWindow MainWindow { get; set; }
+
         public Setting()
         {
             InitializeComponent();
+        }
+
+        public Setting(MainWindow e)
+        {
+            InitializeComponent();
+            MainWindow = e;
+            port = MainWindow._serialPort01;
         }
 
         private void OnButton_Click(object sender, RoutedEventArgs e)
@@ -38,7 +51,7 @@ namespace Monitoring.Views
                 StartFlaskServer();
             }
 
-            ChromeWeb.Address = "http://192.168.5.3:18088/";
+            ChromeWeb.Address = "http://210.119.12.59:18088/";
         }
 
         private void OffButton_Click(object sender, RoutedEventArgs e)
@@ -49,6 +62,27 @@ namespace Monitoring.Views
             }
 
             ChromeWeb.Address = "about:blank";
+        }
+
+        private void BtnSave_Click(object sender, RoutedEventArgs e)
+        {
+            string fanStatus = string.Empty;
+            string buzzStatus = string.Empty;
+            string temp = TempNum.Value.ToString();
+            string humid = HumidNum.Value.ToString();
+
+            if (SwitchFan.IsOn)
+            {
+                fanStatus = "1";
+            }
+            else fanStatus = "0";
+
+            if (SwitchBuzz.IsOn) buzzStatus = "1";
+            else buzzStatus = "0";
+
+            // string setting_data1 = fanStatus + "," + buzzStatus + "," + TempNum.Value.ToString() + "," + HumidNum.Value.ToString();
+            string setting_data = $"{temp},{humid},{fanStatus},{buzzStatus}";
+            port.WriteLine(setting_data);
         }
 
         private void StartFlaskServer()
