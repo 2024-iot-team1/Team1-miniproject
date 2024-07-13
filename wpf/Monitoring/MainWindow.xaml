@@ -15,104 +15,128 @@
             <iconPacks:PackIconMaterial Kind="Ladder" Width="24" Margin="5, 7, 0, 0" Foreground="White" />
         </DataTemplate>
     </mah:MetroWindow.IconTemplate>
+    
+    <!-- 로딩 애니메이션 스토리보드 정의 -->
+    <Window.Resources>
+        <Storyboard x:Key="LoadingAnimation" RepeatBehavior="Forever">
+            <DoubleAnimation
+                Storyboard.TargetName="LoadingSpinnerTransform"
+                Storyboard.TargetProperty="Angle"
+                From="0" To="360" Duration="0:0:2"/>
+        </Storyboard>
+    </Window.Resources>
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="200" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid x:Name="ContentGrid">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-        <Border Grid.Column="0" Grid.RowSpan="2" >
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 0">
-                    <GradientStop Color="#4A65A2" Offset="0" />
-                    <GradientStop Color="#4A65A2" Offset="0.5" />
-                    <GradientStop Color="#4A65A2" Offset="1" />
-                </LinearGradientBrush>
-            </Border.Background>
-            <StackPanel>
-                <Image Source="/image/ladder.png" Width="154" Height="174" />
-                <Grid Height="320" Width="100">
-                    <Grid.Resources>
-                        <Style TargetType="MenuItem">
-                            <Setter Property="FontSize" Value="15" />
-                            <Setter Property="Height" Value="30" />
-                            <Setter Property="Margin" Value="7" />
-                            <Setter Property="Background" Value="#4A65A2" />
-                            <Setter Property="Foreground" Value="White" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="MenuItem">
-                                        <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
-                                            <StackPanel Orientation="Horizontal">
-                                                <ContentPresenter ContentSource="Icon" Margin="0 0 10 0" />
-                                                <ContentPresenter ContentSource="Header" />
-                                            </StackPanel>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </Grid.Resources>
+            <Border Grid.Column="0" Grid.RowSpan="2" >
+                <Border.Background>
+                    <LinearGradientBrush StartPoint="0, 0" EndPoint="0, 0">
+                        <GradientStop Color="#4A65A2" Offset="0" />
+                        <GradientStop Color="#4A65A2" Offset="0.5" />
+                        <GradientStop Color="#4A65A2" Offset="1" />
+                    </LinearGradientBrush>
+                </Border.Background>
+                <StackPanel>
+                    <Image Source="/image/ladder.png" Width="154" Height="174" />
+                    <Grid Height="320" Width="100">
+                        <Grid.Resources>
+                            <Style TargetType="MenuItem">
+                                <Setter Property="FontSize" Value="15" />
+                                <Setter Property="Height" Value="30" />
+                                <Setter Property="Margin" Value="7" />
+                                <Setter Property="Background" Value="#4A65A2" />
+                                <Setter Property="Foreground" Value="White" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="MenuItem">
+                                            <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}">
+                                                <StackPanel Orientation="Horizontal">
+                                                    <ContentPresenter ContentSource="Icon" Margin="0 0 10 0" />
+                                                    <ContentPresenter ContentSource="Header" />
+                                                </StackPanel>
+                                            </Border>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Grid.Resources>
 
-                    <Menu IsMainMenu="True" Margin="-25,10,-30,88" Background="#4A65A2">
-                        <MenuItem Header="Monitoring" Click="Monitoring_Click">
-                            <MenuItem.Icon>
-                                <iconPacks:PackIconPixelartIcons Kind="Bulletlist" Width="20" Height="24" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Order" Click="Order_Click">
-                            <MenuItem.Icon>
-                                <iconPacks:PackIconBootstrapIcons Kind="CartCheck" Width="20" Height="24" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Inventory" Click="Inventory_Click">
-                            <MenuItem.Icon>
-                                <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Width="20" Height="24"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Setting&amp;CCTV" Click="Setting_Click">
-                            <MenuItem.Icon>
-                                <iconPacks:PackIconRemixIcon Kind="Settings5Line" Width="20" Height="24"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </Menu>
+                        <Menu IsMainMenu="True" Margin="-25,10,-30,88" Background="#4A65A2">
+                            <MenuItem Header="Monitoring" Click="Monitoring_Click">
+                                <MenuItem.Icon>
+                                    <iconPacks:PackIconPixelartIcons Kind="Bulletlist" Width="20" Height="24" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Order" Click="Order_Click">
+                                <MenuItem.Icon>
+                                    <iconPacks:PackIconBootstrapIcons Kind="CartCheck" Width="20" Height="24" />
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Inventory" Click="Inventory_Click">
+                                <MenuItem.Icon>
+                                    <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Width="20" Height="24"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                            <MenuItem Header="Setting&amp;CCTV" Click="Setting_Click">
+                                <MenuItem.Icon>
+                                    <iconPacks:PackIconRemixIcon Kind="Settings5Line" Width="20" Height="24"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
+                        </Menu>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Grid.Column="1" Grid.Row="0" Background="#4A65A2">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Text="스마트 팩토리 분류 모니터링" Foreground="White" FontSize="25" VerticalAlignment="Center" 
+                               HorizontalAlignment="Left" Margin="10,20,0,20" FontFamily="Seoge UI" FontWeight="Bold"/>
+
+                    <Label x:Name="LblSensingDt" Content="2023-07-09 00시 00분 00초" FontSize="16" FontWeight="DemiBold"
+                           VerticalAlignment="Bottom" Grid.Row="0" Foreground="White" FontFamily="Seoge UI"
+                           Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,5"/>
+
                 </Grid>
-            </StackPanel>
-        </Border>
+            </Border>
 
-        <Border Grid.Column="1" Grid.Row="0" Background="#4A65A2">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-                <TextBlock Text="스마트 팩토리 분류 모니터링" Foreground="White" FontSize="25" VerticalAlignment="Center" 
-                           HorizontalAlignment="Left" Margin="10,20,0,20" FontFamily="Seoge UI" FontWeight="Bold"/>
-
-                <Label x:Name="LblSensingDt" Content="2023-07-09 00시 00분 00초" FontSize="16" FontWeight="DemiBold"
-                       VerticalAlignment="Bottom" Grid.Row="0" Foreground="White" FontFamily="Seoge UI"
-                       Grid.Column="1" HorizontalAlignment="Right" Margin="0,0,10,5"/>
-
+            <Grid Grid.Row="1" Grid.Column="1" Margin="10 0 0 0">
+                <ContentControl x:Name="ActiveItem" Background="Gainsboro" Margin="-10,0,0,0" />
             </Grid>
-        </Border>
 
-        <Grid Grid.Row="1" Grid.Column="1" Margin="10 0 0 0">
-            <ContentControl x:Name="ActiveItem" Background="Gainsboro" Margin="-10,0,0,0" />
+            <StatusBar Grid.Row="2" Grid.ColumnSpan="2">
+                <StatusBarItem Width="115" HorizontalAlignment="Center" Content="Monitoring System" Margin="10,0,10,0"></StatusBarItem>
+                <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}" />
+                <StatusBarItem>선택화면 :</StatusBarItem>
+                <StatusBarItem x:Name="StsSelScreen"></StatusBarItem>
+            </StatusBar>
         </Grid>
-
-        <StatusBar Grid.Row="2" Grid.ColumnSpan="2">
-            <StatusBarItem>Monitoring System</StatusBarItem>
-            <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}" />
-            <StatusBarItem>선택화면 :</StatusBarItem>
-            <StatusBarItem x:Name="StsSelScreen" Width="700"></StatusBarItem>
-            <Separator Style="{StaticResource MahApps.Styles.Separator.StatusBar}" />
-            <StatusBarItem x:Name="StsResult" HorizontalContentAlignment="Right" Margin="0,0,10,0"></StatusBarItem>
-        </StatusBar>
+        
+        <!-- Loading Overlay: 로딩 애니메이션을 위한 오버레이 -->
+        <Grid x:Name="LoadingOverlay" Background="#80FFFFFF" Visibility="Collapsed">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!-- 회전하는 원 -->
+                <Ellipse x:Name="LoadingSpinner" Width="100" Height="100" Stroke="Black" StrokeThickness="10">
+                    <Ellipse.RenderTransform>
+                        <RotateTransform x:Name="LoadingSpinnerTransform" Angle="0" CenterX="50" CenterY="50"/>
+                    </Ellipse.RenderTransform>
+                </Ellipse>
+                <!-- 로딩 텍스트 -->
+                <TextBlock Text="Loading..." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,120,0,0" FontSize="20" FontWeight="Bold"/>
+            </Grid>
+        </Grid>
     </Grid>
 </mah:MetroWindow>
