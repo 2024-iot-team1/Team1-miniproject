@@ -351,20 +351,21 @@
     </ApplicationDefinition>
     <Compile Include="Models\ArduinoBT.cs" />
     <Compile Include="Models\Common.cs" />
+    <Compile Include="Models\Login.cs" />
     <Compile Include="Models\Orderlist.cs" />
     <Compile Include="Models\ProMonitoring.cs" />
     <Compile Include="Views\Inventory.xaml.cs">
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\InventoryDB.cs" />
+    <Compile Include="LoginPage.xaml.cs">
+      <DependentUpon>LoginPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Order.xaml.cs">
       <DependentUpon>Order.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessMonitoring.xaml.cs">
       <DependentUpon>ProcessMonitoring.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Product.xaml.cs">
-      <DependentUpon>Product.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Setting.xaml.cs">
       <DependentUpon>Setting.xaml</DependentUpon>
@@ -385,15 +386,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="LoginPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\Order.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ProcessMonitoring.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Product.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -433,6 +434,9 @@
   <ItemGroup>
     <Content Include="image\ladder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="image\logo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
