@@ -70,14 +70,23 @@ namespace Monitoring.Views
             InitializeComponent();
             MainWindow = e;
 
-            port01 = MainWindow._serialPort01;
-            port01.DataReceived += SerialPort01_DataReceived;
+            if (MainWindow._serialPort01 != null && MainWindow._serialPort01.IsOpen)
+            {
+                port01 = MainWindow._serialPort01;
+                port01.DataReceived += SerialPort01_DataReceived;
+            }
+            if (MainWindow._serialPort02 != null && MainWindow._serialPort02.IsOpen)
+            {
+                port02 = MainWindow._serialPort02;
+                port02.DataReceived += SerialPort02_DataReceived;
+            }
+            if (MainWindow._serialPort03 != null && MainWindow._serialPort03.IsOpen)
+            {
+                port03 = MainWindow._serialPort03;
+                port03.DataReceived += SerialPort03_DataReceived;
+            }
 
-            port02 = MainWindow._serialPort02;
-            port02.DataReceived += SerialPort02_DataReceived;
 
-            port03 = MainWindow._serialPort03;
-            port03.DataReceived += SerialPort03_DataReceived;
             // 앵귤러 차트 추가
             CreateChart();
 

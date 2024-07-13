@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Windows;
@@ -7,6 +8,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Monitoring.Models;
 using Monitoring.Views;
 
 namespace Monitoring
@@ -29,18 +31,119 @@ namespace Monitoring
 
         internal string UserName { get; set; }
 
+        public int OrderNum { get; set; }
+        public int DeliveryNum { get; set; }
         public MainWindow()
         {
             InitializeComponent();
 
             // 비동기적으로 시리얼 포트 초기화 시작
-            InitializeSerialPortsAsync();
+            // 디자인 작업할 때는 아래를 주석처리하고 작업하기
+            // InitializeSerialPortsAsync();
 
             // 타이머 설정: 1초마다 현재 시간 업데이트
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);   // 1초마다
             timer.Tick += Timer_Tick;
             timer.Start();
+        }
+
+        // 컨베이어 벨트 분류기 아두이노
+        private void SerialPort02_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
+        {
+            try
+            {
+                string data = _serialPort02.ReadLine();
+                Dispatcher.Invoke(() => UpdateDB());
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
+            }
+        }
+
+        // 바코드(QR) 스캐너 아두이노
+        private void SerialPort03_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
+        {
+            try
+            {
+                string data3 = _serialPort03.ReadLine();
+                OrderNum = Convert.ToInt32(data3);
+                Dispatcher.Invoke(() => SendData(data3));
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() => MessageBox.Show($"데이터 송수신 오류: {ex.Message}"));
+            }
+        }
+
+        private void UpdateDB()
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    conn.Open();
+                    // WorkStatus 테이블에 처리결과 삽입
+                    string query2 = ProMonitoring.DELIVERY_UPDATE_QUERY;
+                    DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
+
+                    SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
+
+                    insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
+                    insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
+                    insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
+                    insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'Y');
+
+
+                    int result = insertCmd.ExecuteNonQuery();
+
+                    SqlCommand updateCom = new SqlCommand(query2, conn);
+                    updateCom.Parameters.AddWithValue("@OrderNum", OrderNum);
+                    updateCom.Parameters.AddWithValue("@StartDT", nowDT);
+
+                    updateCom.ExecuteNonQuery();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        // 바코드에서 얻은 주문번호를 기반으로 목적지 확인 -> 컨베이어 벨트 아두이노로 전송
+        private void SendData(string data)
+        {
+            int orderNum = Convert.ToInt32(data);
+            string destination = "";
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    string query = ProMonitoring.DESTINATION_SELECT_QUERY;
+
+                    SqlCommand com = new SqlCommand(query, conn);
+                    com.Parameters.AddWithValue("@OrderNum", orderNum);
+                    conn.Open();
+                    SqlDataReader reader = com.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        destination = reader["Destination"].ToString();
+                        DeliveryNum = reader.GetInt32(reader.GetOrdinal("DeliveryNum"));
+                    }
+                    reader.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+
+            string send_data = "";
+            if (destination == "서울") send_data = "2";
+            else if (destination == "대구") send_data = "4";
+            else if (destination == "부산") send_data = "6";
+            _serialPort02.Write(send_data);
         }
 
         // 비동기적으로 시리얼 포트를 초기화
@@ -53,6 +156,7 @@ namespace Monitoring
             await TryInitializeSerialPortAsync("COM7", 9600, port => _serialPort02 = port);
             await TryInitializeSerialPortAsync("COM10", 9600, port => _serialPort03 = port);
 
+
             // 연결 상태 UI 업데이트
             if (_serialPort01 != null && _serialPort02 != null && _serialPort03 != null)
             {
@@ -62,6 +166,8 @@ namespace Monitoring
             {
                 await this.ShowMessageAsync("블루투스 통신", "연결 실패");
             }
+            _serialPort02.DataReceived += SerialPort02_DataReceived;
+            _serialPort03.DataReceived += SerialPort03_DataReceived;
 
             LoadingOverlay.Visibility = Visibility.Collapsed;
         }
@@ -77,11 +183,11 @@ namespace Monitoring
                     var serialPort = new SerialPort
                     {
                         PortName = portName,
-                        BaudRate = baudRate,
-                        Parity = Parity.None,
-                        DataBits = 8,
-                        StopBits = StopBits.One,
-                        Handshake = Handshake.None
+                        BaudRate = baudRate
+                        //Parity = Parity.None,
+                        //DataBits = 8,
+                        //StopBits = StopBits.One,
+                        //Handshake = Handshake.None
                     };
 
                     try
