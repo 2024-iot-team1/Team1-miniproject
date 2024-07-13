@@ -6,6 +6,13 @@ using System.Data.SqlClient;
 using System.Data;
 using Monitoring.Models;
 using System.Linq;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView.Painting;
+using SkiaSharp;
+using LiveChartsCore.SkiaSharpView.VisualElements;
+using LiveChartsCore.SkiaSharpView.WPF;
+using LiveChartsCore.SkiaSharpView.SKCharts;
 
 namespace Monitoring.Views
 {
@@ -21,6 +28,7 @@ namespace Monitoring.Views
             // 데이터 테이블 초기화
             dataTable = new DataTable();
             LoadData();
+            CreateChart();
         }
 
         private void LoadData()
@@ -192,5 +200,23 @@ namespace Monitoring.Views
                 string deliveryNum = selectedRow["DeliveryNum"].ToString();
             }
         }
+
+        #region 주문 추이 그래프 영역
+        public ISeries[] OrderSeries { get; set; } =
+        {
+            new LineSeries<double>
+            {
+                Values = new double[] { 2, 1, 3, 5, 3, 4, 6 },
+                Fill = null
+            }
+        };
+
+
+        private void CreateChart()
+        {
+            OrderChart.Series = OrderSeries;
+        }
+
+        #endregion
     }
 }

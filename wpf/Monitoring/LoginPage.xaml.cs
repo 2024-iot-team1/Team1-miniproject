@@ -88,6 +88,15 @@ namespace Monitoring.Views
                         checkPass = reader["PASSWORD"] != null ? reader["PASSWORD"].ToString() : "-"; // 패스워드가 null 이면 -로 변경
                         Common.UserIdx = Convert.ToInt32(reader["UserIdx"]);
                         Common.UserName = reader["UserName"].ToString();
+
+                        reader.Close();
+
+                        string query2 = Login.INSERT_QUERY;
+                        SqlCommand cmd2 = new SqlCommand(query2, conn);
+
+                        cmd2.Parameters.AddWithValue("@UserIdx", Common.UserIdx);
+                        cmd2.Parameters.AddWithValue("@ConnectDT", DateTime.Now);
+                        cmd2.ExecuteNonQuery();
                         return true;
                     }
                     else

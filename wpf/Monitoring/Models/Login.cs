@@ -15,5 +15,12 @@ namespace Monitoring.Models
                                                   FROM [dbo].[Users]
                                                  WHERE ID = @ID
                                                    AND PASSWORD = @PASSWORD";
+
+        public static readonly string INSERT_QUERY = @"INSERT INTO [dbo].[ConnectLog]
+                                                                   ([UserIdx]
+                                                                   ,[ConnectDT])
+                                                             VALUES
+                                                                   (@UserIdx
+                                                                   ,@ConnectDT)";
     }
 }
