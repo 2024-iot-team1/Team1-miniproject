@@ -49,9 +49,6 @@ const unsigned long LED_CHANGE_INTERVAL = 200; // LED 변경 간격 (200ms)
 
 #pragma endregion
 
-// 컨베이어 벨트 아두이노와 통신하기 위한 시리얼
-SoftwareSerial mySerial(5, 6); // RX, TX
-
 // 블루투스 통신을 위한 시리얼
 SoftwareSerial bluetooth(BT_RXD, BT_TXD); // 4, 3
 
@@ -65,7 +62,6 @@ void setup() {
   pinMode(GREEN_LED_PIN, OUTPUT);
   pinMode(RELAY_PIN, OUTPUT);
 
-  mySerial.begin(9600); // SoftwareSerial 통신 시작
   bluetooth.begin(9600);
 }
 
@@ -200,11 +196,9 @@ void controlLED() {
 
 void controlSerial() {
   if (temperature > TEMP_THRESHOLD || humidity > HUMIDITY_THRESHOLD) {
-    mySerial.println(0);  // SoftwareSerial로 데이터 전송
     Serial.println("Sent: 0"); // 시리얼 모니터에 전송된 데이터 표시
   }
   else {
-    mySerial.println(1);
     Serial.println("Sent : 1");
   }
 }
