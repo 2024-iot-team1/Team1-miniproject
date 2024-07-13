@@ -127,16 +127,11 @@
         
         <!-- Loading Overlay: 로딩 애니메이션을 위한 오버레이 -->
         <Grid x:Name="LoadingOverlay" Background="#80FFFFFF" Visibility="Collapsed">
-            <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-                <!-- 회전하는 원 -->
-                <Ellipse x:Name="LoadingSpinner" Width="100" Height="100" Stroke="Black" StrokeThickness="10">
-                    <Ellipse.RenderTransform>
-                        <RotateTransform x:Name="LoadingSpinnerTransform" Angle="0" CenterX="50" CenterY="50"/>
-                    </Ellipse.RenderTransform>
-                </Ellipse>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <!-- 로딩 텍스트 -->
-                <TextBlock Text="Loading..." HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,120,0,0" FontSize="20" FontWeight="Bold"/>
-            </Grid>
+                <TextBlock Text="Please wait" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontWeight="Bold"/>
+                <TextBlock Text="Bluetooth Connecting..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="DemiBold"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </mah:MetroWindow>

@@ -8,5 +8,12 @@ namespace Monitoring.Models
 {
     internal class Login
     {
+        public static readonly string SELECT_QUERY = @"SELECT [UserIdx]
+                                                      ,[UserName]
+                                                      ,[ID]
+                                                      ,[PASSWORD]
+                                                  FROM [dbo].[Users]
+                                                 WHERE ID = @ID
+                                                   AND PASSWORD = @PASSWORD";
     }
 }

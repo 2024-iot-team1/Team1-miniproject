@@ -12,5 +12,9 @@ namespace Monitoring.Models
         public static readonly string CONNSTRING = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
 
         public static IDialogCoordinator DialogCoordinator { get; set; }
+
+        public static int UserIdx { get; set; }
+
+        public static string UserName { get; set; }
     }
 }

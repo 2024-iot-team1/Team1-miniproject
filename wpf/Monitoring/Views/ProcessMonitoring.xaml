@@ -147,13 +147,15 @@
         </Grid>
         <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="BtnStart" Content="Start" FontSize="20" Margin="10" Width="150" Height="50" Click="BtnStart_Click"
-                        FontWeight="DemiBold"  Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                <Button x:Name="BtnStart" Content="Start" FontSize="20" Margin="10" 
+                        Width="150" Height="50" Click="BtnStart_Click"
+                        FontWeight="DemiBold"  
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconCodicons Kind="DebugStart" Margin="10" Width="30" Foreground="White"/>
-                                <TextBlock Text="{Binding}" Margin="3" Foreground="White"/>
+                                <iconPacks:PackIconCodicons Kind="DebugStart" Margin="0,10" Width="30" Foreground="White"/>
+                                <TextBlock Text="{Binding}" Margin="0,3" Foreground="White"/>
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>
@@ -163,8 +165,8 @@
                     <Button.ContentTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconEntypo Kind="ControllerStop" Margin="10" Width="30" />
-                                <TextBlock Text="{Binding}" Margin="3" />
+                                <iconPacks:PackIconModern Kind="ControlPause" Margin="0,10" Width="30"/>
+                                <TextBlock Text="{Binding}" Margin="0,3" />
                             </StackPanel>
                         </DataTemplate>
                     </Button.ContentTemplate>

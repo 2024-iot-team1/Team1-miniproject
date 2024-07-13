@@ -7,6 +7,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
+using Monitoring.Views;
 
 namespace Monitoring
 {
@@ -16,13 +17,18 @@ namespace Monitoring
     public partial class MainWindow : MetroWindow
     {
         // 온습도 정보 수신용 블루투스 연결
-        internal SerialPort _serialPort01;   // COM10, 9600
+        internal SerialPort _serialPort01;   // COM11, 9600
 
         // 컨베이어 벨트 블루투스 연결
         internal SerialPort _serialPort02;   // COM12, 9600
 
         // 바코드 및 QR코드 스캐너를 위한 블루트스 연결
-        internal SerialPort _serialPort03;
+        internal SerialPort _serialPort03;  // COM15
+
+        internal int UserIdx {  get; set; }
+
+        internal string UserName { get; set; }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -40,12 +46,12 @@ namespace Monitoring
         // 비동기적으로 시리얼 포트를 초기화
         private async void InitializeSerialPortsAsync()
         {
-
+            LoadingOverlay.Visibility = Visibility.Visible;
 
             // 각 시리얼 포트 초기화 시도
-            await TryInitializeSerialPortAsync("COM11", 9600, port => _serialPort01 = port);
-            await TryInitializeSerialPortAsync("COM15", 9600, port => _serialPort02 = port);
-            await TryInitializeSerialPortAsync("COM12", 9600, port => _serialPort03 = port);
+            await TryInitializeSerialPortAsync("COM13", 9600, port => _serialPort01 = port);
+            await TryInitializeSerialPortAsync("COM7", 9600, port => _serialPort02 = port);
+            await TryInitializeSerialPortAsync("COM10", 9600, port => _serialPort03 = port);
 
             // 연결 상태 UI 업데이트
             if (_serialPort01 != null && _serialPort02 != null && _serialPort03 != null)
@@ -57,6 +63,7 @@ namespace Monitoring
                 await this.ShowMessageAsync("블루투스 통신", "연결 실패");
             }
 
+            LoadingOverlay.Visibility = Visibility.Collapsed;
         }
 
         // 특정 시리얼 포트를 초기화하고 연결 시도
