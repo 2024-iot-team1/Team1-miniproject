@@ -5,6 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+             
              xmlns:local="clr-namespace:Monitoring.Views"
              mc:Ignorable="d">
 
@@ -20,8 +22,12 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0">
+        <Grid Grid.Column="0" Grid.RowSpan="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
                 <RowDefinition Height="1*"/>
@@ -146,7 +152,21 @@
                     
         </Grid>
 
-        <GroupBox Grid.Column="1" Margin="10">
+        <!--주문 추이 GroupBox-->
+        <GroupBox Grid.Row="0" Grid.Column="1" Margin="10,10,10,0" BorderBrush="#2E85C9">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal" Height="25">
+                    <iconPacks:PackIconFontisto Kind="BarChart" Margin="10,0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.354,-0.719"/>
+                    <TextBlock Text="상품별 판매량" VerticalAlignment="Center" Foreground="White" 
+                   FontWeight="Bold" FontSize="17" />
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid Margin="3">
+                <lvc:CartesianChart x:Name="SalesChart"/>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Grid.Column="1" Grid.Row="1" Margin="10">
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal" Height="35">
                     <iconPacks:PackIconFontAwesome Kind="WarehouseSolid" Margin="10" Foreground="White" />

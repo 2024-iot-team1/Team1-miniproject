@@ -1,4 +1,11 @@
-﻿using System;
+﻿using LiveChartsCore;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Painting;
+using Monitoring.Models;
+using Monitoring.Views.Models;
+using SkiaSharp;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
@@ -32,6 +39,7 @@ namespace Monitoring.Views
             Classifications = new ObservableCollection<Classification>();
             GetInventory();
             LoadClassifications();
+            CreateChart();
         }
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
@@ -333,6 +341,71 @@ namespace Monitoring.Views
                 Price.TextChanged += Price_TextChanged;
             }
         }
+
+        #region 상품별 판매량 차트
+        private ObservableCollection<ISeries> SalesSeries { get; set; }
+
+        private ObservableCollection<Axis> SalesLabels { get; set; }
+        private string[] ProductNames { get; set; }
+        private List<ProductSale> GetChartInfo()
+        {
+            var productSales = new List<ProductSale>();
+
+            using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+            {
+                conn.Open();
+                string query = InventoryDB.SALES_SELECT_QUERY;
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    productSales.Add(new ProductSale()
+                    {
+                        ProductName = reader["ProductName"].ToString(),
+                        Sales = Convert.ToInt32(reader["SalesRate"])
+                    });
+                }
+            }
+            return productSales;
+        }
+
+        private void CreateChart()
+        {
+            var productSales = GetChartInfo();
+
+            SalesSeries = new ObservableCollection<ISeries> 
+            {
+                new ColumnSeries<int>
+                {
+                    Values = new List<int>(productSales.Select(ps => ps.Sales)),
+                    Name = "Sales"
+                }
+            };
+
+            ProductNames = productSales.Select(ps => ps.ProductName).ToArray();
+
+            SalesLabels = new ObservableCollection<Axis>
+            {
+                new Axis
+                {
+                    Labels = ProductNames,
+                    TextSize = 10,
+                    LabelsPaint = new SolidColorPaint
+                    {
+                        Color = SKColors.Black,
+                        FontFamily = "NanumGothic"
+                    },
+                }
+            };
+
+
+            SalesChart.Series = SalesSeries;
+            SalesChart.XAxes = SalesLabels;
+        }
+
+        #endregion
+
     }
 
     public class Classification
@@ -340,4 +413,11 @@ namespace Monitoring.Views
         public string ClassificationCode { get; set; }
         public string ClassificationName { get; set; }
     }
+
+    public class ProductSale
+    {
+        public string ProductName { get; set; }
+        public int Sales { get; set; }
+    }
+
 }

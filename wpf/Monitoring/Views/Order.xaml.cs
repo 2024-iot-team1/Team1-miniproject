@@ -202,6 +202,7 @@ namespace Monitoring.Views
         }
 
         #region 주문 추이 그래프 영역
+
         public ISeries[] OrderSeries { get; set; } =
         {
             new LineSeries<double>

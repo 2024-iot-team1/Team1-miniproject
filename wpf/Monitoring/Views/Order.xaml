@@ -187,7 +187,7 @@
         <GroupBox Grid.Row="0" Grid.Column="1" Margin="10,10,10,0" BorderBrush="#2E85C9">
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal" Height="25">
-                    <iconPacks:PackIconOcticons Kind="Archive" Margin="10,0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.354,-0.719"/>
+                    <iconPacks:PackIconPhosphorIcons Kind="ChartLine" Margin="10,0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.354,-0.719"/>
                     <TextBlock Text="주문 추이" VerticalAlignment="Center" Foreground="White" 
                    FontWeight="Bold" FontSize="17" />
                 </StackPanel>
