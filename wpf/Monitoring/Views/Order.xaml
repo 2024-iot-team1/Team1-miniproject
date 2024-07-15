@@ -30,7 +30,7 @@
                         <RowDefinition Height="*"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <Border Margin="5">
+                    <Border>
                         <DataGrid x:Name="OrderDataGrid" Margin="10" RowHeight="30"
                                   IsReadOnly="True" ItemsSource="{Binding}" FontFamily="Helvetica"
                                   AutoGenerateColumns="False" BorderBrush="#2E85C9"

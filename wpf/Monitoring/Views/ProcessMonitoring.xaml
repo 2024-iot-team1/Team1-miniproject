@@ -30,12 +30,12 @@
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <!-- 작업 DataGrid 영역 -->
-        <Border Grid.RowSpan="3" Margin="10" BorderThickness="1"  BorderBrush="#2E85C9">
+        <Border Grid.RowSpan="3" Margin="10" BorderThickness="2"  BorderBrush="#2E85C9">
             <StackPanel Grid.RowSpan="3">
             <DataGrid x:Name="DrdWorkStatus" AutoGenerateColumns="False" RowHeight="30"
                       BorderBrush="#2E85C9" FontFamily="Helvetica" ItemsSource="{Binding}"
                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                      IsReadOnly="True" GridLinesVisibility="All"
+                      IsReadOnly="True" GridLinesVisibility="All" Margin="10"
                       ColumnWidth="*" CanUserSortColumns="True" VerticalScrollBarVisibility="Auto"
                       BorderThickness="1" IsSynchronizedWithCurrentItem="False">
                 <DataGrid.Resources>

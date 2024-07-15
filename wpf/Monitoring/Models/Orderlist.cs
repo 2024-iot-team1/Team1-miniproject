@@ -153,5 +153,15 @@ namespace Monitoring.Views.Models
                                                         WHERE D.DeliveryNum = @DeliveryNum AND O.OrderNum = @OrderNum AND I.InventoryNum = @InventoryNum AND P.ProductCode = @ProductCode;";
 
         //public static readonly string DELETE_QUERY = @"DELETE FROM [dbo].[Orders] WHERE Id = @Id";
+
+        public static readonly string QUANTITY_SELECT_QUERY = @"SELECT 
+                                                                    FORMAT(OrderDT, 'yyyy-MM-dd') AS OrderDT, 
+                                                                    SUM(Quantity) AS Quantity
+                                                                FROM 
+                                                                    Orders
+                                                                GROUP BY 
+                                                                    FORMAT(OrderDT, 'yyyy-MM-dd')
+                                                                ORDER BY 
+                                                                    FORMAT(OrderDT, 'yyyy-MM-dd');";
     }
 }

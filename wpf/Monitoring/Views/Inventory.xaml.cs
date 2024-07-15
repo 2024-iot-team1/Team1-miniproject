@@ -379,7 +379,12 @@ namespace Monitoring.Views
                 new ColumnSeries<int>
                 {
                     Values = new List<int>(productSales.Select(ps => ps.Sales)),
-                    Name = "Sales"
+                    Name = "Sales",
+                    Tag = new SolidColorPaint
+                    {
+                        Color = SKColors.Black,
+                        FontFamily = "NanumGothic"
+                    }
                 }
             };
 
@@ -402,6 +407,11 @@ namespace Monitoring.Views
 
             SalesChart.Series = SalesSeries;
             SalesChart.XAxes = SalesLabels;
+            SalesChart.TooltipTextPaint = new SolidColorPaint
+            {
+                Color = SKColors.Black,
+                FontFamily = "NanumGothic"
+            };
         }
 
         #endregion
@@ -419,5 +429,4 @@ namespace Monitoring.Views
         public string ProductName { get; set; }
         public int Sales { get; set; }
     }
-
 }

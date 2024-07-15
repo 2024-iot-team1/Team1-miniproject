@@ -7,12 +7,16 @@ using System.Data;
 using Monitoring.Models;
 using System.Linq;
 using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Eto;
 using LiveChartsCore;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
 using LiveChartsCore.SkiaSharpView.VisualElements;
 using LiveChartsCore.SkiaSharpView.WPF;
 using LiveChartsCore.SkiaSharpView.SKCharts;
+using System.Collections.ObjectModel;
+using Monitoring.Views.Models;
+using System.Collections.Generic;
 
 namespace Monitoring.Views
 {
@@ -28,7 +32,7 @@ namespace Monitoring.Views
             // 데이터 테이블 초기화
             dataTable = new DataTable();
             LoadData();
-            CreateChart();
+            CreateOrderChart();
         }
 
         private void LoadData()
@@ -203,21 +207,79 @@ namespace Monitoring.Views
 
         #region 주문 추이 그래프 영역
 
-        public ISeries[] OrderSeries { get; set; } =
+        private ObservableCollection<ISeries> OrderQuantities { get; set; }
+
+        private ObservableCollection<Axis> OrderDates { get; set; }
+
+        private string[] Dates { get; set; } 
+        private List<OrderQuantity> GetOrderChartInfo()
         {
-            new LineSeries<double>
+            var tempList = new List<OrderQuantity>();
+
+            using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
             {
-                Values = new double[] { 2, 1, 3, 5, 3, 4, 6 },
-                Fill = null
+                conn.Open();
+                string query = Orderlist.QUANTITY_SELECT_QUERY;
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    tempList.Add(new OrderQuantity()
+                    {
+                        OrderDT = reader["OrderDT"].ToString(),
+                        Quantity = Convert.ToInt32(reader["Quantity"])
+                    });
+                }
             }
-        };
-
-
-        private void CreateChart()
-        {
-            OrderChart.Series = OrderSeries;
+            return tempList;
         }
+        private void CreateOrderChart()
+        {
+            var OrderList = GetOrderChartInfo();
+                
+            OrderQuantities = new ObservableCollection<ISeries>
+            {
 
+                new LineSeries<int>
+                {
+                    Values = new List<int>(OrderList.Select(ps => ps.Quantity)),
+                    Fill = null,
+                    //Name = "주문량",
+                    YToolTipLabelFormatter = point => $"주문량: {point.PrimaryValue}개",
+                }
+            };
+
+            Dates = OrderList.Select(ps => ps.OrderDT).ToArray();
+
+            OrderDates = new ObservableCollection<Axis>
+            {
+                new Axis
+                {
+                    Labels = Dates,
+                    TextSize = 10,
+                    LabelsPaint = new SolidColorPaint
+                    {
+                        Color = SKColors.Black,
+                        FontFamily = "NanumGothic"
+                    },
+                }
+            };
+
+            OrderChart.Series = OrderQuantities;
+            OrderChart.XAxes = OrderDates;
+            OrderChart.TooltipTextPaint = new SolidColorPaint
+            {
+                Color = SKColors.Black,
+                FontFamily = "NanumGothic"
+            };
+        }
         #endregion
+    }
+
+    public class OrderQuantity
+    {
+        public string OrderDT { get; set; }
+        public int Quantity { get; set; }
     }
 }
