@@ -355,6 +355,9 @@
       <DependentUpon>Inventory.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\InventoryDB.cs" />
+    <Compile Include="Views\MainWindowTest.xaml.cs">
+      <DependentUpon>MainWindowTest.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\Order.xaml.cs">
       <DependentUpon>Order.xaml</DependentUpon>
     </Compile>
@@ -380,6 +383,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\Inventory.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\MainWindowTest.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -432,6 +439,7 @@
     <Content Include="image\ladder.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Resource Include="image\logo.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="packages\HarfBuzzSharp.NativeAssets.macOS.7.3.0\build\net462\HarfBuzzSharp.NativeAssets.macOS.targets" Condition="Exists('packages\HarfBuzzSharp.NativeAssets.macOS.7.3.0\build\net462\HarfBuzzSharp.NativeAssets.macOS.targets')" />
