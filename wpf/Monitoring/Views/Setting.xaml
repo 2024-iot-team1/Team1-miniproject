@@ -16,96 +16,116 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="320" />
         </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="50" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="50" />
-        </Grid.RowDefinitions>
 
-        <Label Content="공장 내부 CCTV" VerticalAlignment="Center" HorizontalAlignment="Center" 
-               FontWeight="Bold" FontSize="22" Margin="10,0,0,0" Grid.Column="0"/>
-        <Label Content="센서 설정" VerticalAlignment="Center" HorizontalAlignment="Center" 
-               FontWeight="Bold" FontSize="22" Margin="10,0,0,0" Grid.Column="1"/>
 
-        <Border Grid.Row="1" Grid.Column="0" BorderBrush="#2E85C9" Margin="10" BorderThickness="2">
+        <GroupBox Grid.Row="0" Grid.RowSpan="3" BorderThickness="2" BorderBrush="#2E85C9" Margin="10">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center"  Height="40">
+                    <iconPacks:PackIconIonicons Kind="VideocamMD" Foreground="White" VerticalAlignment="Center" Height="22" Width="22"/>
+                    <TextBlock Text="공장 내부 CCTV" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           FontWeight="Bold" FontSize="22" Margin="10,0,0,0" Grid.Column="0" Foreground="White"/>
+                </StackPanel>
+            </GroupBox.Header>
             <Grid>
-                <cefSharp:ChromiumWebBrowser x:Name="ChromeWeb" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
-            </Grid>
-        </Border>
-
-        <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
-            <Button Name="OnButton" HorizontalAlignment="Left" VerticalAlignment="Center" 
-                    Width="110" Click="OnButton_Click" Margin="10,0,0,10" Height="40"
-                    Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
-                <Button.ContentTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal" >
-                            <iconPacks:PackIconCodicons Kind="DebugStart" Width="30" Foreground="White" VerticalAlignment="Center"/>
-                            <TextBlock Text="CCTV ON" Foreground="White"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </Button.ContentTemplate>
-            </Button>
-            <Button Name="OffButton"  HorizontalAlignment="Left" VerticalAlignment="Center" 
-                    Width="110" Click="OffButton_Click" Margin="10,0,0,10" Height="40"
-                    Style="{StaticResource MahApps.Styles.Button.Square}">
-                <Button.ContentTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <iconPacks:PackIconEntypo Kind="SquaredCross" Margin="5" />
-                            <TextBlock Text="CCTV OFF" Margin="5"/>
-                        </StackPanel>
-                    </DataTemplate>
-                </Button.ContentTemplate>
-            </Button>
-
-        </StackPanel>
-
-        <Border BorderBrush="#2E85C9" BorderThickness="2" Grid.Row="1" Grid.Column="1" 
-                Margin="10" Background="Gainsboro">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="0.6*"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
-                    <RowDefinition Height="50"/>
                     <RowDefinition Height="1*"/>
-                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="50"/>
                 </Grid.RowDefinitions>
-                <Label Content="환기팬 ON/OFF" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="경고 부저 ON/OFF" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="경고 온도 수준" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <Label Content="경고 습도 수준" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"
-                   Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="1" Margin="5,10"
-                                  OnContent="FAN ON" OffContent="FAN OFF" FontWeight="DemiBold"/>
-                <mah:ToggleSwitch x:Name="SwitchBuzz" Grid.Column="1" Grid.Row="2" Margin="5,10"
-                                  OnContent="Buzzer ON" OffContent="Buzzer OFF" FontWeight="DemiBold"/>
-                <mah:NumericUpDown x:Name="TempNum" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"
-                                   Margin="5,10" Width="100" Value="30" FontWeight="DemiBold"/>
-                <mah:NumericUpDown x:Name="HumidNum" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left"
-                                   Margin="5,10" Width="100" Value="70" FontWeight="DemiBold"/>
+                <Border Grid.Row="0" Grid.Column="0" BorderBrush="#2E85C9" Margin="10" BorderThickness="1">
+                    <Grid>
+                        <cefSharp:ChromiumWebBrowser x:Name="ChromeWeb" ScrollViewer.VerticalScrollBarVisibility="Disabled"/>
+                    </Grid>
+                </Border>
+
+                <StackPanel Grid.Row="2" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Right">
+                    <Button Name="OnButton" HorizontalAlignment="Left" VerticalAlignment="Center" 
+                            Width="110" Click="OnButton_Click" Margin="0,0,0,10" Height="40"
+                            Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" >
+                                    <iconPacks:PackIconCodicons Kind="DebugStart" Width="30" Foreground="White" VerticalAlignment="Center"/>
+                                    <TextBlock Text="CCTV ON" Foreground="White"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                    <Button Name="OffButton"  HorizontalAlignment="Left" VerticalAlignment="Center" 
+                            Width="110" Click="OffButton_Click" Margin="10,0,10,10" Height="40"
+                            Style="{StaticResource MahApps.Styles.Button.Square}">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconEntypo Kind="SquaredCross" Margin="5" />
+                                    <TextBlock Text="CCTV OFF" Margin="5"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+
+                </StackPanel>
             </Grid>
-        </Border>
-        <Button x:Name="BtnSave" Grid.Row="2" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"
-                Width="110" Height="40" Margin="0,0,10,10" Click="BtnSave_Click"
-                Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
-            <Button.ContentTemplate>
-                <DataTemplate>
-                    <StackPanel Orientation="Horizontal">
-                        <iconPacks:PackIconMaterial Kind="ContentSaveCheck" Margin="5"/>
-                        <TextBlock Text="설정 저장" Margin="5"/>
-                    </StackPanel>
-                </DataTemplate>
-            </Button.ContentTemplate>
-        </Button>
+
+        </GroupBox>
+
+        <GroupBox BorderBrush="#2E85C9" BorderThickness="2" Grid.Row="0" Grid.Column="1" Grid.RowSpan="3" 
+                Margin="10">
+            <GroupBox.Header>
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal" Height="40">
+                    <iconPacks:PackIconForkAwesome Kind="Cog" Foreground="White" Width="22" Height="22" VerticalAlignment="Center"/>
+                    <Label Content="센서 설정" VerticalAlignment="Center" HorizontalAlignment="Center" 
+                           FontWeight="Bold" FontSize="22" Margin="5,0,0,0" Grid.Column="1" Foreground="White"/>
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                    <RowDefinition Height="50"/>
+                </Grid.RowDefinitions>
+                <Grid Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.6*"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Label Content="환기팬 ON/OFF" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
+                    <Label Content="경고 부저 ON/OFF" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
+                    <Label Content="경고 온도 수준" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
+                    <Label Content="경고 습도 수준" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
+                    <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="1" Margin="5,10"
+                                      OnContent="FAN ON" OffContent="FAN OFF" FontWeight="DemiBold"/>
+                    <mah:ToggleSwitch x:Name="SwitchBuzz" Grid.Column="1" Grid.Row="2" Margin="5,10"
+                                      OnContent="Buzzer ON" OffContent="Buzzer OFF" FontWeight="DemiBold"/>
+                    <mah:NumericUpDown x:Name="TempNum" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"
+                                       Margin="5,10" Width="100" Value="30" FontWeight="DemiBold"/>
+                    <mah:NumericUpDown x:Name="HumidNum" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left"
+                                       Margin="5,10" Width="100" Value="70" FontWeight="DemiBold"/>
+                </Grid>
+                <Button x:Name="BtnSave" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"
+                        Width="110" Height="40" Margin="0,0,10,10" Click="BtnSave_Click"
+                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                    <Button.ContentTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <iconPacks:PackIconMaterial Kind="ContentSaveCheck" Margin="5"/>
+                                <TextBlock Text="설정 저장" Margin="5"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </Button.ContentTemplate>
+                </Button>
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>
