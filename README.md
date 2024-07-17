@@ -279,7 +279,14 @@
     - CCTV & 설정 페이지
         - 버튼 디자인 적용
 
-### 📝 2024.07.15
+### 📝 2024.07.16
 - WPF 
     - CCTV & 설정 페이지
         - 프레임 양식 통일화
+
+### 📝 2024.07.17
+- 메인 프레임 80% 가량 완성
+
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject005.jpg" width="50%">
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject006.jpg" width="50%">

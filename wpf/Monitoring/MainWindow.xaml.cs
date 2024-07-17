@@ -39,7 +39,7 @@ namespace Monitoring
 
             // 비동기적으로 시리얼 포트 초기화 시작
             // 디자인 작업할 때는 아래를 주석처리하고 작업하기
-            // InitializeSerialPortsAsync();
+            InitializeSerialPortsAsync();
 
             // 타이머 설정: 1초마다 현재 시간 업데이트
             DispatcherTimer timer = new DispatcherTimer();
