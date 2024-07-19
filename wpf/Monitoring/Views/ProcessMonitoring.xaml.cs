@@ -169,6 +169,18 @@ namespace Monitoring.Views
                         DeliveryNum = reader.GetInt32(reader.GetOrdinal("DeliveryNum"));
                     }
                     reader.Close();
+
+                    // WorkStatus 테이블에 처리결과 삽입
+                    DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
+
+                    SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
+
+                    insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
+                    insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
+                    insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
+                    insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'N');
+
+                    insertCmd.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
@@ -191,20 +203,15 @@ namespace Monitoring.Views
                 {
                     conn.Open();
                     // WorkStatus 테이블에 처리결과 삽입
-                    string query2 = ProMonitoring.DELIVERY_UPDATE_QUERY;
+                    string query = ProMonitoring.DELIVERY_UPDATE_QUERY;
                     DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
 
-                    SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
+                    SqlCommand updateCmd = new SqlCommand(ProMonitoring.UPDATE_WORKSTATUS, conn);
+                    updateCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
 
-                    insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
-                    insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
-                    insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
-                    insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'Y');
+                    updateCmd.ExecuteNonQuery();
 
-
-                    int result = insertCmd.ExecuteNonQuery();
-
-                    SqlCommand updateCom = new SqlCommand(query2, conn);
+                    SqlCommand updateCom = new SqlCommand(query, conn);
                     updateCom.Parameters.AddWithValue("@OrderNum", OrderNum);
                     updateCom.Parameters.AddWithValue("@StartDT", nowDT);
 

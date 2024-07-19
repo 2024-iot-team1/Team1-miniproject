@@ -58,5 +58,9 @@ namespace Monitoring.Models
 		                                                                     WHERE p.ProductCode = i.ProductCode) AS i
                                                                      WHERE o.InventoryNum = i.InventoryNum
                                                                      GROUP BY i.ProductName";
+
+        public static readonly string UPDATE_WORKSTATUS = @"UPDATE WorkStatus
+                                                               SET CompleteOrNot = 'Y'
+                                                             WHERE OrderNum = @OrderNum";
     }
 }
