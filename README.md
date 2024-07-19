@@ -290,3 +290,8 @@
 <br>
     <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject005.jpg" width="50%">
     <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject006.jpg" width="50%">
+
+### 📝 2024.07.19
+- WPF
+    - 모니터링 페이지
+        - 바코드가 인식되면 WorkStatus에 데이터가 추가되고 상품이 상자에 들어간게 인식되면 Update 쿼리문을 실행해 CompleteOrNot 값을 Y으로 변경
