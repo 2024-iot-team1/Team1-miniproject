@@ -6,9 +6,8 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
-             
              xmlns:local="clr-namespace:Monitoring.Views"
-             mc:Ignorable="d">
+             mc:Ignorable="d" Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
         <!-- 중앙 정렬 스타일 리소스 정의 -->
@@ -29,10 +28,37 @@
         <Border Margin="10" BorderBrush="#2E85C9" BorderThickness="2" Grid.RowSpan="2">
             <Grid>
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <DataGrid x:Name="GrdResult" Grid.Column="0" Grid.Row="0" Margin="10,10,10,5" RowHeight="30"
+                <!-- 데이터 그리드 필터용 콤보 박스 -->
+                <Border BorderThickness="1" BorderBrush="#2E85C9" Margin="10,10,10,0" >
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+                        <Label Content="정렬 분류" FontWeight="Bold" FontSize="15" FontFamily="Helvetica"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A65A2"/>
+                        <ComboBox x:Name="CboAlignment" Margin="10,5,5,5"
+                                  VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding Alignments}" HorizontalContentAlignment="Center"
+                                  SelectedItem="{Binding SelectedAlignment, Mode=TwoWay}"
+                                  DisplayMemberPath="AlignmentName" SelectedValuePath="AlignmentCode"
+                                  SelectionChanged="CboAlignment_SelectionChanged"
+                                  Height="30" Width="100" Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
+                        </ComboBox>
+                        <Label Content="상품 분류" FontWeight="Bold" FontSize="15" FontFamily="Helvetica"
+                           VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A65A2"/>
+                        <ComboBox x:Name="CboClassification" Margin="10,5,5,5"
+                                  VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding Classifications2}" HorizontalContentAlignment="Center"
+                                  SelectedItem="{Binding SelectedClassification, Mode=TwoWay}"
+                                  DisplayMemberPath="ClassificationName" SelectedValuePath="ClassificationCode"
+                                  SelectionChanged="CboClassification_SelectionChanged"
+                                  Height="30" Width="100" Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
+                        </ComboBox>
+                    
+                    </StackPanel>
+                </Border>
+                <DataGrid x:Name="GrdResult" Grid.Column="0" Grid.Row="1" Margin="10,10,10,5" RowHeight="30"
                           IsReadOnly="True" ItemsSource="{Binding}" FontFamily="Helvetica"
                           AutoGenerateColumns="False" BorderBrush="#2E85C9"
                           HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
@@ -137,7 +163,7 @@
                         </DataGridTextColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-                <Button Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" Margin="10,5,10,10"
+                <Button Grid.Row="2" Grid.Column="0" HorizontalAlignment="Right" Margin="10,5,10,10"
                         Content="새로고침" Width="120" Height="40" Click="BtnSearch_Click"
                         Style="{StaticResource MahApps.Styles.Button.Square.Accent}" FontSize="15" >
                     <Button.ContentTemplate>

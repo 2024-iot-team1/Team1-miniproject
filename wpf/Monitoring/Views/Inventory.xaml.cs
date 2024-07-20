@@ -21,6 +21,8 @@ namespace Monitoring.Views
         private string CONNSTRING = "Server=localhost;Database=AutoSortingDB;User Id=sa;Password=mssql_p@ss";
 
         public ObservableCollection<Classification> Classifications { get; set; }
+        public ObservableCollection<Classification> Classifications2 { get; set; }
+
         private Classification _selectedClassification;
         public Classification SelectedClassification
         {
@@ -31,15 +33,59 @@ namespace Monitoring.Views
                 OnPropertyChanged(nameof(SelectedClassification));
             }
         }
+        public ObservableCollection<Alignment> Alignments { get; set; }
 
+        private Alignment _selectedAlignment;
+
+        public Alignment SelectedAlignment
+        {
+            get { return _selectedAlignment; }
+            set
+            {
+                _selectedAlignment = value;
+                OnPropertyChanged(nameof(SelectedAlignment));
+            }
+        }
+
+        public static string AlignmentStandard {  get; set; }
         public Inventory()
         {
             InitializeComponent();
             DataContext = this;
             Classifications = new ObservableCollection<Classification>();
-            GetInventory();
+            Classifications2 = new ObservableCollection<Classification>();
+            Alignments = new ObservableCollection<Alignment>();
+            Classifications2.Add(new Classification
+            {
+                ClassificationCode = "0",
+                ClassificationName = "(전체)"
+            });
+            SetAlignments();
             LoadClassifications();
             CreateChart();
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            CboAlignment.SelectedIndex = 0;
+            CboClassification.SelectedIndex = 0;
+            GetInventory();
+        }
+
+        private void SetAlignments()
+        {
+            List<Alignment> alignments = new List<Alignment>();
+            string[] alignmentsName = { "상품코드", "상품명", "상품분류", "상품가격", "판매량", "재고 현황", "안전 재고", "조달 예정 물량" };
+            string[] alignmentsCode = { "ProductCode", "ProductName", "ClassificationName", "Price", "InventoryNum", "SalesRate", "Stock", "SafeStock", "Procurement" };
+
+            for (int i = 0; i < alignmentsName.Count(); i++)
+            {
+                Alignments.Add(new Alignment
+                {
+                    AlignmentName = alignmentsName[i],
+                    AlignmentCode = alignmentsCode[i],
+                });
+            }
         }
 
         private void BtnSearch_Click(object sender, RoutedEventArgs e)
@@ -47,6 +93,7 @@ namespace Monitoring.Views
             GetInventory();
         }
 
+        // 데이터 그리드에 전체 값을 출력하는 함수
         public void GetInventory()
         {
             try
@@ -54,6 +101,9 @@ namespace Monitoring.Views
                 using (SqlConnection connection = new SqlConnection(CONNSTRING))
                 {
                     connection.Open();
+
+                    AlignmentStandard = CboAlignment.sel;
+
                     SqlCommand command = new SqlCommand(Models.InventoryDB.SELECT_QUERY, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
                     DataTable dataTable = new DataTable();
@@ -67,6 +117,8 @@ namespace Monitoring.Views
             }
         }
 
+        
+        // 콤보박스에 값을 집어넣는 함수
         private void LoadClassifications()
         {
             try
@@ -79,6 +131,11 @@ namespace Monitoring.Views
                     while (reader.Read())
                     {
                         Classifications.Add(new Classification
+                        {
+                            ClassificationCode = reader["ClassificationCode"].ToString(),
+                            ClassificationName = reader["ClassificationName"].ToString()
+                        });
+                        Classifications2.Add(new Classification
                         {
                             ClassificationCode = reader["ClassificationCode"].ToString(),
                             ClassificationName = reader["ClassificationName"].ToString()
@@ -97,6 +154,7 @@ namespace Monitoring.Views
             SaveInventory();
         }
 
+        // 신규 상품 및 재고 추가
         private void SaveInventory()
         {
             string productCode = ProductCode.Text;
@@ -416,6 +474,39 @@ namespace Monitoring.Views
 
         #endregion
 
+        // 상품 분류 필터 콤보박스 선택 변경
+        private void CboClassification_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (Convert.ToInt32(CboClassification.SelectedValue) == 0)
+            {
+                GetInventory();
+            }
+            else
+            {
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(CONNSTRING))
+                    {
+                        connection.Open();
+                        SqlCommand command = new SqlCommand(Models.InventoryDB.FILTER_SELECT_QUERY, connection);
+                        command.Parameters.AddWithValue("@ClassificationCode", Convert.ToInt32(CboClassification.SelectedValue));
+                    
+                        SqlDataAdapter adapter = new SqlDataAdapter(command);
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        GrdResult.ItemsSource = dataTable.DefaultView;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+            }
+        }
+
+        private void CboAlignment_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+        }
     }
 
     public class Classification
@@ -428,5 +519,11 @@ namespace Monitoring.Views
     {
         public string ProductName { get; set; }
         public int Sales { get; set; }
+    }
+
+    public class Alignment
+    {
+        public string AlignmentCode { get; set; }
+        public string AlignmentName { get; set; }
     }
 }

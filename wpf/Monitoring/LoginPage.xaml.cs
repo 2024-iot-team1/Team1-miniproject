@@ -27,6 +27,7 @@ namespace Monitoring.Views
         public LoginPage()
         {
             InitializeComponent();
+            TbxId.Focus();
         }
 
         private async void BtnLogin_Click(object sender, RoutedEventArgs e)

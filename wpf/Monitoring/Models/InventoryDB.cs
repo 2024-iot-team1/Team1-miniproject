@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
+using static Monitoring.Views.Inventory;
 
 namespace Monitoring.Views.Models
 {
@@ -19,7 +21,7 @@ namespace Monitoring.Views.Models
         public string Classification { get; set; }
 
 
-        public static readonly string SELECT_QUERY = @"SELECT p.[ProductCode]
+        public static readonly string SELECT_QUERY = $@"SELECT p.[ProductCode]
                                                               ,p.[ProductName]
                                                               ,p.[Price]                                                              
                                                               ,c.[ClassificationName]
@@ -30,7 +32,8 @@ namespace Monitoring.Views.Models
                                                               ,i.[Procurement]
                                                         FROM [AutoSortingDB].[dbo].[Product] p
                                                         INNER JOIN [Inventory] i ON p.[ProductCode] = i.[ProductCode]
-                                                        INNER JOIN [Classification] c ON p.[Classification] = c.[ClassificationCode];";
+                                                        INNER JOIN [Classification] c ON p.[Classification] = c.[ClassificationCode]
+                                                       ORDER BY {AlignmentStandard}";
 
         public static readonly string INSERT_QUERY = @"INSERT INTO [dbo].[Inventory]
                                                            ([ProductCode]
@@ -76,5 +79,19 @@ namespace Monitoring.Views.Models
                                                                FROM Product p
                                                               INNER JOIN Inventory i ON p.ProductCode = i.ProductCode
                                                               WHERE i.SalesRate > 0";
+
+        public static readonly string FILTER_SELECT_QUERY = @"SELECT p.[ProductCode]
+                                                                    ,p.[ProductName]
+                                                                    ,p.[Price]                                                              
+                                                                    ,c.[ClassificationName]
+                                                                    ,i.[InventoryNum]
+                                                                    ,i.[SalesRate]
+                                                                    ,i.[Stock]
+                                                                    ,i.[SafeStock]
+                                                                    ,i.[Procurement]
+                                                                FROM [AutoSortingDB].[dbo].[Product] p
+                                                               INNER JOIN [Inventory] i ON p.[ProductCode] = i.[ProductCode]
+                                                               INNER JOIN [Classification] c ON p.[Classification] = c.[ClassificationCode]
+                                                               WHERE c.ClassificationCode = @ClassificationCode;";
     }
 }
