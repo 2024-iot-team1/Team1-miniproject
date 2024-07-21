@@ -36,7 +36,7 @@ namespace Monitoring
         public MainWindow()
         {
             InitializeComponent();
-
+            // StartWarningAnimation();
             // 비동기적으로 시리얼 포트 초기화 시작
             // 디자인 작업할 때는 아래를 주석처리하고 작업하기
             // InitializeSerialPortsAsync();
@@ -46,6 +46,23 @@ namespace Monitoring
             timer.Interval = new TimeSpan(0, 0, 1);   // 1초마다
             timer.Tick += Timer_Tick;
             timer.Start();
+        }
+
+        // 온습도 아두이노
+        private void SerialPort01_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            try
+            {
+                string data = _serialPort01.ReadLine();
+                if (data.Contains("W"))  // W가 
+                {
+                    Dispatcher.Invoke(() => StartWarningAnimation());
+                }
+            }
+            catch (Exception ex)
+            {
+                Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
+            }
         }
 
         // 컨베이어 벨트 분류기 아두이노
@@ -73,10 +90,25 @@ namespace Monitoring
             }
             catch (Exception ex)
             {
-                Dispatcher.Invoke(() => MessageBox.Show($"데이터 송수신 오류: {ex.Message}"));
+                Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
             }
         }
 
+        // 경고 애니메이션 ON 함수
+        private void StartWarningAnimation()
+        {
+            RedOverlay.Visibility = Visibility.Visible;
+            Storyboard warningStoryboard = (Storyboard)FindResource("WarningStoryboard");
+            warningStoryboard.Begin();
+        }
+
+        // 경고 애니메이션 OFF 함수
+        private void StopWarningAnimation()
+        {
+            RedOverlay.Visibility = Visibility.Collapsed;
+            Storyboard warningStoryboard = (Storyboard)FindResource("WarningStoryboard");
+            warningStoryboard.Stop();
+        }
         private void UpdateDB()
         {
             try
@@ -166,6 +198,7 @@ namespace Monitoring
             {
                 await this.ShowMessageAsync("블루투스 통신", "연결 실패");
             }
+            _serialPort01.DataReceived += SerialPort01_DataReceived;
             _serialPort02.DataReceived += SerialPort02_DataReceived;
             _serialPort03.DataReceived += SerialPort03_DataReceived;
 

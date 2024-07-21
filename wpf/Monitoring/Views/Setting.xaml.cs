@@ -85,8 +85,9 @@ namespace Monitoring.Views
 
                 var buzzStatus = SwitchBuzz.IsOn ? "1" : "0";
                 var fanStatus = SwitchFan.IsOn ? "1" : "0";
+                var lightStatus = SwitchLight.IsOn ? "1" : "0";
 
-                var setting_data = $"{temp},{humid},{fanStatus},{buzzStatus}";
+                var setting_data = $"{temp},{humid},{fanStatus},{buzzStatus},{lightStatus}";
                 port01.WriteLine(setting_data);
             }
             catch (Exception ex)

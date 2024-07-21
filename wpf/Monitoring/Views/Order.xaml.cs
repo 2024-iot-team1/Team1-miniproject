@@ -17,6 +17,8 @@ using LiveChartsCore.SkiaSharpView.SKCharts;
 using System.Collections.ObjectModel;
 using Monitoring.Views.Models;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Security.Cryptography;
 
 namespace Monitoring.Views
 {
@@ -26,13 +28,52 @@ namespace Monitoring.Views
         private DataTable dataTable; // 데이터 테이블을 클래스 레벨 변수로 선언
         private IDialogCoordinator _dialogCoordinator;
 
+        // 리스트 선언
+        public ObservableCollection<DestClassification> Destinations { get; set; }
+
+        public ObservableCollection<StatusClassification> Statuses { get; set; }
+
+        private DestClassification _selectedDestination;
+
+        public DestClassification SelectedDestination
+        {
+            get { return _selectedDestination; }
+            set
+            {
+                _selectedDestination = value;
+                OnPropertyChanged(nameof(SelectedDestination));
+            }
+        }
+
+        private StatusClassification _selectedStatus;
+        public StatusClassification SelectedStatus
+        {
+            get => _selectedStatus;
+            set
+            {
+                _selectedStatus = value;
+                OnPropertyChanged(nameof(SelectedStatus));
+            }
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
         public Order()
         {
             InitializeComponent();
             // 데이터 테이블 초기화
             dataTable = new DataTable();
+            Destinations = new ObservableCollection<DestClassification>();
+            Statuses = new ObservableCollection<StatusClassification>();
+            DataContext = this;
             LoadData();
             CreateOrderChart();
+            setComboBoxes();
         }
 
         private void LoadData()
@@ -275,11 +316,182 @@ namespace Monitoring.Views
             };
         }
         #endregion
+
+
+        private void setComboBoxes()
+        {
+            Destinations.Add(new DestClassification
+            {
+                Dest = "(전지역)"
+            });
+
+            Statuses.Add(new StatusClassification
+            {
+                Status = "(전체)"
+            });
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    conn.Open();
+                    
+                    SqlCommand com1 = new SqlCommand(Orderlist.DESTINATION_SELECT_QUERY, conn);
+                    SqlDataReader reader1 = com1.ExecuteReader();
+                    while (reader1.Read())
+                    {
+                        Destinations.Add(new DestClassification
+                        {
+                            Dest = reader1["Destination"].ToString()
+                        });
+                    }
+
+                    reader1.Close();
+
+                    SqlCommand com2 = new SqlCommand(Orderlist.STATUS_SELECT_QUERY, conn);
+                    SqlDataReader reader2 = com2.ExecuteReader();
+                    while (reader2.Read())
+                    {
+                        Statuses.Add(new StatusClassification
+                        {
+                            Status = reader2["DeliveryStatus"].ToString()
+                        });
+                    }
+
+                    reader2.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string status = SelectedStatus?.Status;
+            string dest = SelectedDestination?.Dest;
+
+            if ((CboDestination.SelectedIndex == 0 && CboStatus.SelectedIndex == 0)||CboDestination.SelectedIndex == -1 || CboStatus.SelectedIndex == -1)
+            {
+                LoadData();
+            }
+
+            // 배송 상태로만 필터링
+            else if (CboDestination.SelectedIndex == 0 && CboStatus.SelectedIndex != 0)
+            {
+                FilterByStatus(status);
+            }
+
+            // 배송지로만 필터링
+            else if (CboDestination.SelectedIndex != 0 && CboStatus.SelectedIndex == 0)
+            {
+                FilterByDest(dest);
+            }
+
+            // 배송상태, 배송지로 필터링
+            else
+            {
+                FilterData(status, dest);
+            }
+        }
+
+        private void FilterData(string status, string dest)
+        {
+            try
+            {
+                using(SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(Orderlist.FILTER_SELECT_QUERY, conn);
+                    cmd.Parameters.AddWithValue("@DeliveryStatus", status);
+                    cmd.Parameters.AddWithValue("@Destination", dest);
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    // DataGrid에 데이터 바인딩
+                    OrderDataGrid.ItemsSource = dataTable.DefaultView;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void FilterByStatus(string status)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(Orderlist.STATUS_FILTER_SELECT_QUERY, conn);
+                    cmd.Parameters.AddWithValue("@DeliveryStatus", status);
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    // DataGrid에 데이터 바인딩
+                    OrderDataGrid.ItemsSource = dataTable.DefaultView;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void FilterByDest(string dest)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    conn.Open();
+                    SqlCommand cmd = new SqlCommand(Orderlist.DEST_FILTER_SELECT_QUERY, conn);
+                    cmd.Parameters.AddWithValue("@Destination", dest);
+
+                    SqlDataAdapter adapter = new SqlDataAdapter(cmd);
+                    dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+
+                    // DataGrid에 데이터 바인딩
+                    OrderDataGrid.ItemsSource = dataTable.DefaultView;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            CboDestination.SelectedIndex = 0;
+            CboStatus.SelectedIndex = 0;
+        }
     }
 
     public class OrderQuantity
     {
         public string OrderDT { get; set; }
         public int Quantity { get; set; }
+    }
+
+    public class DestClassification
+    {
+        public string Dest { get; set; }
+    }
+
+    public class StatusClassification
+    {
+        public string Status { get; set; }
     }
 }

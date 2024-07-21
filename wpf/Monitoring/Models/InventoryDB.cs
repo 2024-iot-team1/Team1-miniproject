@@ -32,8 +32,7 @@ namespace Monitoring.Views.Models
                                                               ,i.[Procurement]
                                                         FROM [AutoSortingDB].[dbo].[Product] p
                                                         INNER JOIN [Inventory] i ON p.[ProductCode] = i.[ProductCode]
-                                                        INNER JOIN [Classification] c ON p.[Classification] = c.[ClassificationCode]
-                                                       ORDER BY {AlignmentStandard}";
+                                                        INNER JOIN [Classification] c ON p.[Classification] = c.[ClassificationCode]";
 
         public static readonly string INSERT_QUERY = @"INSERT INTO [dbo].[Inventory]
                                                            ([ProductCode]

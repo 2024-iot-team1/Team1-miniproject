@@ -18,11 +18,10 @@
     
     <!-- 로딩 애니메이션 스토리보드 정의 -->
     <Window.Resources>
-        <Storyboard x:Key="LoadingAnimation" RepeatBehavior="Forever">
-            <DoubleAnimation
-                Storyboard.TargetName="LoadingSpinnerTransform"
-                Storyboard.TargetProperty="Angle"
-                From="0" To="360" Duration="0:0:2"/>
+        <Storyboard x:Key="WarningStoryboard" AutoReverse="True" RepeatBehavior="Forever">
+            <DoubleAnimation Storyboard.TargetName="RedOverlay"
+                             Storyboard.TargetProperty="Opacity"
+                             From="0.5" To="0" Duration="0:0:0.5"/>
         </Storyboard>
     </Window.Resources>
     <Grid>
@@ -132,6 +131,10 @@
                 <TextBlock Text="Please wait" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="50" FontWeight="Bold"/>
                 <TextBlock Text="Bluetooth Connecting..." HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" FontWeight="DemiBold"/>
             </StackPanel>
+        </Grid>
+
+        <!-- 빨간색 오버레이 레이아웃 -->
+        <Grid x:Name="RedOverlay" Background="Red" Opacity="0" Visibility="Collapsed" IsHitTestVisible="False">
         </Grid>
     </Grid>
 </mah:MetroWindow>

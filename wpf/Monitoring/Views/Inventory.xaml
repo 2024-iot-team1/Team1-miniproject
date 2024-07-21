@@ -35,16 +35,6 @@
                 <!-- 데이터 그리드 필터용 콤보 박스 -->
                 <Border BorderThickness="1" BorderBrush="#2E85C9" Margin="10,10,10,0" >
                     <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-                        <Label Content="정렬 분류" FontWeight="Bold" FontSize="15" FontFamily="Helvetica"
-                           VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A65A2"/>
-                        <ComboBox x:Name="CboAlignment" Margin="10,5,5,5"
-                                  VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center"
-                                  ItemsSource="{Binding Alignments}" HorizontalContentAlignment="Center"
-                                  SelectedItem="{Binding SelectedAlignment, Mode=TwoWay}"
-                                  DisplayMemberPath="AlignmentName" SelectedValuePath="AlignmentCode"
-                                  SelectionChanged="CboAlignment_SelectionChanged"
-                                  Height="30" Width="100" Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
-                        </ComboBox>
                         <Label Content="상품 분류" FontWeight="Bold" FontSize="15" FontFamily="Helvetica"
                            VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A65A2"/>
                         <ComboBox x:Name="CboClassification" Margin="10,5,5,5"

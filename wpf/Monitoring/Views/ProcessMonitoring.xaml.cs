@@ -33,6 +33,8 @@ using LiveChartsCore.SkiaSharpView.WPF;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Brushes = System.Windows.Media.Brushes;
+using Monitoring.Views.Models;
 
 namespace Monitoring.Views
 {
@@ -64,7 +66,23 @@ namespace Monitoring.Views
         #endregion
         public int OrderNum { get; set; }
         public int DeliveryNum { get; set; }
+
+        public bool AlreadyDone { get; set; }
         MainWindow MainWindow { get; set; }
+
+        public ObservableCollection<DestClassifications> Destinations { get; set; }
+
+        private DestClassifications _selectedDestination;
+
+        public DestClassifications SelectedDestination
+        {
+            get { return _selectedDestination; }
+            set
+            {
+                _selectedDestination = value;
+                OnPropertyChanged(nameof(SelectedDestination));
+            }
+        }
         public ProcessMonitoring(MainWindow e)
         {
             InitializeComponent();
@@ -85,7 +103,9 @@ namespace Monitoring.Views
                 port03 = MainWindow._serialPort03;
                 port03.DataReceived += SerialPort03_DataReceived;
             }
-
+            // Destinations 리스트 객체 생성
+            Destinations = new ObservableCollection<DestClassifications>();
+            DataContext = this;
 
             // 앵귤러 차트 추가
             CreateChart();
@@ -98,6 +118,9 @@ namespace Monitoring.Views
 
             // 지역별 처리량을 DB에서 조회하여 지역별 처리량 차트에 넣기
             UpdateValues();
+
+            // 콤보박스에 값 넣기
+            setComboBox();
         }
         public ProcessMonitoring()
         {
@@ -170,17 +193,28 @@ namespace Monitoring.Views
                     }
                     reader.Close();
 
-                    // WorkStatus 테이블에 처리결과 삽입
-                    DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
+                    // 이미 처리한 주문 번호인지 확인
+                    string checkQuery = ProMonitoring.ORDERNUM_SELECT_QUERY;
+                    SqlCommand checkCom = new SqlCommand(checkQuery, conn);
+                    checkCom.Parameters.AddWithValue("@OrderNum", orderNum);
+                    int count = (int)checkCom.ExecuteScalar();
 
-                    SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
+                    // 이미 처리한 주문번호가 아니라면
+                    if(count == 0)
+                    {
+                        AlreadyDone = false;
+                        // WorkStatus 테이블에 처리결과 삽입
+                        DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
 
-                    insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
-                    insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
-                    insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
-                    insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'N');
+                        SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
 
-                    insertCmd.ExecuteNonQuery();
+                        insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
+                        insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
+                        insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
+                        insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'N');
+
+                        insertCmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -197,30 +231,40 @@ namespace Monitoring.Views
 
         private void UpdateDB()
         {
-            try
+            // 이미 처리된 작업이라면
+            if (AlreadyDone == true)
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
-                {
-                    conn.Open();
-                    // WorkStatus 테이블에 처리결과 삽입
-                    string query = ProMonitoring.DELIVERY_UPDATE_QUERY;
-                    DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
-
-                    SqlCommand updateCmd = new SqlCommand(ProMonitoring.UPDATE_WORKSTATUS, conn);
-                    updateCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
-
-                    updateCmd.ExecuteNonQuery();
-
-                    SqlCommand updateCom = new SqlCommand(query, conn);
-                    updateCom.Parameters.AddWithValue("@OrderNum", OrderNum);
-                    updateCom.Parameters.AddWithValue("@StartDT", nowDT);
-
-                    updateCom.ExecuteNonQuery();
-                }
+                return;
             }
-            catch (Exception ex)
+            // 처리된 작업이 아니라면
+            else
             {
-                MessageBox.Show(ex.Message);
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(connectionString))
+                    {
+                        conn.Open();
+                        // WorkStatus 테이블에 처리결과 삽입
+                        string query = ProMonitoring.DELIVERY_UPDATE_QUERY;
+                        DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
+
+                        SqlCommand updateCmd = new SqlCommand(ProMonitoring.UPDATE_WORKSTATUS, conn);
+                        updateCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
+
+                        updateCmd.ExecuteNonQuery();
+
+                        SqlCommand updateCom = new SqlCommand(query, conn);
+                        updateCom.Parameters.AddWithValue("@OrderNum", OrderNum);
+                        updateCom.Parameters.AddWithValue("@StartDT", nowDT);
+
+                        updateCom.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                AlreadyDone = true;
             }
             LoadData();
             UpdateValues();
@@ -274,8 +318,9 @@ namespace Monitoring.Views
             ChtHumid.Series = HumidSeries;
 
             // 습도를 나타낼 앵귤러차트를 초기화
-            HumidNeedle = new NeedleVisual { Value = 50, ScalesXAt = 10 };   // 차트 바늘의 초기값이 20
-                                                                // 앵귤러 차트를 그리기 위한 속성들
+            HumidNeedle = new NeedleVisual { Value = 50 };   // 차트 바늘의 초기값이 50
+
+            // 앵귤러 차트를 그리기 위한 속성들
             HumidVisualElements = new VisualElement<SkiaSharpDrawingContext>[]
             {
                 new AngularTicksVisual
@@ -283,9 +328,8 @@ namespace Monitoring.Views
                     // 앵귤러 차트를 꾸미는 속성들
                     LabelsSize = 12,
                     LabelsOuterOffset = 15,
-                    OuterOffset = 50, // 차트 선이 퍼져있는 정도
-                    TicksLength = 15, // 차트 실선 길이
-
+                    OuterOffset = 40, // 차트 선이 퍼져있는 정도
+                    TicksLength = 12, // 차트 실선 길이
                 },
                 HumidNeedle
             };
@@ -323,7 +367,7 @@ namespace Monitoring.Views
         {
             try
             {
-                using (SqlConnection conn = new SqlConnection(connectionString))
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
                 {
                     conn.Open();
                     // Orders 테이블과 Delivery 테이블을 Inner Join 하여 데이터 가져오는 쿼리
@@ -334,6 +378,30 @@ namespace Monitoring.Views
                     DataTable dataTable = new DataTable();
                     adapter.Fill(dataTable);
                     DrdWorkStatus.ItemsSource = dataTable.DefaultView;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+
+        private void LoadData(string dest)
+        {
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    conn.Open();
+
+                    string query = ProMonitoring.FILTER_SELECT_QUERY;
+                    SqlCommand comm = new SqlCommand(query, conn);
+                    comm.Parameters.AddWithValue("@Destination", dest);
+
+                    SqlDataAdapter adapter= new SqlDataAdapter(comm);
+                    DataTable dataTable = new DataTable();
+                    adapter.Fill(dataTable);
+                    DrdWorkStatus.ItemsSource= dataTable.DefaultView;
                 }
             }
             catch (Exception ex)
@@ -487,5 +555,61 @@ namespace Monitoring.Views
             DestinationSeries[0].Values = new double[] { SeoulValue, BusanValue, DaeguValue };
         }
         #endregion
+
+
+        #region 배송지 분류 콤보박스
+        private void setComboBox()
+        {
+            Destinations.Add(new DestClassifications
+            {
+                Dest = "(전지역)"
+            });
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                {
+                    conn.Open();
+
+                    SqlCommand com1 = new SqlCommand(Orderlist.DESTINATION_SELECT_QUERY, conn);
+                    SqlDataReader reader1 = com1.ExecuteReader();
+                    while (reader1.Read())
+                    {
+                        Destinations.Add(new DestClassifications
+                        {
+                            Dest = reader1["Destination"].ToString()
+                        });
+                    }
+
+                    reader1.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"오류 발생: {ex.Message}", "오류", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void CboDest_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(CboDest.SelectedIndex == 0)
+            {
+                LoadData();
+            }
+            else
+            {
+                LoadData(CboDest.SelectedValue.ToString());
+            }
+        }
+        #endregion
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            CboDest.SelectedIndex = 0;
+        }
+    }
+    public class DestClassifications
+    {
+        public string Dest { get; set; }
     }
 }

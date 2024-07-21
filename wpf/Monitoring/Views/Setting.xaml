@@ -93,24 +93,29 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="50"/>
+                        <RowDefinition Height="50"/>
                         <RowDefinition Height="1*"/>
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
-                    <Label Content="환기팬 ON/OFF" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
+                    <Label Content="전등 ON/OFF" Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Right"
                        Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                    <Label Content="경고 부저 ON/OFF" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
+                    <Label Content="환기팬 ON/OFF" Grid.Row="2" VerticalAlignment="Center" HorizontalAlignment="Right"
                        Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                    <Label Content="경고 온도 수준" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
+                    <Label Content="경고 부저 ON/OFF" Grid.Row="3" VerticalAlignment="Center" HorizontalAlignment="Right"
                        Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                    <Label Content="경고 습도 수준" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"
+                    <Label Content="경고 온도 수준" Grid.Row="4" VerticalAlignment="Center" HorizontalAlignment="Right"
                        Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
-                    <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="1" Margin="5,10"
+                    <Label Content="경고 습도 수준" Grid.Row="5" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Margin="5" FontSize="15" FontFamily="Seoge UI" FontWeight="DemiBold"/>
+                    <mah:ToggleSwitch x:Name="SwitchLight" Grid.Column="1" Grid.Row="1" Margin="5,10"
+                                      OnContent="Light ON" OffContent="Light OFF" FontWeight="DemiBold"/>
+                    <mah:ToggleSwitch x:Name="SwitchFan" Grid.Column="1" Grid.Row="2" Margin="5,10"
                                       OnContent="FAN ON" OffContent="FAN OFF" FontWeight="DemiBold"/>
-                    <mah:ToggleSwitch x:Name="SwitchBuzz" Grid.Column="1" Grid.Row="2" Margin="5,10"
+                    <mah:ToggleSwitch x:Name="SwitchBuzz" Grid.Column="1" Grid.Row="3" Margin="5,10"
                                       OnContent="Buzzer ON" OffContent="Buzzer OFF" FontWeight="DemiBold"/>
-                    <mah:NumericUpDown x:Name="TempNum" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left"
+                    <mah:NumericUpDown x:Name="TempNum" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left"
                                        Margin="5,10" Width="100" Value="30" FontWeight="DemiBold"/>
-                    <mah:NumericUpDown x:Name="HumidNum" Grid.Column="1" Grid.Row="4" HorizontalAlignment="Left"
+                    <mah:NumericUpDown x:Name="HumidNum" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left"
                                        Margin="5,10" Width="100" Value="70" FontWeight="DemiBold"/>
                 </Grid>
                 <Button x:Name="BtnSave" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center"

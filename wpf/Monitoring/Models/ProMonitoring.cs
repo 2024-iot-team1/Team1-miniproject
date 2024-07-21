@@ -12,15 +12,28 @@ namespace Monitoring.Models
         public int WorkNum { get; set; }
         public int OrderNum { get; set; }
         public int DeliveryNum { get; set; }
+        public string Destination { get; set; }
         public DateTime ProcessDT { get; set; }
         public char CompleteOrNot { get; set; }
 
-        public static readonly string SELECT_QUERY = @"SELECT [WorkNum]
-                                                             ,[OrderNum]
-                                                             ,[DeliveryNum]
-                                                             ,[ProcessDT]
-                                                             ,[CompleteOrNot]
-                                                         FROM [dbo].[WorkStatus]";
+        public static readonly string SELECT_QUERY = @"SELECT W.[WorkNum]
+                                                             ,W.[OrderNum]
+                                                             ,W.[DeliveryNum]
+                                                             ,D.[Destination]
+                                                             ,W.[ProcessDT]
+                                                             ,W.[CompleteOrNot]
+                                                         FROM [dbo].[WorkStatus] W
+                                                        INNER JOIN [dbo].[Delivery] D ON W.DeliveryNum = D.DeliveryNum";
+
+        public static readonly string FILTER_SELECT_QUERY = @"SELECT W.[WorkNum]
+                                                                    ,W.[OrderNum]
+                                                                    ,W.[DeliveryNum]
+                                                                    ,D.[Destination]
+                                                                    ,W.[ProcessDT]
+                                                                    ,W.[CompleteOrNot]
+                                                                FROM [dbo].[WorkStatus] W
+                                                               INNER JOIN [dbo].[Delivery] D ON W.DeliveryNum = D.DeliveryNum
+                                                               WHERE D.Destination = @Destination";
 
         public static readonly string DESTINATION_SELECT_QUERY = @"SELECT Destination
                                                                         , DeliveryNum
@@ -62,5 +75,9 @@ namespace Monitoring.Models
         public static readonly string UPDATE_WORKSTATUS = @"UPDATE WorkStatus
                                                                SET CompleteOrNot = 'Y'
                                                              WHERE OrderNum = @OrderNum";
+
+        public static readonly string ORDERNUM_SELECT_QUERY = @"SELECT COUNT(*)
+                                                                  FROM WorkStatus
+                                                                 WHERE OrderNum = @OrderNum";
     }
 }

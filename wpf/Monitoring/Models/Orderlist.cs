@@ -154,14 +154,100 @@ namespace Monitoring.Views.Models
 
         //public static readonly string DELETE_QUERY = @"DELETE FROM [dbo].[Orders] WHERE Id = @Id";
 
-        public static readonly string QUANTITY_SELECT_QUERY = @"SELECT 
-                                                                    FORMAT(OrderDT, 'yyyy-MM-dd') AS OrderDT, 
-                                                                    SUM(Quantity) AS Quantity
-                                                                FROM 
-                                                                    Orders
-                                                                GROUP BY 
-                                                                    FORMAT(OrderDT, 'yyyy-MM-dd')
-                                                                ORDER BY 
-                                                                    FORMAT(OrderDT, 'yyyy-MM-dd');";
+        public static readonly string QUANTITY_SELECT_QUERY = @"SELECT TOP 5 FORMAT(OrderDT, 'yyyy-MM-dd') AS OrderDT, 
+                                                                       SUM(Quantity) AS Quantity
+                                                                  FROM Orders
+                                                                 GROUP BY FORMAT(OrderDT, 'yyyy-MM-dd')
+                                                                 ORDER BY FORMAT(OrderDT, 'yyyy-MM-dd') DESC;";
+
+        // 배송지 콤보박스에 값을 넣기 위한 쿼리문
+        public static readonly string DESTINATION_SELECT_QUERY = @"SELECT DISTINCT Destination
+                                                                     FROM Delivery;";
+
+        // 배송상태 콤보박스에 값을 넣기 위한 쿼리문
+        public static readonly string STATUS_SELECT_QUERY = @"SELECT DISTINCT DeliveryStatus
+                                                                     FROM Delivery;";
+
+        // 배송상태, 배송지 둘 다 0번 인덱스가 아닌경우
+        public static readonly string FILTER_SELECT_QUERY = @"SELECT D.DeliveryNum,
+                                                              D.OrderNum,
+                                                              D.DeliveryStatus,
+                                                              D.StartDT,
+                                                              D.CompleteDT,
+                                                              D.Destination,
+                                                              O.InventoryNum,
+                                                              O.Quantity,
+                                                              O.OrderDT,
+                                                              O.OrderNum,
+                                                              O.CancelOrNot,
+                                                              P.ProductCode,
+                                                              P.ProductName,
+                                                              P.Price,
+                                                              I.Stock,
+                                                              I.SafeStock,
+                                                              I.SalesRate,
+                                                              I.Procurement,
+                                                              I.InventoryNum,
+                                                              I.ProductCode
+                                                         FROM [dbo].[Delivery] D
+                                                        INNER JOIN [dbo].[Orders] O ON D.OrderNum = O.OrderNum
+                                                        INNER JOIN [dbo].[Inventory] I ON O.InventoryNum = I.InventoryNum
+                                                        INNER JOIN [dbo].[Product] P ON I.ProductCode = P.ProductCode
+                                                        WHERE D.DeliveryStatus = @DeliveryStatus
+                                                          AND D.Destination = @Destination;";
+
+        // 배송지만 0번 인덱스가 아닌 경우
+        public static readonly string STATUS_FILTER_SELECT_QUERY = @"SELECT D.DeliveryNum,
+                                                                            D.OrderNum,
+                                                                            D.DeliveryStatus,
+                                                                            D.StartDT,
+                                                                            D.CompleteDT,
+                                                                            D.Destination,
+                                                                            O.InventoryNum,
+                                                                            O.Quantity,
+                                                                            O.OrderDT,
+                                                                            O.OrderNum,
+                                                                            O.CancelOrNot,
+                                                                            P.ProductCode,
+                                                                            P.ProductName,
+                                                                            P.Price,
+                                                                            I.Stock,
+                                                                            I.SafeStock,
+                                                                            I.SalesRate,
+                                                                            I.Procurement,
+                                                                            I.InventoryNum,
+                                                                            I.ProductCode
+                                                                       FROM [dbo].[Delivery] D
+                                                                      INNER JOIN [dbo].[Orders] O ON D.OrderNum = O.OrderNum
+                                                                      INNER JOIN [dbo].[Inventory] I ON O.InventoryNum = I.InventoryNum
+                                                                      INNER JOIN [dbo].[Product] P ON I.ProductCode = P.ProductCode
+                                                                      WHERE D.DeliveryStatus = @DeliveryStatus;";
+
+        // 배송상태만 0번 인덱스가 아닌 경우
+        public static readonly string DEST_FILTER_SELECT_QUERY = @"SELECT D.DeliveryNum,
+                                                                          D.OrderNum,
+                                                                          D.DeliveryStatus,
+                                                                          D.StartDT,
+                                                                          D.CompleteDT,
+                                                                          D.Destination,
+                                                                          O.InventoryNum,
+                                                                          O.Quantity,
+                                                                          O.OrderDT,
+                                                                          O.OrderNum,
+                                                                          O.CancelOrNot,
+                                                                          P.ProductCode,
+                                                                          P.ProductName,
+                                                                          P.Price,
+                                                                          I.Stock,
+                                                                          I.SafeStock,
+                                                                          I.SalesRate,
+                                                                          I.Procurement,
+                                                                          I.InventoryNum,
+                                                                          I.ProductCode
+                                                                     FROM [dbo].[Delivery] D
+                                                                    INNER JOIN [dbo].[Orders] O ON D.OrderNum = O.OrderNum
+                                                                    INNER JOIN [dbo].[Inventory] I ON O.InventoryNum = I.InventoryNum
+                                                                    INNER JOIN [dbo].[Product] P ON I.ProductCode = P.ProductCode
+                                                                    WHERE D.Destination = @Destination;";
     }
 }

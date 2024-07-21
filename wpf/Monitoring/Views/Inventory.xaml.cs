@@ -67,7 +67,6 @@ namespace Monitoring.Views
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
         {
-            CboAlignment.SelectedIndex = 0;
             CboClassification.SelectedIndex = 0;
             GetInventory();
         }
@@ -101,8 +100,6 @@ namespace Monitoring.Views
                 using (SqlConnection connection = new SqlConnection(CONNSTRING))
                 {
                     connection.Open();
-
-                    AlignmentStandard = CboAlignment.sel;
 
                     SqlCommand command = new SqlCommand(Models.InventoryDB.SELECT_QUERY, connection);
                     SqlDataAdapter adapter = new SqlDataAdapter(command);
@@ -502,10 +499,6 @@ namespace Monitoring.Views
                     MessageBox.Show(ex.Message);
                 }
             }
-        }
-
-        private void CboAlignment_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
         }
     }
 

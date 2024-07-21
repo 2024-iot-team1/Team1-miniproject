@@ -7,7 +7,7 @@
       xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-      mc:Ignorable="d" 
+      mc:Ignorable="d" Loaded="UserControl_Loaded"
       d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
         <Style x:Key="CenteredHeaderStyle" TargetType="DataGridColumnHeader">
@@ -23,19 +23,38 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="1*"/>
-            <RowDefinition Height="77"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
         <!-- 작업 DataGrid 영역 -->
-        <Border Grid.RowSpan="3" Margin="10" BorderThickness="2"  BorderBrush="#2E85C9">
-            <StackPanel Grid.RowSpan="3">
-            <DataGrid x:Name="DrdWorkStatus" AutoGenerateColumns="False" RowHeight="30"
+        <Border Grid.RowSpan="3" Margin="10,10,7,10" BorderThickness="2"  BorderBrush="#2E85C9">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border BorderThickness="1" BorderBrush="#2E85C9" Margin="10,10,10,0" >
+                    <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+                        <Label Content="배송지 분류" FontWeight="Bold" FontSize="15" FontFamily="Helvetica"
+                               VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A65A2"/>
+                        <ComboBox x:Name="CboDest" Margin="10,5,5,5"
+                                  VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+                                  ItemsSource="{Binding Destinations}" HorizontalContentAlignment="Center"
+                                  SelectedItem="{Binding SelectedDestination, Mode=TwoWay}"
+                                  DisplayMemberPath="Dest" SelectedValuePath="Dest"
+                                  SelectionChanged="CboDest_SelectionChanged"
+                                  Height="30" Width="100" Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
+                        </ComboBox>
+
+                    </StackPanel>
+                </Border>
+                <DataGrid x:Name="DrdWorkStatus" AutoGenerateColumns="False" RowHeight="30"
                       BorderBrush="#2E85C9" FontFamily="Helvetica" ItemsSource="{Binding}"
                       VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
-                      IsReadOnly="True" GridLinesVisibility="All" Margin="10"
+                      IsReadOnly="True" GridLinesVisibility="All" Margin="10" Grid.Row="1"
                       ColumnWidth="*" CanUserSortColumns="True" VerticalScrollBarVisibility="Auto"
                       BorderThickness="1" IsSynchronizedWithCurrentItem="False">
                 <DataGrid.Resources>
@@ -80,6 +99,15 @@
                             </Style>
                         </DataGridTextColumn.ElementStyle>
                     </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding Destination}" Width="1*" Header="배송지역" >
+                        <DataGridTextColumn.ElementStyle>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Setter Property="VerticalAlignment" Value="Center"/>
+                                <Setter Property="FontWeight" Value="Normal"/>
+                            </Style>
+                        </DataGridTextColumn.ElementStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Binding="{Binding ProcessDT, StringFormat={}{0:yyyy/MM/dd}}" Width="1*" Header="작업일시" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
@@ -100,10 +128,17 @@
                     </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
-        </StackPanel>
+            </Grid>
         </Border>
         <!-- 작업 현황 차트 영역 -->
-        <Border Grid.Row="0" Grid.Column="1" BorderBrush="#2E85C9" BorderThickness="1" Margin="10">
+        <GroupBox Grid.Row="0" Grid.Column="1" BorderBrush="#2E85C9" BorderThickness="1" Margin="5,10,10,10">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal" Height="25">
+                    <iconPacks:PackIconFontisto Kind="BarChart" Margin="10,0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.354,-0.719"/>
+                    <TextBlock Text="지역별 처리량 모니터링" VerticalAlignment="Center" Foreground="White" 
+                   FontWeight="Bold" FontSize="17" />
+                </StackPanel>
+            </GroupBox.Header>
             <Grid>
                 <!--<Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*"/>
@@ -116,62 +151,73 @@
                 <!--<Label Content="상품별 물량" HorizontalAlignment="Center" Grid.Row="0"
                        FontWeight="DemiBold" FontFamily="Seoge UI" FontSize="20" Margin="0,15,0,0"/>
                 <lvc:PieChart x:Name="ChtProduct" Margin="10,0,10,10" Grid.Row="1" Grid.Column="0"/>-->
-                <Label Content="지역별 화물 처리량" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0"
-                       FontWeight="DemiBold" FontFamily="Helvetica" FontSize="20" Margin="0,15,0,0"/>
+
                 <lvc:CartesianChart x:Name="ChtDestination" LegendPosition="Hidden" Grid.Row="1" Grid.Column="0"
-                                    Margin="10,0,10,10" />
+                                    Margin="10" />
             </Grid>
-        </Border>
+        </GroupBox>
         
         <!-- 온습도 차트 영역 -->
-        <Border Grid.Row="1" Grid.Column="1" BorderBrush="#2E85C9" BorderThickness="1" Margin="10">
-            
-        </Border>
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Label Content="실내 온도(℃)" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0"
-                   FontWeight="DemiBold" FontFamily="Helvetica" FontSize="20" Margin="0,15,0,0"/>
-            <lvc:PieChart x:Name="ChtTemp" MinValue="0" MaxValue="100" MaxAngle="270" Grid.Row="1" Grid.Column="0"
-                                  InitialRotation="-225" Margin="20,10,10,10"></lvc:PieChart>
-            <Label Content="실내 습도(%)" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="1"
-                   FontWeight="DemiBold" FontFamily="Helvetica" FontSize="20" Margin="0,15,0,0"/>
-            <lvc:PieChart x:Name="ChtHumid" MinValue="0" Grid.Column="1" Grid.Row="1"
-                          MaxValue="100" MaxAngle="270" InitialRotation="-225" Margin="10,10,20,10"/>
-        </Grid>
-        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Bottom">
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="BtnStart" Content="Start" FontSize="20" Margin="10" 
-                        Width="150" Height="50" Click="BtnStart_Click"
-                        FontWeight="DemiBold"  
-                        Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconCodicons Kind="DebugStart" Margin="0,10" Width="30" Foreground="White"/>
-                                <TextBlock Text="{Binding}" Margin="0,3" Foreground="White"/>
-                            </StackPanel>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
-                </Button>
-                <Button x:Name="BtnStop" Content="Stop" FontSize="20" Margin="10" Width="150" Click="BtnStop_Click"
-                        FontWeight="DemiBold" Style="{StaticResource MahApps.Styles.Button.Square}">
-                    <Button.ContentTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <iconPacks:PackIconModern Kind="ControlPause" Margin="0,10" Width="30"/>
-                                <TextBlock Text="{Binding}" Margin="0,3" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </Button.ContentTemplate>
-                </Button>
+        <GroupBox Grid.Row="1" Grid.Column="1" BorderBrush="#2E85C9" BorderThickness="1" Margin="5,5,10,5">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal" Height="25">
+                    <iconPacks:PackIconMaterial Kind="ThermometerWater" Margin="10,0" Foreground="White" VerticalAlignment="Center"/>
+                    <TextBlock Text="실내 온습도 모니터링" VerticalAlignment="Center" Foreground="White" 
+                   FontWeight="Bold" FontSize="17" />
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <!--<iconPacks:PackIconPhosphorIcons Kind="ThermometerFill" VerticalAlignment="Center" Height="30"/>-->
+                    <Label Content="실내 온도(℃)" HorizontalAlignment="Center" Grid.Row="0" Grid.Column="0"
+                           FontWeight="Bold" FontFamily="Helvetica" FontSize="15" Margin="5"/>
+                </StackPanel>
+                <lvc:PieChart x:Name="ChtTemp" MinValue="0" MaxValue="100" MaxAngle="270" Grid.Row="1" Grid.Column="0"
+                                      InitialRotation="-225" Margin="10,10,10,0"></lvc:PieChart>
+                <StackPanel Orientation="Horizontal"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <!--<iconPacks:PackIconMaterial Kind="WaterPercent" VerticalAlignment="Center" Height="30"/>-->
+                    <Label Content="실내 습도(%)" HorizontalAlignment="Center" 
+                           FontWeight="Bold" FontFamily="Helvetica" FontSize="15" Margin="5"/>
+                </StackPanel>
+                <lvc:PieChart x:Name="ChtHumid" MinValue="0" Grid.Column="1" Grid.Row="1"
+                              MaxValue="100" MaxAngle="270" InitialRotation="-225" Margin="10,10,10,0"/>
+            </Grid>
+        </GroupBox>
+        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button x:Name="BtnStart" Content="Start" FontSize="20" Margin="10" 
+                            Width="150" Height="50" Click="BtnStart_Click"
+                            FontWeight="DemiBold"  
+                            Style="{StaticResource MahApps.Styles.Button.Square.Accent}">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconCodicons Kind="DebugStart" Margin="0,10" Width="30" Foreground="White"/>
+                                    <TextBlock Text="{Binding}" Margin="0,3" Foreground="White"/>
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                    <Button x:Name="BtnStop" Content="Stop" FontSize="20" Margin="10" Width="150" Click="BtnStop_Click"
+                            FontWeight="DemiBold" Style="{StaticResource MahApps.Styles.Button.Square}">
+                        <Button.ContentTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <iconPacks:PackIconModern Kind="ControlPause" Margin="0,10" Width="30"/>
+                                    <TextBlock Text="{Binding}" Margin="0,3" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </Button.ContentTemplate>
+                    </Button>
+                </StackPanel>
             </StackPanel>
-        </StackPanel>
     </Grid>
 </UserControl>
