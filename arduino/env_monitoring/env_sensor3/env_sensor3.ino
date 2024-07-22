@@ -25,6 +25,7 @@ float TEMP_THRESHOLD = 30.0;
 float HUMIDITY_THRESHOLD = 70.0;
 int fanOnOff = 1;   // 1 : On, 0 : Off
 int buzzOnOff = 1;  // 1 : On, 0 : Off
+int WarningSign = 0; // 0 : Safe, 1 : Warning
 
 unsigned long lastDHTReadTime = 0;
 unsigned long lastBuzzerCheckTime = 0;
@@ -115,12 +116,15 @@ void loop() {
       Serial.print(temperature);
       Serial.println(" *C");
 
+      // 온습도 정보 및 위험 정보 전송
+      if (temperature > TEMP_THRESHOLD || humidity > HUMIDITY_THRESHOLD) WarningSign = 1;
+      else Warning = 0;
       char tempString[10];
       char humString[10];
       dtostrf(temperature, 6, 2, tempString); // 온도 변환
       dtostrf(humidity, 6, 2, humString);  // 습도 변환
 
-      String data = String(tempString) + "," + String(humString);
+      String data = String(tempString) + "," + String(humString) + "," + String(WarningSign);
 
       bluetooth.println(data);
   }

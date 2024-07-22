@@ -337,7 +337,7 @@ namespace Monitoring.Views
             //위에서 만든 차트 화면 디자인을 실제 화면의 차트에 적용
             ChtHumid.VisualElements = HumidVisualElements;
         }
-        private void UpdateChart(string data)
+        public void UpdateChart(string data)
         {
             this.Invoke(() =>
             {
@@ -345,9 +345,19 @@ namespace Monitoring.Views
 
                 var temp = Convert.ToDouble(values[0]);
                 var humid = Convert.ToDouble(values[1]);
+                var warningSign = Convert.ToDouble(values[2]);
 
                 TempNeedle.Value = temp;
                 HumidNeedle.Value = humid;
+                if (warningSign == 1) 
+                {
+                    MainWindow.StartWarningAnimation();
+                }
+                else
+                {
+                     MainWindow.StopWarningAnimation();
+                }
+
             });
         }
         #endregion

@@ -3,13 +3,11 @@ using System.Data.SqlClient;
 using System.IO.Ports;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Threading;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
 using Monitoring.Models;
-using Monitoring.Views;
 
 namespace Monitoring
 {
@@ -31,6 +29,7 @@ namespace Monitoring
 
         internal string UserName { get; set; }
 
+        public bool AlreadyDone { get; set; }
         public int OrderNum { get; set; }
         public int DeliveryNum { get; set; }
         public MainWindow()
@@ -39,7 +38,7 @@ namespace Monitoring
             // StartWarningAnimation();
             // 비동기적으로 시리얼 포트 초기화 시작
             // 디자인 작업할 때는 아래를 주석처리하고 작업하기
-            // InitializeSerialPortsAsync();
+            InitializeSerialPortsAsync();
 
             // 타이머 설정: 1초마다 현재 시간 업데이트
             DispatcherTimer timer = new DispatcherTimer();
@@ -49,21 +48,22 @@ namespace Monitoring
         }
 
         // 온습도 아두이노
-        private void SerialPort01_DataReceived(object sender, SerialDataReceivedEventArgs e)
-        {
-            try
-            {
-                string data = _serialPort01.ReadLine();
-                if (data.Contains("W"))  // W가 
-                {
-                    Dispatcher.Invoke(() => StartWarningAnimation());
-                }
-            }
-            catch (Exception ex)
-            {
-                Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
-            }
-        }
+        //private void SerialPort01_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        //{
+        //    try
+        //    {
+        //        string data = _serialPort01.ReadLine();
+        //        if (data.Contains("W"))  // W가 
+        //        {
+        //            Dispatcher.Invoke(() => StartWarningAnimation());
+        //        }
+        //        else StopWarningAnimation();
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Dispatcher.Invoke(() => MessageBox.Show($"MainWindow port1 데이터 수신 오류: {ex.Message}"));
+        //    }
+        //}
 
         // 컨베이어 벨트 분류기 아두이노
         private void SerialPort02_DataReceived(object sender, SerialDataReceivedEventArgs e)  // 블루투스에서 데이터를 수신받음
@@ -75,7 +75,7 @@ namespace Monitoring
             }
             catch (Exception ex)
             {
-                Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
+                Dispatcher.Invoke(() => MessageBox.Show($"MainWindow port2 데이터 수신 오류: {ex.Message}"));
             }
         }
 
@@ -90,12 +90,12 @@ namespace Monitoring
             }
             catch (Exception ex)
             {
-                Dispatcher.Invoke(() => MessageBox.Show($"데이터 수신 오류: {ex.Message}"));
+                Dispatcher.Invoke(() => MessageBox.Show($"MainWindow port3 데이터 수신 오류: {ex.Message}"));
             }
         }
 
         // 경고 애니메이션 ON 함수
-        private void StartWarningAnimation()
+        public void StartWarningAnimation()
         {
             RedOverlay.Visibility = Visibility.Visible;
             Storyboard warningStoryboard = (Storyboard)FindResource("WarningStoryboard");
@@ -103,7 +103,7 @@ namespace Monitoring
         }
 
         // 경고 애니메이션 OFF 함수
-        private void StopWarningAnimation()
+        public void StopWarningAnimation()
         {
             RedOverlay.Visibility = Visibility.Collapsed;
             Storyboard warningStoryboard = (Storyboard)FindResource("WarningStoryboard");
@@ -111,41 +111,47 @@ namespace Monitoring
         }
         private void UpdateDB()
         {
-            try
+            // 이미 처리된 작업이라면
+            if (AlreadyDone == true)
             {
-                using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
-                {
-                    conn.Open();
-                    // WorkStatus 테이블에 처리결과 삽입
-                    string query2 = ProMonitoring.DELIVERY_UPDATE_QUERY;
-                    DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
-
-                    SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
-
-                    insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
-                    insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
-                    insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
-                    insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'Y');
-
-
-                    int result = insertCmd.ExecuteNonQuery();
-
-                    SqlCommand updateCom = new SqlCommand(query2, conn);
-                    updateCom.Parameters.AddWithValue("@OrderNum", OrderNum);
-                    updateCom.Parameters.AddWithValue("@StartDT", nowDT);
-
-                    updateCom.ExecuteNonQuery();
-                }
+                return;
             }
-            catch (Exception ex)
+            // 처리된 작업이 아니라면
+            else
             {
-                MessageBox.Show(ex.Message);
+                try
+                {
+                    using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+                    {
+                        conn.Open();
+                        // WorkStatus 테이블에 처리결과 삽입
+                        string query = ProMonitoring.DELIVERY_UPDATE_QUERY;
+                        DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
+
+                        SqlCommand updateCmd = new SqlCommand(ProMonitoring.UPDATE_WORKSTATUS, conn);
+                        updateCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
+
+                        updateCmd.ExecuteNonQuery();
+
+                        SqlCommand updateCom = new SqlCommand(query, conn);
+                        updateCom.Parameters.AddWithValue("@OrderNum", OrderNum);
+                        updateCom.Parameters.AddWithValue("@StartDT", nowDT);
+
+                        updateCom.ExecuteNonQuery();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
+                AlreadyDone = true;
             }
         }
 
         // 바코드에서 얻은 주문번호를 기반으로 목적지 확인 -> 컨베이어 벨트 아두이노로 전송
         private void SendData(string data)
         {
+
             int orderNum = Convert.ToInt32(data);
             string destination = "";
             try
@@ -164,6 +170,29 @@ namespace Monitoring
                         DeliveryNum = reader.GetInt32(reader.GetOrdinal("DeliveryNum"));
                     }
                     reader.Close();
+
+                    // 이미 처리한 주문 번호인지 확인
+                    string checkQuery = ProMonitoring.ORDERNUM_SELECT_QUERY;
+                    SqlCommand checkCom = new SqlCommand(checkQuery, conn);
+                    checkCom.Parameters.AddWithValue("@OrderNum", orderNum);
+                    int count = (int)checkCom.ExecuteScalar();
+
+                    // 이미 처리한 주문번호가 아니라면
+                    if (count == 0)
+                    {
+                        AlreadyDone = false;
+                        // WorkStatus 테이블에 처리결과 삽입
+                        DateTime nowDT = DateTime.Now; //ToString("yyyy-MM-dd HH:mm:ss");
+
+                        SqlCommand insertCmd = new SqlCommand(ProMonitoring.INSERT_QUERY, conn);
+
+                        insertCmd.Parameters.AddWithValue("@OrderNum", OrderNum);
+                        insertCmd.Parameters.AddWithValue("@DeliveryNum", DeliveryNum);
+                        insertCmd.Parameters.AddWithValue("@ProcessDT", nowDT);
+                        insertCmd.Parameters.AddWithValue("@CompleteOrNot", 'N');
+
+                        insertCmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -198,7 +227,7 @@ namespace Monitoring
             {
                 await this.ShowMessageAsync("블루투스 통신", "연결 실패");
             }
-            _serialPort01.DataReceived += SerialPort01_DataReceived;
+            //_serialPort01.DataReceived += SerialPort01_DataReceived;
             _serialPort02.DataReceived += SerialPort02_DataReceived;
             _serialPort03.DataReceived += SerialPort03_DataReceived;
 
@@ -250,7 +279,7 @@ namespace Monitoring
         // 타이머
         private void Timer_Tick(object sender, EventArgs e)
         {
-            LblSensingDt.Content = DateTime.Now.ToString("yyyy년 MM월 dd일 HH시 mm분 ss초");
+            Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate { LblSensingDt.Content = DateTime.Now.ToString("yyyy년 MM월 dd일 HH시 mm분 ss초"); }));
         }
 
         // 화면 출력
