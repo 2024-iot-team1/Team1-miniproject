@@ -27,7 +27,7 @@
             <td align="center">아두이노<br>자동 분류 시스템 구현</td>
             <td align="center">더미 데이터 세팅</td>
             <td align="center">메인화면 프레임 구현</td>
-            <td align="center">공장 프레임 제작</td>
+            <td align="center">창고 프레임 제작</td>
         <tr/>
             <td align="center"></td>
             <td align="center">아두이노 실내 환경<br>모니터링 시스템 구현</td>
@@ -45,22 +45,40 @@
             <td align="center">공정 모니터링<br>화면 및 기능 구현</td>
             <td align="center"></td>
             <td align="center">WPF 디자인 통일화</td>
-            <td align="center"></td>
+            <td align="center">상품 추가 기능 구현</td>
         </tr>
             <td align="center"></td>
             <td align="center">설정 조정<br>화면 및 기능 구현</td>
             <td align="center"></td>
-            <td align="center"></td>
-            <td align="center"></td>
+            <td align="center">추가 더미데이터 세팅</td>
+            <td align="center">실내 전등 프레임 제작</td>
         </tr>        
             <td align="center"></td>
             <td align="center">공정 처리<br>데이터베이스 관리</td>
+            <td align="center"></td>
+            <td align="center">주문 취소 기능 구현</td>
+            <td align="center"></td>
+        </tr>
+            <td align="center"></td>
+            <td align="center">Livechart2를 활용한<br>데이터 출력</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>             
+            <td align="center"></td>
+            <td align="center">storyboard와 레이아웃를<br>활용한 경고화면 구현</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
         </tr>
             <td align="center"></td>
-            <td align="center">Livechart2를 활용한<br>데이터 출력</td>
+            <td align="center">DataGrid별 필터 기능 추가</td>
+            <td align="center"></td>
+            <td align="center"></td>
+            <td align="center"></td>
+        </tr>
+            <td align="center"></td>
+            <td align="center">실내 환경 모니터링<br>설정값 변경 기능 추가</td>
             <td align="center"></td>
             <td align="center"></td>
             <td align="center"></td>
@@ -288,8 +306,7 @@
 - 메인 프레임 80% 가량 완성
 
 <br>
-    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject005.jpg" width="50%">
-    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject006.jpg" width="50%">
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject005.jpg" width="50%"><img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject006.jpg" width="50%">
 
 ### 📝 2024.07.19
 - WPF
@@ -297,6 +314,9 @@
         - 바코드가 인식되면 WorkStatus에 데이터가 추가되고 상품이 상자에 들어간게 인식되면 Update 쿼리문을 실행해 CompleteOrNot 값을 Y으로 변경
 
 - 창고 지붕 설치 완료
+
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject007.jpg" width="50%">
 
 ### 📝 2024.07.20
 - WPF
@@ -321,7 +341,10 @@
 
 ### 📝 2024.07.22
 - Arduino
-    - 가스 감지 센서 설치
-    - 가스가 감지되면 블루투스 통신을 통해 위험 신호 전달
+    - 부저 모듈 교체
+    - 일정 수준의 온습도가 넘어가면 위험신호를 전송하게 하여 WPF가 붉은색 레이아웃으로 깜짝 거리게 함
 
 - 전등 역할을 할 아크릴 LED 및 가스 감지 센서 설치를 위한 프레임 구축
+
+- DB
+    - 더미데이터 추가 세팅

@@ -193,14 +193,20 @@ namespace Monitoring.Views
                     }
                     reader.Close();
 
-                    // 이미 처리한 주문 번호인지 확인
-                    string checkQuery = ProMonitoring.ORDERNUM_SELECT_QUERY;
-                    SqlCommand checkCom = new SqlCommand(checkQuery, conn);
+                    // 이미 처리한 주문 번호인지(테이블에 존재하는 주문번호인지) 확인
+                    string checkQuery1 = ProMonitoring.ORDERNUM_SELECT_QUERY;
+                    SqlCommand checkCom = new SqlCommand(checkQuery1, conn);
                     checkCom.Parameters.AddWithValue("@OrderNum", orderNum);
-                    int count = (int)checkCom.ExecuteScalar();
+                    int count1 = (int)checkCom.ExecuteScalar();
 
-                    // 이미 처리한 주문번호가 아니라면
-                    if(count == 0)
+                    // 이미 배송중이거나 배송완료한 주문 번호인지 확인
+                    string checkQuery2 = ProMonitoring.STATUS_SELECT_QUERY;
+                    SqlCommand checkCom2 = new SqlCommand(checkQuery2, conn);
+                    checkCom2.Parameters.AddWithValue("@OrderNum", orderNum);
+                    int count2 = (int)checkCom2.ExecuteScalar();
+
+                    // 이미 처리한 주문번호가 아니고 배송중이거나 배송완료한 주문이 아닌 경우
+                    if(count1 == 0 && count2 == 0)
                     {
                         AlreadyDone = false;
                         // WorkStatus 테이블에 처리결과 삽입

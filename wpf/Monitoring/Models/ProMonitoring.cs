@@ -79,5 +79,10 @@ namespace Monitoring.Models
         public static readonly string ORDERNUM_SELECT_QUERY = @"SELECT COUNT(*)
                                                                   FROM WorkStatus
                                                                  WHERE OrderNum = @OrderNum";
+
+        public static readonly string STATUS_SELECT_QUERY = @"SELECT *
+                                                                FROM Delivery
+                                                               WHERE DeliveryStatus IN ('배송중','배송완료','주문취소')
+                                                                 AND OrderNum = 1112112;";    
     }
 }

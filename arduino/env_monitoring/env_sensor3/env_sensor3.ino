@@ -39,6 +39,7 @@ const unsigned long LED_INTERVAL = 100; // 100ms
 const unsigned long SIGNAL_INTERVAL = 2000; // 2초
 const unsigned long FAN_INTERVAL = 100; // 100ms
 
+// 부저 관련 함수
 bool policeSiren = false;
 unsigned long sirenStartTime = 0;
 int sirenFrequency = 1000;
