@@ -16,7 +16,7 @@
         </DataTemplate>
     </mah:MetroWindow.IconTemplate>
     
-    <!-- 로딩 애니메이션 스토리보드 정의 -->
+    <!-- 경고 애니메이션 스토리보드 정의 -->
     <Window.Resources>
         <Storyboard x:Key="WarningStoryboard" AutoReverse="True" RepeatBehavior="Forever">
             <DoubleAnimation Storyboard.TargetName="RedOverlay"
@@ -24,6 +24,8 @@
                              From="0.5" To="0" Duration="0:0:0.5"/>
         </Storyboard>
     </Window.Resources>
+    
+    <!-- 화면 디자인 -->
     <Grid>
         <Grid x:Name="ContentGrid">
             <Grid.ColumnDefinitions>
