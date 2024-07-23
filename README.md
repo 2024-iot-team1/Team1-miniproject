@@ -348,3 +348,6 @@
 
 - DB
     - 더미데이터 추가 세팅
+ 
+## 저작권 표시
+<a href="https://www.flaticon.com/kr/free-icons/-" title="데이터웨어 하우스 아이콘">데이터웨어 하우스 아이콘 제작자: smashingstocks - Flaticon</a>
