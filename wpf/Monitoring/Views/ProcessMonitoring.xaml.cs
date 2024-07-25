@@ -574,6 +574,7 @@ namespace Monitoring.Views
 
 
         #region 배송지 분류 콤보박스
+        // 콤보박스에 값 진어넣기
         private void setComboBox()
         {
             Destinations.Add(new DestClassifications

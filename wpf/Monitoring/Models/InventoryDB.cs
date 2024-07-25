@@ -74,7 +74,7 @@ namespace Monitoring.Views.Models
                                                          WHERE ProductCode = @ProductCode";
 
         // 상품별 판매량 조회 쿼리문
-        public static readonly string SALES_SELECT_QUERY = @"SELECT p.ProductName, i.SalesRate
+        public static readonly string SALES_SELECT_QUERY = @"SELECT TOP 10 p.ProductName, i.SalesRate
                                                                FROM Product p
                                                               INNER JOIN Inventory i ON p.ProductCode = i.ProductCode
                                                               WHERE i.SalesRate > 0";

@@ -25,6 +25,7 @@ float TEMP_THRESHOLD = 30.0;
 float HUMIDITY_THRESHOLD = 70.0;
 int fanOnOff = 1;   // 1 : On, 0 : Off
 int buzzOnOff = 1;  // 1 : On, 0 : Off
+int lightOnOff = 1; // 1 : On, 0 : Off
 int WarningSign = 0; // 0 : Safe, 1 : Warning
 
 unsigned long lastDHTReadTime = 0;
@@ -220,6 +221,12 @@ void controlRelay() {
   }
 }
 
+// 라이트 관리 함수
+void controlLight() {
+  
+}
+
+// WPF에서 설정 정보를 받는 함수
 void recvSetting() {
   if (bluetooth.available()) {
     String data = bluetooth.readStringUntil('\n');
@@ -228,19 +235,23 @@ void recvSetting() {
     int commaIndex1 = data.indexOf(',');
     int commaIndex2 = data.indexOf(',', commaIndex1 + 1);
     int commaIndex3 = data.indexOf(',', commaIndex2 + 1);
+    int commaIndex4 = data.indexOf(',', commaIndex3 + 1);
 
     TEMP_THRESHOLD = data.substring(0, commaIndex1).toFloat();
     HUMIDITY_THRESHOLD = data.substring(commaIndex1 + 1, commaIndex2).toFloat();
     fanOnOff = data.substring(commaIndex2 + 1, commaIndex3).toInt();
     buzzOnOff = data.substring(commaIndex3 +1).toInt();
+    lightOnOff = data.substring(commaIndex4 + 1).toInt();
 
-    Serial.print("Temperature: ");
+    Serial.print("Warning Temperature: ");
     Serial.println(TEMP_THRESHOLD);
-    Serial.print("Humidity: ");
+    Serial.print("Warning Humidity: ");
     Serial.println(HUMIDITY_THRESHOLD);
     Serial.print("Fan: ");
     Serial.println(fanOnOff);
     Serial.print("Buzzer: ");
     Serial.println(buzzOnOff);
+    Serial.print("Light: ");
+    Serial.println(lightOnOff);
   }
 }
