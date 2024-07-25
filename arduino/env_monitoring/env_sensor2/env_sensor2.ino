@@ -43,9 +43,6 @@ bool ledState = false; // LED 상태를 저장하기 위한 변수
 unsigned long lastLEDChangeTime = 0; // 마지막 LED 변경 시간을 저장하는 변수
 const unsigned long LED_CHANGE_INTERVAL = 200; // LED 변경 간격 (200ms)
 
-// 컨베이어 벨트 아두이노와 통신하기 위한 시리얼
-SoftwareSerial mySerial(5, 6); // RX, TX
-
 // 블루투스 통신을 위한 시리얼
 SoftwareSerial bluetooth(BT_RXD, BT_TXD); // 4, 3
 
