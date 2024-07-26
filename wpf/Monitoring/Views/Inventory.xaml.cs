@@ -11,6 +11,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -60,9 +61,11 @@ namespace Monitoring.Views
                 ClassificationCode = "0",
                 ClassificationName = "(전체)"
             });
+
+            DataContext = this;
             SetAlignments();
             LoadClassifications();
-            CreateChart();
+            CreateChart(0);
         }
 
         private void UserControl_Loaded(object sender, RoutedEventArgs e)
@@ -398,18 +401,64 @@ namespace Monitoring.Views
         }
 
         #region 상품별 판매량 차트
-        private ObservableCollection<ISeries> SalesSeries { get; set; }
 
-        private ObservableCollection<Axis> SalesLabels { get; set; }
+        private ObservableCollection<ISeries> _salesSeries;
+
+        public ObservableCollection<ISeries> SalesSeries 
+        {   
+            get => _salesSeries;
+            set
+            {
+                _salesSeries = value;
+                OnPropertyChanged2();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged2;
+
+        protected void OnPropertyChanged2([CallerMemberName] string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        private ObservableCollection<Axis> _salesLabels;
+
+        public ObservableCollection<Axis> SalesLabels 
+        {
+            get => _salesLabels;
+            set
+            {
+                _salesLabels = value;
+                OnPropertyChanged2();
+            }
+        }
+
+        private SolidColorPaint _tooltipColors;
+
+        public SolidColorPaint TooltipColors
+        {
+            get => _tooltipColors;
+            set
+            {
+                _tooltipColors = value;
+                OnPropertyChanged2();
+            }
+        }
         private string[] ProductNames { get; set; }
-        private List<ProductSale> GetChartInfo()
+        private List<ProductSale> GetChartInfo(int align)
         {
             var productSales = new List<ProductSale>();
 
             using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
             {
                 conn.Open();
-                string query = InventoryDB.SALES_SELECT_QUERY;
+                string query = "";
+                if(align == 0)
+                {
+                    query = InventoryDB.SALES_SELECT_QUERY_DESC;
+                }
+                else if (align == 1) query = InventoryDB.SALES_SELECT_QUERY_ASC;
+
                 SqlCommand cmd = new SqlCommand(query, conn);
                 SqlDataReader reader = cmd.ExecuteReader();
 
@@ -425,9 +474,9 @@ namespace Monitoring.Views
             return productSales;
         }
 
-        private void CreateChart()
+        private void CreateChart(int alignNum)
         {
-            var productSales = GetChartInfo();
+            var productSales = GetChartInfo(alignNum);
 
             SalesSeries = new ObservableCollection<ISeries> 
             {
@@ -439,7 +488,8 @@ namespace Monitoring.Views
                     {
                         Color = SKColors.Black,
                         FontFamily = "NanumGothic"
-                    }
+                    },
+                    MaxBarWidth = 40,
                 }
             };
 
@@ -450,23 +500,26 @@ namespace Monitoring.Views
                 new Axis
                 {
                     Labels = ProductNames,
-                    TextSize = 10,
+                    TextSize = 15,
                     LabelsPaint = new SolidColorPaint
                     {
                         Color = SKColors.Black,
                         FontFamily = "NanumGothic"
                     },
+                    
                 }
             };
 
+            TooltipColors =
+                new SolidColorPaint
+                {
+                    Color = SKColors.Black,
+                    FontFamily = "NanumGothic"
+                };
 
-            SalesChart.Series = SalesSeries;
-            SalesChart.XAxes = SalesLabels;
-            SalesChart.TooltipTextPaint = new SolidColorPaint
-            {
-                Color = SKColors.Black,
-                FontFamily = "NanumGothic"
-            };
+
+            //SalesChart.Series = SalesSeries;
+            //SalesChart.XAxes = SalesLabels;
         }
 
         #endregion
@@ -498,6 +551,18 @@ namespace Monitoring.Views
                 {
                     MessageBox.Show(ex.Message);
                 }
+            }
+        }
+
+        private void CboAlign_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if(CboAlign.SelectedIndex == 0)
+            {
+                CreateChart(0);
+            }
+            if(CboAlign.SelectedIndex == 1)
+            {
+                CreateChart(1);
             }
         }
     }

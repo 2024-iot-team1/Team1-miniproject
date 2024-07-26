@@ -35,6 +35,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Brushes = System.Windows.Media.Brushes;
 using Monitoring.Views.Models;
+using CefSharp.DevTools.CSS;
 
 namespace Monitoring.Views
 {
@@ -509,7 +510,7 @@ namespace Monitoring.Views
                     Values = new double[] { 2, 5, 4 },
                     MaxBarWidth = 100,
                     DataLabelsSize = 15,
-                    Padding = 10
+                    Padding = 10,
                 }
             };
 
@@ -524,6 +525,14 @@ namespace Monitoring.Views
                     ShowSeparatorLines = false,
                     SeparatorsAtCenter = false,
                     ForceStepToMin = true,
+                }
+            };
+            ChtDestination.YAxes = new Axis[]
+            {
+                new Axis
+                {
+                    MinLimit = 0,
+                    MinStep = 1,
                 }
             };
 

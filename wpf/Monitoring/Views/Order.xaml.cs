@@ -286,7 +286,9 @@ namespace Monitoring.Views
                 {
                     Values = new List<int>(OrderList.Select(ps => ps.Quantity)),
                     Fill = null,
-                    //Name = "주문량",
+                    Stroke = new SolidColorPaint(SKColors.Red) {StrokeThickness = 4},
+                    GeometryFill = null,
+                    GeometryStroke = null,
                     YToolTipLabelFormatter = point => $"주문량: {point.PrimaryValue}개",
                 }
             };

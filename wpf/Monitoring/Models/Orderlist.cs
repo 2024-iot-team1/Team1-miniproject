@@ -154,11 +154,13 @@ namespace Monitoring.Views.Models
 
         //public static readonly string DELETE_QUERY = @"DELETE FROM [dbo].[Orders] WHERE Id = @Id";
 
-        public static readonly string QUANTITY_SELECT_QUERY = @"SELECT TOP 5 FORMAT(OrderDT, 'yyyy-MM-dd') AS OrderDT, 
-                                                                       SUM(Quantity) AS Quantity
-                                                                  FROM Orders
-                                                                 GROUP BY FORMAT(OrderDT, 'yyyy-MM-dd')
-                                                                 ORDER BY FORMAT(OrderDT, 'yyyy-MM-dd') DESC;";
+        public static readonly string QUANTITY_SELECT_QUERY = @"SELECT *
+                                                                  FROM(SELECT TOP 5 FORMAT(OrderDT, 'yyyy-MM-dd') AS OrderDT, 
+                                                                            SUM(Quantity) AS Quantity
+                                                                        FROM Orders
+                                                                        GROUP BY FORMAT(OrderDT, 'yyyy-MM-dd')
+		                                                                ORDER BY OrderDT DESC) a
+                                                                 ORDER BY a.OrderDT;";
 
         // 배송지 콤보박스에 값을 넣기 위한 쿼리문
         public static readonly string DESTINATION_SELECT_QUERY = @"SELECT DISTINCT Destination

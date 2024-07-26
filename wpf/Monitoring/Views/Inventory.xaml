@@ -172,14 +172,25 @@
         <!--주문 추이 GroupBox-->
         <GroupBox Grid.Row="0" Grid.Column="1" Margin="10,10,10,0" BorderBrush="#2E85C9">
             <GroupBox.Header>
-                <StackPanel Orientation="Horizontal" Height="25">
-                    <iconPacks:PackIconFontisto Kind="BarChart" Margin="10,0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.354,-0.719"/>
-                    <TextBlock Text="상품별 판매량" VerticalAlignment="Center" Foreground="White" 
-                   FontWeight="Bold" FontSize="17" />
-                </StackPanel>
+                <Grid Height="40">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>                    
+                    <StackPanel Orientation="Horizontal" Grid.Column="0">
+                        <iconPacks:PackIconFontisto Kind="BarChart" Margin="10,0" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock Text="상품별 판매량" VerticalAlignment="Center" Foreground="White" FontWeight="Bold" FontSize="17" />
+                    </StackPanel>
+                    <ComboBox x:Name="CboAlign" Grid.Column="1" HorizontalAlignment="Right" Width="100" Margin="0,5,20,5"
+                              Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}" SelectedIndex="0" SelectionChanged="CboAlign_SelectionChanged">
+                        <ComboBoxItem Content="상위 5개"/>
+                        <ComboBoxItem Content="하위 5개"/>
+                    </ComboBox>
+                </Grid>
             </GroupBox.Header>
             <Grid Margin="3">
-                <lvc:CartesianChart x:Name="SalesChart"/>
+                <lvc:CartesianChart x:Name="SalesChart" Series="{Binding SalesSeries}" XAxes="{Binding SalesLabels}" 
+                                    TooltipTextPaint="{Binding TooltipColors}"/>
             </Grid>
         </GroupBox>
 
