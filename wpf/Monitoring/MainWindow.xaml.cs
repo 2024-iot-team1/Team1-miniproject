@@ -17,13 +17,13 @@ namespace Monitoring
     public partial class MainWindow : MetroWindow
     {
         // 온습도 정보 수신용 블루투스 연결
-        internal SerialPort _serialPort01;   // COM11, 9600
+        internal SerialPort _serialPort01;   // COM13, 9600
 
         // 컨베이어 벨트 블루투스 연결
-        internal SerialPort _serialPort02;   // COM12, 9600
+        internal SerialPort _serialPort02;   // COM7, 9600
 
         // 바코드 및 QR코드 스캐너를 위한 블루트스 연결
-        internal SerialPort _serialPort03;  // COM15
+        internal SerialPort _serialPort03;  // COM10
 
         internal int UserIdx {  get; set; }
 
@@ -213,9 +213,9 @@ namespace Monitoring
             LoadingOverlay.Visibility = Visibility.Visible;
 
             // 각 시리얼 포트 초기화 시도
-            await TryInitializeSerialPortAsync("COM13", 9600, port => _serialPort01 = port);
-            await TryInitializeSerialPortAsync("COM7", 9600, port => _serialPort02 = port);
-            await TryInitializeSerialPortAsync("COM10", 9600, port => _serialPort03 = port);
+            await TryInitializeSerialPortAsync("COM12", 9600, port => _serialPort01 = port);    // 온습도
+            await TryInitializeSerialPortAsync("COM6", 9600, port => _serialPort02 = port);     // 컨베이어
+            await TryInitializeSerialPortAsync("COM8", 9600, port => _serialPort03 = port);    // 바코드
 
 
             // 연결 상태 UI 업데이트

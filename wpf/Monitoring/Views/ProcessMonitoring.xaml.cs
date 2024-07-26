@@ -203,7 +203,12 @@ namespace Monitoring.Views
                     string checkQuery2 = ProMonitoring.STATUS_SELECT_QUERY;
                     SqlCommand checkCom2 = new SqlCommand(checkQuery2, conn);
                     checkCom2.Parameters.AddWithValue("@OrderNum", orderNum);
-                    int count2 = (int)checkCom2.ExecuteScalar();
+                    int count2 = 0;
+                    if (checkCom2.ExecuteScalar() == null)
+                    {
+                        count2 = 0;
+                    }
+                    else count2 = (int)checkCom2.ExecuteScalar();
 
                     // 이미 처리한 주문번호가 아니고 배송중이거나 배송완료한 주문이 아닌 경우
                     if(count1 == 0 && count2 == 0)
