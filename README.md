@@ -361,6 +361,12 @@
 - WPF
     - 바코드 리더기 함수 일부 수정
 
+### 📝 2024.07.27
+- WPF
+    - 이벤트 핸들러 함수 등록/제거 수정
+    - 모니터링 페이지 
+        - 일산화탄소 표시 추가
+        - 일별 작업량 표시 추가
 
 ## 저작권 표시
 <a href="https://www.flaticon.com/kr/free-icons/-" title="데이터웨어 하우스 아이콘">데이터웨어 하우스 아이콘 제작자: smashingstocks - Flaticon</a>

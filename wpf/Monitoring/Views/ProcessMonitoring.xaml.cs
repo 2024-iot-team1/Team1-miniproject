@@ -36,6 +36,7 @@ using System.Runtime.CompilerServices;
 using Brushes = System.Windows.Media.Brushes;
 using Monitoring.Views.Models;
 using CefSharp.DevTools.CSS;
+using Color = System.Windows.Media.Brushes;
 
 namespace Monitoring.Views
 {
@@ -122,7 +123,11 @@ namespace Monitoring.Views
 
             // 콤보박스에 값 넣기
             setComboBox();
+
+            // 날짜별 처리량 그래프 생성
+            CreateChtDate();
         }
+
         public ProcessMonitoring()
         {
             InitializeComponent();
@@ -280,6 +285,7 @@ namespace Monitoring.Views
             }
             LoadData();
             UpdateValues();
+            CreateChtDate();
         }
 
         #region 온습도 앵귤러 차트 영역
@@ -358,9 +364,15 @@ namespace Monitoring.Views
                 var temp = Convert.ToDouble(values[0]);
                 var humid = Convert.ToDouble(values[1]);
                 var warningSign = Convert.ToDouble(values[2]);
+                var CO = Convert.ToDouble(values[3]);
 
                 TempNeedle.Value = temp;
                 HumidNeedle.Value = humid;
+                TbxCO.Text = CO.ToString() + " ppm";
+
+                if (CO > 100) TbxCO.Foreground = Color.Red;
+                else TbxCO.Foreground = Color.Black;
+
                 if (warningSign == 1) 
                 {
                     MainWindow.StartWarningAnimation();
@@ -432,42 +444,107 @@ namespace Monitoring.Views
             }
         }
 
-        #region 상품별 처리량 도넛 그래프
-        //public IEnumerable<ISeries> ProductSeries { get; set; } =
-        //    new[]
-        //    {
-        //            new PieSeries<int> { Values = new[]{ 2 }, Name = "A", InnerRadius = 30,
-        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-        //                                DataLabelsSize = 15,
-        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2")},
-        //            new PieSeries<int> { Values = new[]{ 4 }, Name = "B", InnerRadius = 30,
-        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-        //                                DataLabelsSize = 15,
-        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2") },
-        //            new PieSeries<int> { Values = new[]{ 1 }, Name = "C", InnerRadius = 30,                                
-        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-        //                                DataLabelsSize = 15,
-        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N2")},
-        //            new PieSeries<int> { Values = new[]{ 4 }, Name = "D", InnerRadius = 30,
-        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-        //                                DataLabelsSize = 15,
-        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N1")},
-        //            new PieSeries<int> { Values = new[]{ 3 }, Name = "E", InnerRadius = 30,
-        //                                DataLabelsPaint = new SolidColorPaint(SKColors.Black),
-        //                                DataLabelsSize = 15,
-        //                                DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Middle,
-        //                                DataLabelsFormatter = point => point.PrimaryValue.ToString("N1") },
-        //    };
+        #region 날짜별 처리량 막대 그래프
+        private ObservableCollection<ISeries> _processQuantities;
 
-        //private void UpdateDoughnut()
-        //{
-        //    ChtProduct.Series = ProductSeries;
-        //    ChtProduct.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
-        //}
+        public ObservableCollection<ISeries> ProcessQuantities
+        {
+            get => _processQuantities;
+            set
+            {
+                _processQuantities = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<Axis> _processDates;
+        public ObservableCollection<Axis> ProcessDates
+        {
+            get => _processDates;
+            set
+            {
+                _processDates = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string[] Dates { get; set; }
+
+        private List<DateProcess> GetDateChartInfo()
+        {
+            var tempList = new List<DateProcess>();
+
+            using (SqlConnection conn = new SqlConnection(Common.CONNSTRING))
+            {
+                conn.Open();
+                string query = ProMonitoring.DATE_SELECT_QUERY;
+                SqlCommand cmd = new SqlCommand(query, conn);
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    tempList.Add(new DateProcess()
+                    {
+                        Date = reader["Date"].ToString(),
+                        ProcessCount = Convert.ToInt32(reader["Count"])
+                    });
+                }
+            }
+            return tempList;
+        }
+
+        private void CreateChtDate()
+        {
+            var DateList = GetDateChartInfo();
+
+            ProcessQuantities = new ObservableCollection<ISeries>
+            {
+                new LineSeries<int>
+                {
+                    Values = new List<int>(DateList.Select(ps => ps.ProcessCount)),
+                    Fill = null,
+                    Stroke = new SolidColorPaint(SKColors.Red) {StrokeThickness = 4},
+                    GeometryFill = null,
+                    GeometryStroke = null,
+                    YToolTipLabelFormatter = point => $"처리량: {point.PrimaryValue}개",
+                    
+                }
+            };
+
+            Dates = DateList.Select(ps => ps.Date).ToArray();
+
+            ProcessDates = new ObservableCollection<Axis>
+            {
+                new Axis
+                {
+                    Labels = Dates,
+                    TextSize = 10,
+                    LabelsPaint = new SolidColorPaint
+                    {
+                        Color = SKColors.Black,
+                        FontFamily = "NanumGothic"
+                    },
+                }
+            };
+            ChtDate.TooltipTextPaint = new SolidColorPaint
+            {
+                Color = SKColors.Black,
+                FontFamily = "NanumGothic"
+            };
+            ChtDate.YAxes = new Axis[]
+            {
+                new Axis
+                {
+                    MinLimit = 0,
+                    MinStep = 1,
+                }
+            };
+
+            ChtDate.Series = ProcessQuantities;
+            ChtDate.XAxes = ProcessDates;
+
+        }
+
         #endregion
 
         #region 지역별 처리량 막대 그래프
@@ -518,9 +595,13 @@ namespace Monitoring.Views
             {
                 new Axis
                 {
-                    Labels = new string[] { "Seoul", "Busan", "Daegu" },
+                    Labels = new string[] { "서울", "부산", "대구" },
                     LabelsRotation = 0,
-
+                    LabelsPaint = new SolidColorPaint
+                    {
+                        Color = SKColors.Black,
+                        FontFamily = "NanumGothic"
+                    },
                     SeparatorsPaint = new SolidColorPaint(new SKColor(200, 200, 200)),
                     ShowSeparatorLines = false,
                     SeparatorsAtCenter = false,
@@ -639,6 +720,13 @@ namespace Monitoring.Views
             CboDest.SelectedIndex = 0;
         }
     }
+
+    public class DateProcess
+    {
+        internal string Date {  get; set; }
+        internal int ProcessCount { get; set; }
+    }
+
     public class DestClassifications
     {
         public string Dest { get; set; }

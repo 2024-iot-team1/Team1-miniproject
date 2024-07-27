@@ -7,7 +7,7 @@
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
     xmlns:local="clr-namespace:Monitoring"
-    mc:Ignorable="d"
+    mc:Ignorable="d" Closed="Window_Closed"
     Title="Sorting System" Height="670" Width="1060"
     MinHeight="450" MinWidth="670">
     <mah:MetroWindow.IconTemplate>

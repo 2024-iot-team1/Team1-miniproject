@@ -26,8 +26,9 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="0.75*"/>
+            <ColumnDefinition Width="0.75*"/>
         </Grid.ColumnDefinitions>
         <!-- 작업 DataGrid 영역 -->
         <Border Grid.RowSpan="3" Margin="10,10,7,10" BorderThickness="2"  BorderBrush="#2E85C9">
@@ -133,7 +134,7 @@
         <!-- 작업 현황 차트 영역 -->
         <GroupBox Grid.Row="0" Grid.Column="1" BorderBrush="#2E85C9" BorderThickness="1" Margin="5,10,10,10">
             <GroupBox.Header>
-                <StackPanel Orientation="Horizontal" Height="25">
+                <StackPanel Orientation="Horizontal" Height="30">
                     <iconPacks:PackIconFontisto Kind="BarChart" Margin="10,0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.354,-0.719"/>
                     <TextBlock Text="지역별 처리량 모니터링" VerticalAlignment="Center" Foreground="White" 
                    FontWeight="Bold" FontSize="17" />
@@ -156,13 +157,33 @@
                                     Margin="10" />
             </Grid>
         </GroupBox>
-        
-        <!-- 온습도 차트 영역 -->
-        <GroupBox Grid.Row="1" Grid.Column="1" BorderBrush="#2E85C9" BorderThickness="1" Margin="5,5,10,5">
+
+        <!--날짜별 처리량 선 그래프-->
+        <GroupBox Grid.Row="0" Grid.Column="2" BorderBrush="#2E85C9" BorderThickness="1" Margin="5,10,10,10">
             <GroupBox.Header>
-                <StackPanel Orientation="Horizontal" Height="25">
-                    <iconPacks:PackIconMaterial Kind="ThermometerWater" Margin="10,0" Foreground="White" VerticalAlignment="Center"/>
-                    <TextBlock Text="실내 온습도 모니터링" VerticalAlignment="Center" Foreground="White" 
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <iconPacks:PackIconPhosphorIcons Kind="ChartLine" Margin="10,0" Foreground="White" VerticalAlignment="Center"/>
+                    <TextBlock Text="지역별 처리량 모니터링" VerticalAlignment="Center" Foreground="White" 
+                   FontWeight="Bold" FontSize="17" />
+                </StackPanel>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <lvc:CartesianChart x:Name="ChtDate" LegendPosition="Hidden" Grid.Row="1" Grid.Column="0"
+                                    Margin="10" />
+            </Grid>
+        </GroupBox>
+
+        <!-- 온습도 차트 영역 -->
+        <GroupBox Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" BorderBrush="#2E85C9" BorderThickness="1" Margin="5,5,10,5">
+            <GroupBox.Header>
+                <StackPanel Orientation="Horizontal" Height="30">
+                    <iconPacks:PackIconMaterial Kind="ThermometerWater" Margin="10,0,0,0" Foreground="White" VerticalAlignment="Center"/>
+                    <iconPacks:PackIconMaterial Kind="MoleculeCo" Foreground="White" VerticalAlignment="Center" Margin="2,0,10,0"/>
+                    <TextBlock Text="실내 환경 모니터링" VerticalAlignment="Center" Foreground="White" 
                    FontWeight="Bold" FontSize="17" />
                 </StackPanel>
             </GroupBox.Header>
@@ -174,6 +195,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
+                    <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <!--<iconPacks:PackIconPhosphorIcons Kind="ThermometerFill" VerticalAlignment="Center" Height="30"/>-->
@@ -181,17 +203,25 @@
                            FontWeight="Bold" FontFamily="Helvetica" FontSize="15" Margin="5"/>
                 </StackPanel>
                 <lvc:PieChart x:Name="ChtTemp" MinValue="0" MaxValue="100" MaxAngle="270" Grid.Row="1" Grid.Column="0"
-                                      InitialRotation="-225" Margin="10,10,10,0"></lvc:PieChart>
+                                      InitialRotation="-225" Margin="15,10,15,0"></lvc:PieChart>
                 <StackPanel Orientation="Horizontal"  Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
                     <!--<iconPacks:PackIconMaterial Kind="WaterPercent" VerticalAlignment="Center" Height="30"/>-->
                     <Label Content="실내 습도(%)" HorizontalAlignment="Center" 
                            FontWeight="Bold" FontFamily="Helvetica" FontSize="15" Margin="5"/>
                 </StackPanel>
                 <lvc:PieChart x:Name="ChtHumid" MinValue="0" Grid.Column="1" Grid.Row="1"
-                              MaxValue="100" MaxAngle="270" InitialRotation="-225" Margin="10,10,10,0"/>
+                              MaxValue="100" MaxAngle="270" InitialRotation="-225" Margin="15,10,15,0"/>
+                <StackPanel Grid.Column="2" Grid.Row="0" Grid.RowSpan="2" VerticalAlignment="Center">
+                    <Label Content="일산화탄소(ppm)" HorizontalAlignment="Center" Grid.Column="2" 
+                               FontWeight="Bold" FontFamily="Helvetica" FontSize="15" Margin="5"/>
+                    <TextBlock x:Name="TbxCO"  Grid.Column="2" Grid.Row="1"
+                               VerticalAlignment="Center" HorizontalAlignment="Center" Text="10.0"
+                               FontFamily="Helvetica" FontSize="50" FontWeight="DemiBold"/>
+                    
+                </StackPanel>
             </Grid>
         </GroupBox>
-        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center">
+        <StackPanel Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Grid.ColumnSpan="2">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button x:Name="BtnStart" Content="Start" FontSize="20" Margin="10" 
                             Width="150" Height="50" Click="BtnStart_Click"

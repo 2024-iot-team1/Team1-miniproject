@@ -83,6 +83,13 @@ namespace Monitoring.Models
         public static readonly string STATUS_SELECT_QUERY = @"SELECT *
                                                                 FROM Delivery
                                                                WHERE DeliveryStatus IN ('배송중','배송완료','주문취소')
-                                                                 AND OrderNum = 1112112;";    
+                                                                 AND OrderNum = 1112112;";
+
+        public static readonly string DATE_SELECT_QUERY = @"SELECT FORMAT(ProcessDT,'yyyy년 MM월 dd일') AS Date
+	                                                              ,COUNT(*) AS [Count]
+                                                              FROM WorkStatus
+                                                             WHERE CompleteOrNot = 'Y'
+                                                             GROUP BY FORMAT(ProcessDT, 'yyyy년 MM월 dd일')
+                                                             ORDER BY Date ASC";
     }
 }
