@@ -123,13 +123,14 @@ void loop() {
   if (currentTime - lastFanCheckTime >= FAN_INTERVAL) {
     lastFanCheckTime = currentTime;
     controlRelay();
-  }
-
-  // 실내 전등 제어
-  if (currentTime - lastLightCheckTime >= LIGHT_INTERVAL) {
-    lastLightCheckTime = currentTime;
     controlLight();
   }
+
+  // // 실내 전등 제어
+  // if (currentTime - lastLightCheckTime >= LIGHT_INTERVAL) {
+  //   lastLightCheckTime = currentTime;
+  //   controlLight();
+  // }
 
   recvSetting();
 }
@@ -166,7 +167,7 @@ void loop() {
       dtostrf(temperature, 6, 2, tempString); // 온도 변환
       dtostrf(humidity, 6, 2, humString);  // 습도 변환
 
-      String data = String(tempString) + "," + String(humString) + "," + String(WarningSign);
+      String data = String(tempString) + "," + String(humString) + "," + String(WarningSign) + "," + String(CO) ;
 
       bluetooth.println(data);
   }

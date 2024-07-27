@@ -363,7 +363,7 @@ namespace Monitoring.Views
 
                 var temp = Convert.ToDouble(values[0]);
                 var humid = Convert.ToDouble(values[1]);
-                var warningSign = Convert.ToDouble(values[2]);
+                var warningSign = Convert.ToInt32(values[2]);
                 var CO = Convert.ToDouble(values[3]);
 
                 TempNeedle.Value = temp;
