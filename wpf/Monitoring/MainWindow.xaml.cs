@@ -40,16 +40,19 @@ namespace Monitoring
 
             // 비동기적으로 시리얼 포트 초기화 시작
             // 디자인 작업할 때는 아래를 주석처리하고 작업하기
-            // InitializeSerialPortsAsync();
+            InitializeSerialPortsAsync();
 
             // 타이머 설정: 1초마다 현재 시간 업데이트
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = new TimeSpan(0, 0, 1);   // 1초마다
             timer.Tick += Timer_Tick;
             timer.Start();
+        }
 
-            ActiveItem.Content = new Views.ProcessMonitoring(this);
-            StsSelScreen.Content = "모니터링";
+
+        private void MetroWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+
         }
 
         // 온습도 아두이노
@@ -239,7 +242,7 @@ namespace Monitoring
             // 각 시리얼 포트 초기화 시도
             await TryInitializeSerialPortAsync("COM12", 9600, port => _serialPort01 = port);    // 온습도
             await TryInitializeSerialPortAsync("COM6", 9600, port => _serialPort02 = port);     // 컨베이어
-            await TryInitializeSerialPortAsync("COM8", 9600, port => _serialPort03 = port);    // 바코드
+            await TryInitializeSerialPortAsync("COM10", 9600, port => _serialPort03 = port);    // 바코드
 
 
             // 연결 상태 UI 업데이트
@@ -309,18 +312,36 @@ namespace Monitoring
         // 화면 출력
         private void Monitoring_Click(object sender, RoutedEventArgs e)
         {
-            ClearSerialPortEventHandlers(_serialPort01);
-            ClearSerialPortEventHandlers(_serialPort02);
-            ClearSerialPortEventHandlers(_serialPort03);
+            if (_serialPort01 != null && _serialPort01.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort01);
+            }
+            if (_serialPort02 != null && _serialPort02.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort02);
+            }
+            if (_serialPort03 != null && _serialPort03.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort03);
+            }
             ActiveItem.Content = new Views.ProcessMonitoring(this);
             StsSelScreen.Content = "모니터링";
         }
 
         private void Order_Click(object sender, RoutedEventArgs e)
         {
-            ClearSerialPortEventHandlers(_serialPort01);
-            ClearSerialPortEventHandlers(_serialPort02);
-            ClearSerialPortEventHandlers(_serialPort03);
+            if (_serialPort01 != null && _serialPort01.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort01);
+            }
+            if (_serialPort02 != null && _serialPort02.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort02);
+            }
+            if (_serialPort03 != null && _serialPort03.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort03);
+            }
             ActiveItem.Content = new Views.Order();
             StsSelScreen.Content = "주문 목록 모니터링";
             SettingEventHandler();
@@ -329,9 +350,18 @@ namespace Monitoring
 
         private void Inventory_Click(object sender, RoutedEventArgs e)
         {
-            ClearSerialPortEventHandlers(_serialPort01);
-            ClearSerialPortEventHandlers(_serialPort02);
-            ClearSerialPortEventHandlers(_serialPort03);
+            if (_serialPort01 != null && _serialPort01.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort01);
+            }
+            if (_serialPort02 != null && _serialPort02.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort02);
+            }
+            if (_serialPort03 != null && _serialPort03.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort03);
+            }
             ActiveItem.Content = new Views.Inventory();
             StsSelScreen.Content = "재고 목록 모니터링";
             SettingEventHandler();
@@ -339,9 +369,18 @@ namespace Monitoring
 
         private void Setting_Click(object sender, RoutedEventArgs e)
         {
-            ClearSerialPortEventHandlers(_serialPort01);
-            ClearSerialPortEventHandlers(_serialPort02);
-            ClearSerialPortEventHandlers(_serialPort03);
+            if (_serialPort01 != null && _serialPort01.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort01);
+            }
+            if (_serialPort02 != null && _serialPort02.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort02);
+            }
+            if (_serialPort03 != null && _serialPort03.IsOpen)
+            {
+                ClearSerialPortEventHandlers(_serialPort03);
+            }
             ActiveItem.Content = new Views.Setting(this);
             StsSelScreen.Content = "시스템 모니터링";
             SettingEventHandler();

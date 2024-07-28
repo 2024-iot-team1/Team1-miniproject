@@ -27,8 +27,8 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
-            <ColumnDefinition Width="0.75*"/>
-            <ColumnDefinition Width="0.75*"/>
+            <ColumnDefinition Width="0.5*"/>
+            <ColumnDefinition Width="1*"/>
         </Grid.ColumnDefinitions>
         <!-- 작업 DataGrid 영역 -->
         <Border Grid.RowSpan="3" Margin="10,10,7,10" BorderThickness="2"  BorderBrush="#2E85C9">
@@ -39,6 +39,16 @@
                 </Grid.RowDefinitions>
                 <Border BorderThickness="1" BorderBrush="#2E85C9" Margin="10,10,10,0" >
                     <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
+                        <Label Content="정렬 순서" FontWeight="Bold" FontSize="15" FontFamily="Helvetica"
+                               VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A65A2"/>
+                        <ComboBox x:Name="CboAlign" Margin="10,5,10,5"
+                                  VerticalAlignment="Center" HorizontalAlignment="Right" VerticalContentAlignment="Center"
+                                  HorizontalContentAlignment="Center"
+                                  SelectionChanged="CboAlign_SelectionChanged"
+                                  Height="30" Width="100" Style="{StaticResource MahApps.Styles.ComboBox.Virtualized}">
+                            <ComboBoxItem Content="최신순으로"/>
+                            <ComboBoxItem Content="오래된 순으로"/>
+                        </ComboBox>
                         <Label Content="배송지 분류" FontWeight="Bold" FontSize="15" FontFamily="Helvetica"
                                VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#4A65A2"/>
                         <ComboBox x:Name="CboDest" Margin="10,5,5,5"
@@ -58,67 +68,67 @@
                       IsReadOnly="True" GridLinesVisibility="All" Margin="10" Grid.Row="1"
                       ColumnWidth="*" CanUserSortColumns="True" VerticalScrollBarVisibility="Auto"
                       BorderThickness="1" IsSynchronizedWithCurrentItem="False">
-                <DataGrid.Resources>
-                    <Style TargetType="DataGridColumnHeader">
-                        <Setter Property="Height" Value="45" />
-                        <Setter Property="FontWeight" Value="Bold" />
-                        <Setter Property="FontSize" Value="15" />
-                        <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        <Setter Property="VerticalContentAlignment" Value="Center"/>
-                        <Setter Property="Background" Value="#3393DF"/>
-                        <Setter Property="Foreground" Value="White"/>
-                        <!--<Setter Property="BorderThickness" Value="1"/>
-                        <Setter Property="BorderBrush" Value="#2E85C9"/>-->
-                        <Setter Property="FontFamily" Value="Helvetica"/>
-                    </Style>
-                </DataGrid.Resources>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding WorkNum}" Width="1*" Header="작업번호" >
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Normal"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding OrderNum}" Width="1*" Header="주문번호" >
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Normal"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding DeliveryNum}" Width="1*" Header="배송번호" >
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Normal"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
+                    <DataGrid.Resources>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="Height" Value="45" />
+                            <Setter Property="FontWeight" Value="Bold" />
+                            <Setter Property="FontSize" Value="15" />
+                            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                            <Setter Property="VerticalContentAlignment" Value="Center"/>
+                            <Setter Property="Background" Value="#3393DF"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <!--<Setter Property="BorderThickness" Value="1"/>
+                            <Setter Property="BorderBrush" Value="#2E85C9"/>-->
+                            <Setter Property="FontFamily" Value="Helvetica"/>
+                        </Style>
+                    </DataGrid.Resources>
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding WorkNum}" Width="1*" Header="작업번호" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding OrderNum}" Width="1*" Header="주문번호" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding DeliveryNum}" Width="1*" Header="배송번호" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
                         <DataGridTextColumn Binding="{Binding Destination}" Width="1*" Header="배송지역" >
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Normal"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding ProcessDT, StringFormat={}{0:yyyy/MM/dd}}" Width="1*" Header="작업일시" >
-                        <DataGridTextColumn.ElementStyle>
-                            <Style TargetType="TextBlock">
-                                <Setter Property="HorizontalAlignment" Value="Center"/>
-                                <Setter Property="VerticalAlignment" Value="Center"/>
-                                <Setter Property="FontWeight" Value="Normal"/>
-                            </Style>
-                        </DataGridTextColumn.ElementStyle>
-                    </DataGridTextColumn>
-                    <DataGridTextColumn Binding="{Binding CompleteOrNot}" Width="1*" Header="성공여부" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding ProcessDT, StringFormat={}{0:yyyy/MM/dd}}" Width="1*" Header="작업일시" >
+                            <DataGridTextColumn.ElementStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="HorizontalAlignment" Value="Center"/>
+                                    <Setter Property="VerticalAlignment" Value="Center"/>
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                </Style>
+                            </DataGridTextColumn.ElementStyle>
+                        </DataGridTextColumn>
+                        <DataGridTextColumn Binding="{Binding CompleteOrNot}" Width="1*" Header="성공여부" >
                         <DataGridTextColumn.ElementStyle>
                             <Style TargetType="TextBlock">
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -136,23 +146,15 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal" Height="30">
                     <iconPacks:PackIconFontisto Kind="BarChart" Margin="10,0" Foreground="White" VerticalAlignment="Center" RenderTransformOrigin="0.354,-0.719"/>
-                    <TextBlock Text="지역별 처리량 모니터링" VerticalAlignment="Center" Foreground="White" 
+                    <TextBlock Text="지역별 처리량" VerticalAlignment="Center" Foreground="White" 
                    FontWeight="Bold" FontSize="17" />
                 </StackPanel>
             </GroupBox.Header>
             <Grid>
-                <!--<Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="3*"/>
-                </Grid.ColumnDefinitions>-->
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <!--<Label Content="상품별 물량" HorizontalAlignment="Center" Grid.Row="0"
-                       FontWeight="DemiBold" FontFamily="Seoge UI" FontSize="20" Margin="0,15,0,0"/>
-                <lvc:PieChart x:Name="ChtProduct" Margin="10,0,10,10" Grid.Row="1" Grid.Column="0"/>-->
-
                 <lvc:CartesianChart x:Name="ChtDestination" LegendPosition="Hidden" Grid.Row="1" Grid.Column="0"
                                     Margin="10" />
             </Grid>
@@ -163,7 +165,7 @@
             <GroupBox.Header>
                 <StackPanel Orientation="Horizontal" Height="30">
                     <iconPacks:PackIconPhosphorIcons Kind="ChartLine" Margin="10,0" Foreground="White" VerticalAlignment="Center"/>
-                    <TextBlock Text="지역별 처리량 모니터링" VerticalAlignment="Center" Foreground="White" 
+                    <TextBlock Text="날짜별 처리량" VerticalAlignment="Center" Foreground="White" 
                    FontWeight="Bold" FontSize="17" />
                 </StackPanel>
             </GroupBox.Header>

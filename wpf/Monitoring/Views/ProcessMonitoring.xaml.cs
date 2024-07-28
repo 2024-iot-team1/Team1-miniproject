@@ -13,29 +13,15 @@ using System.Data.SqlClient;
 using System.Data;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
-using Monitoring.Models;
 using LiveChartsCore.SkiaSharpView.Painting;
 using SkiaSharp;
-using System.Drawing;
-using LiveChartsCore.SkiaSharpView.WPF;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Brushes = System.Windows.Media.Brushes;
 using Monitoring.Views.Models;
-using CefSharp.DevTools.CSS;
 using Color = System.Windows.Media.Brushes;
 
 namespace Monitoring.Views
@@ -108,6 +94,12 @@ namespace Monitoring.Views
             // Destinations 리스트 객체 생성
             Destinations = new ObservableCollection<DestClassifications>();
             DataContext = this;
+        }
+
+        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            CboDest.SelectedIndex = 0;
+            CboAlign.SelectedIndex = 0;
 
             // 앵귤러 차트 추가
             CreateChart();
@@ -405,7 +397,9 @@ namespace Monitoring.Views
                 {
                     conn.Open();
                     // Orders 테이블과 Delivery 테이블을 Inner Join 하여 데이터 가져오는 쿼리
-                    string query = ProMonitoring.SELECT_QUERY;
+                    string query = "";
+                    if(CboAlign.SelectedIndex == 0) query = ProMonitoring.SELECT_QUERY_DESC;
+                    else if (CboAlign.SelectedIndex == 1) query = ProMonitoring.SELECT_QUERY_ASC;  
 
                     SqlCommand com = new SqlCommand(query, conn);
                     SqlDataAdapter adapter = new SqlDataAdapter(com);
@@ -428,7 +422,10 @@ namespace Monitoring.Views
                 {
                     conn.Open();
 
-                    string query = ProMonitoring.FILTER_SELECT_QUERY;
+                    string query = "";
+                    if (CboAlign.SelectedIndex == 0) query = ProMonitoring.FILTER_SELECT_QUERY_DESC;
+                    else if (CboAlign.SelectedIndex == 1) query = ProMonitoring.FILTER_SELECT_QUERY_ASC;
+
                     SqlCommand comm = new SqlCommand(query, conn);
                     comm.Parameters.AddWithValue("@Destination", dest);
 
@@ -507,7 +504,6 @@ namespace Monitoring.Views
                     GeometryFill = null,
                     GeometryStroke = null,
                     YToolTipLabelFormatter = point => $"처리량: {point.PrimaryValue}개",
-                    
                 }
             };
 
@@ -518,11 +514,11 @@ namespace Monitoring.Views
                 new Axis
                 {
                     Labels = Dates,
-                    TextSize = 10,
+                    TextSize = 15,
                     LabelsPaint = new SolidColorPaint
                     {
                         Color = SKColors.Black,
-                        FontFamily = "NanumGothic"
+                        FontFamily = "NanumGothic",
                     },
                 }
             };
@@ -585,7 +581,7 @@ namespace Monitoring.Views
                 {
                     Name = "Count",
                     Values = new double[] { 2, 5, 4 },
-                    MaxBarWidth = 100,
+                    MaxBarWidth = 50,
                     DataLabelsSize = 15,
                     Padding = 10,
                 }
@@ -615,6 +611,11 @@ namespace Monitoring.Views
                     MinLimit = 0,
                     MinStep = 1,
                 }
+            };
+            ChtDestination.TooltipTextPaint = new SolidColorPaint
+            {
+                Color = SKColors.Black,
+                FontFamily = "NanumGothic0"
             };
 
             ChtDestination.Series = DestinationSeries;
@@ -702,9 +703,15 @@ namespace Monitoring.Views
             }
         }
 
-        private void CboDest_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        #endregion
+
+        private void CboAlign_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if(CboDest.SelectedIndex == 0)
+            if (CboDest.SelectedIndex == 0)
+            {
+                LoadData();
+            }
+            else if (CboDest.SelectedIndex == -1)
             {
                 LoadData();
             }
@@ -713,11 +720,17 @@ namespace Monitoring.Views
                 LoadData(CboDest.SelectedValue.ToString());
             }
         }
-        #endregion
 
-        private void UserControl_Loaded(object sender, RoutedEventArgs e)
+        private void CboDest_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            CboDest.SelectedIndex = 0;
+            if (CboDest.SelectedIndex == 0)
+            {
+                LoadData();
+            }
+            else
+            {
+                LoadData(CboDest.SelectedValue.ToString());
+            }
         }
     }
 

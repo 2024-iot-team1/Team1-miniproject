@@ -119,6 +119,44 @@
 - DHT11 디지털 온습도 센서 모듈
 - 쿨러(CT-5010L05R-2P(5V))
 - 아두이노 수동 부저
+- MQ-7B / 일산화탄소 검출센서
+- 불꽃 감지 센서
+- 아크릴 백색LED 백라이트 모듈 / 3~4V
+
+## 💻 WPF 화면 구성
+
+#### 모니터링 화면
+
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/Monitoring_Page.png" width="80%">
+<br>
+
+- 위험 신호 수신시 화면 효과
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/Warning_Page.png" width="80%">
+<br>
+
+#### 주문·배송 관리 화면
+
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/Order_Page.png" width="80%">
+<br>
+
+#### 상품·재고 관리 화면
+
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/Inventory_Page.png" width="80%">
+<br>
+
+#### 아두이노 설정·내부 CCTV 화면
+
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/Setting_Page.png" width="80%">
+<br>
+
+## 🔨 아두이노 및 모형 구성
+
+
 
 ## 📃 진행 현황
 
@@ -234,7 +272,7 @@
 - Raspberry Pi
     - flask를 이용하여 웹 페이지에 라즈베리파이 카메라가 촬영한 화면 출력
 <br>
-    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject002.jpg" width="80%">
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject002.jpg"  width="50%">
 
 
 
@@ -256,7 +294,7 @@
         - CCTV 화면 크기 및 비율 조정
         - 환기팬 ON/OFF, 경고 부저 OFF, 경고 온습도 수준을 설정할 수 있도록 화면 구현
 <br>
-    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject003.jpg" width="80%">
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject003.jpg"  width="50%">
 
 ### 📝 2024.07.12
 - WPF
@@ -269,7 +307,7 @@
 - DB
     - 상품 분류 테이블 추가 및 데이터 삽입
 <br>
-    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject004.jpg" width="80%">
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject004.jpg" width="50%">
 
 ### 📝 2024.07.13
 - WPF
@@ -313,7 +351,7 @@
     - 모니터링 페이지
         - 바코드가 인식되면 WorkStatus에 데이터가 추가되고 상품이 상자에 들어간게 인식되면 Update 쿼리문을 실행해 CompleteOrNot 값을 Y으로 변경
 
-- 창고 지붕 설치 완료
+- 창고 모형 지붕 설치 완료
 
 <br>
     <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject007.jpg" width="50%">
@@ -354,6 +392,9 @@
     - 백색 아크릴 LED, MQ-7 가스 감지 센서, 불꽃 감지 센서 설치
     - 실내 환경 모니터링 아두이노 코드 수정
 
+<br>
+    <img src="https://raw.githubusercontent.com/2024-iot-team1/Team1-miniproject/main/images/teamProject008.jpg" width="50%">
+
 ### 📝 2024.07.26
 - Arduino
     - MQ-7 가스 감지 센서, 불꽃 감지 센서로 부터 실시간 정보 획득 기능 구현
@@ -366,7 +407,21 @@
     - 이벤트 핸들러 함수 등록/제거 수정
     - 모니터링 페이지 
         - 일산화탄소 표시 추가
-        - 일별 작업량 표시 추가
+        - 일별 작업량 선 그래프 추가
+
+
+### 📝 2024.07.28
+- WPF
+    - 모니터링 페이지 
+        - 최신순 정렬, 오래된 순 정렬 콤보박스 추가
+
+    - CCTV & 설정 페이지
+        - 블루투스 통신을 통해 아두이노에 LED ON/OFF 신호 보내기
+
+    - 아이콘 추가
+
+- Arduino
+    - 블루투스 모듈을 통해 LED ON/OFF 신호를 받아서 실내 전등 LED ON/OFF 구현
 
 ## 저작권 표시
-<a href="https://www.flaticon.com/kr/free-icons/-" title="데이터웨어 하우스 아이콘">데이터웨어 하우스 아이콘 제작자: smashingstocks - Flaticon</a>
+<a href="https://www.flaticon.com/kr/fre    e-icons/-" title="데이터웨어 하우스 아이콘">데이터웨어 하우스 아이콘 제작자: smashingstocks - Flaticon</a>

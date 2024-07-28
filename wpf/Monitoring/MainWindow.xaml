@@ -6,16 +6,17 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
     xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-    xmlns:local="clr-namespace:Monitoring"
+    xmlns:local="clr-namespace:Monitoring" Loaded="MetroWindow_Loaded"
     mc:Ignorable="d" Closed="Window_Closed"
     Title="Sorting System" Height="670" Width="1060"
     MinHeight="450" MinWidth="670">
     <mah:MetroWindow.IconTemplate>
         <DataTemplate>
-            <iconPacks:PackIconMaterial Kind="Ladder" Width="24" Margin="5, 7, 0, 0" Foreground="White" />
+            <Image Source="/image/warehouseImage.png"  Width="24" Margin="5, 7, 0, 0" />
+            <!--<iconPacks:PackIconMaterial Kind="Ladder" Width="24" Margin="5, 7, 0, 0" Foreground="White" />-->
         </DataTemplate>
     </mah:MetroWindow.IconTemplate>
-    
+
     <!-- 경고 애니메이션 스토리보드 정의 -->
     <Window.Resources>
         <Storyboard x:Key="WarningStoryboard" AutoReverse="True" RepeatBehavior="Forever">

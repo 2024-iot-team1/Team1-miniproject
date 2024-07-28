@@ -16,16 +16,27 @@ namespace Monitoring.Models
         public DateTime ProcessDT { get; set; }
         public char CompleteOrNot { get; set; }
 
-        public static readonly string SELECT_QUERY = @"SELECT W.[WorkNum]
+        public static readonly string SELECT_QUERY_DESC = @"SELECT W.[WorkNum]
                                                              ,W.[OrderNum]
                                                              ,W.[DeliveryNum]
                                                              ,D.[Destination]
                                                              ,W.[ProcessDT]
                                                              ,W.[CompleteOrNot]
                                                          FROM [dbo].[WorkStatus] W
-                                                        INNER JOIN [dbo].[Delivery] D ON W.DeliveryNum = D.DeliveryNum";
+                                                        INNER JOIN [dbo].[Delivery] D ON W.DeliveryNum = D.DeliveryNum
+                                                        ORDER BY W.[ProcessDT] DESC";
 
-        public static readonly string FILTER_SELECT_QUERY = @"SELECT W.[WorkNum]
+        public static readonly string SELECT_QUERY_ASC = @"SELECT W.[WorkNum]
+                                                             ,W.[OrderNum]
+                                                             ,W.[DeliveryNum]
+                                                             ,D.[Destination]
+                                                             ,W.[ProcessDT]
+                                                             ,W.[CompleteOrNot]
+                                                         FROM [dbo].[WorkStatus] W
+                                                        INNER JOIN [dbo].[Delivery] D ON W.DeliveryNum = D.DeliveryNum
+                                                        ORDER BY W.[ProcessDT] ASC";
+
+        public static readonly string FILTER_SELECT_QUERY_DESC = @"SELECT W.[WorkNum]
                                                                     ,W.[OrderNum]
                                                                     ,W.[DeliveryNum]
                                                                     ,D.[Destination]
@@ -33,7 +44,19 @@ namespace Monitoring.Models
                                                                     ,W.[CompleteOrNot]
                                                                 FROM [dbo].[WorkStatus] W
                                                                INNER JOIN [dbo].[Delivery] D ON W.DeliveryNum = D.DeliveryNum
-                                                               WHERE D.Destination = @Destination";
+                                                               WHERE D.Destination = @Destination
+                                                               ORDER BY W.[ProcessDT] DESC";
+
+        public static readonly string FILTER_SELECT_QUERY_ASC = @"SELECT W.[WorkNum]
+                                                                    ,W.[OrderNum]
+                                                                    ,W.[DeliveryNum]
+                                                                    ,D.[Destination]
+                                                                    ,W.[ProcessDT]
+                                                                    ,W.[CompleteOrNot]
+                                                                FROM [dbo].[WorkStatus] W
+                                                               INNER JOIN [dbo].[Delivery] D ON W.DeliveryNum = D.DeliveryNum
+                                                               WHERE D.Destination = @Destination
+                                                               ORDER BY W.[ProcessDT] ASC";
 
         public static readonly string DESTINATION_SELECT_QUERY = @"SELECT Destination
                                                                         , DeliveryNum
@@ -85,11 +108,11 @@ namespace Monitoring.Models
                                                                WHERE DeliveryStatus IN ('배송중','배송완료','주문취소')
                                                                  AND OrderNum = 1112112;";
 
-        public static readonly string DATE_SELECT_QUERY = @"SELECT FORMAT(ProcessDT,'yyyy년 MM월 dd일') AS Date
+        public static readonly string DATE_SELECT_QUERY = @"SELECT FORMAT(ProcessDT,'MM월 dd일') AS Date
 	                                                              ,COUNT(*) AS [Count]
                                                               FROM WorkStatus
                                                              WHERE CompleteOrNot = 'Y'
-                                                             GROUP BY FORMAT(ProcessDT, 'yyyy년 MM월 dd일')
+                                                             GROUP BY FORMAT(ProcessDT, 'MM월 dd일')
                                                              ORDER BY Date ASC";
     }
 }
