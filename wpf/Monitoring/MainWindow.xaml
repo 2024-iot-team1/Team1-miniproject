@@ -105,7 +105,7 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Text="스마트 팩토리 분류 모니터링" Foreground="White" FontSize="25" VerticalAlignment="Center" 
+                    <TextBlock Text="스마트 물류 센터 모니터링" Foreground="White" FontSize="25" VerticalAlignment="Center" 
                                HorizontalAlignment="Left" Margin="10,20,0,20" FontFamily="Seoge UI" FontWeight="Bold"/>
 
                     <Label x:Name="LblSensingDt" Content="2023-07-09 00시 00분 00초" FontSize="16" FontWeight="DemiBold"
