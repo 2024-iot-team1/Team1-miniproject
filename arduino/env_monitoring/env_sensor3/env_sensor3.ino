@@ -157,7 +157,10 @@ void loop() {
       Serial.print(" *C\t");
       Serial.print("CO: ");
       Serial.print(CO);
-      Serial.println(" ppm");
+      Serial.print(" ppm\t");
+      Serial.print("flameSignal: ");
+      Serial.println(flameSignal);
+
 
       // 온습도 정보 및 위험 정보 전송
       if (temperature > TEMP_THRESHOLD || humidity > HUMIDITY_THRESHOLD || CO > CO_THRESHOLD || flameSignal == 0) WarningSign = 1;
@@ -247,6 +250,9 @@ void controlRelay() {
     if (fanOnOff == 1){
       digitalWrite(RELAY_PIN, HIGH);
     }
+    else {
+    digitalWrite(RELAY_PIN, LOW);
+    }
   } 
   else {
     digitalWrite(RELAY_PIN, LOW);
@@ -257,10 +263,10 @@ void controlRelay() {
 void controlLight() {
   if(lightOnOff == 1)
   {
-    digitalWrite(LIGHT_PIN, HIGH);
+    analogWrite(LIGHT_PIN, 180);
   }
   else{
-    digitalWrite(LIGHT_PIN, LOW);
+    digitalWrite(LIGHT_PIN, 0);
   }
 }
 
